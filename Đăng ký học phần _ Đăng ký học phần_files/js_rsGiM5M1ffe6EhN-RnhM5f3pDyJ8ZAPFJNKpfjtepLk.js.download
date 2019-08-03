@@ -104,7 +104,7 @@ $(document).ready(function() {
 Drupal.googleanalytics.isCrossDomain = function (hostname, crossDomains) {
   /**
    * jQuery < 1.6.3 bug: $.inArray crushes IE6 and Chrome if second argument is
-   * `null` or `undefined`, http://bugs.jquery.com/ticket/10076,
+   * `null` or `undefined`, https://bugs.jquery.com/ticket/10076,
    * https://github.com/jquery/jquery/commit/a839af034db2bd934e4d4fa6758a3fed8de74174
    *
    * @todo: Remove/Refactor in D8
@@ -163,8 +163,8 @@ Drupal.googleanalytics.isInternalSpecial = function (url) {
  * Extract the relative internal URL from an absolute internal URL.
  *
  * Examples:
- * - http://mydomain.com/node/1 -> /node/1
- * - http://example.com/foo/bar -> http://example.com/foo/bar
+ * - https://mydomain.com/node/1 -> /node/1
+ * - https://example.com/foo/bar -> https://example.com/foo/bar
  *
  * @param string url
  *   The web url to check.
