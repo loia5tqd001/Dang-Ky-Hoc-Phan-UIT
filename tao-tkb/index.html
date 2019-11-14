@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>Tạo TKB</title>
+
+</head>
+
+<body>
+  <div class="col-12">
+    <h1 class="mt-3 font-weight-bold">Tạo TKB theo mã lớp học</h1>
+    <p class="mb-4">
+      Inspired by: <a href="https://dkhp.kienthuc24h.com/taotkb.php">kienthuc24h</a>
+    </p>
+
+    <h4 class="text-danger font-weight-bold">1. Tải file excel dữ liệu TKB của trường</h4>
+    <input type="file" class="form-control-file" id="xlf">
+
+
+    <h4 class="mt-3 mb-1 text-danger font-weight-bold">2. Nhập vào danh sách mã lớp học</h4>
+    <textarea id='text-input' class="form-control" cols="40" rows="10" spellcheck="false"
+    placeholder="Mỗi lớp trên một hàng. Ví dụ:
+SE100.K11
+SS002.K11
+SE114.K12"></textarea>
+    <button id="submit" class="mt-2 mb-4 btn btn-primary">Chấp Nhận</button>
+
+    <div id='alert-error' style='display:none' class="alert alert-danger" role="alert"> 
+    </div>
+
+    <h4 class="text-danger font-weight-bold">3. Kết quả</h4>
+    <div class="table-responsive" id="schedule-table">
+
+      <table width="100%" style="font-size:1em;" class="sticky-enabled">
+        <thead>
+          <tr>
+            <th>Thứ / Tiết</th>
+            <th>Thứ 2</th>
+            <th>Thứ 3</th>
+            <th>Thứ 4</th>
+            <th>Thứ 5</th>
+            <th>Thứ 6</th>
+            <th>Thứ 7</th>
+          </tr>
+        </thead>
+
+        <tbody id='table-body'>
+        </tbody>
+      </table>
+      <br>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+
+</html>

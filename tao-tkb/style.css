@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+th, td {
+  padding: 0.1em;
+  border: 1px solid #ddd;
+}
+
+#schedule-table table thead tr th {
+  background-color: #eee;
+  text-align: center;
+  width: 3%;
+}
+
+#schedule-table table tr {
+  background: #ccc !important;
+  border-bottom: 1px solid #ddd;
+  background-color: transparent;
+}
+
+#schedule-table table tr td.lesson-center_bold {
+  text-align: center;
+  font-weight: bold;
+}
+
+.class-center_white {
+  background-color: #fff;
+  text-align: center;
+  width: 230px;
+}
