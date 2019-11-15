@@ -167,19 +167,25 @@ function handleFile(file) {
       row => typeof row[0] === 'number'
     )
     data = dataInArray.map(array => dataArrayToObject(array))
+  }
+  reader.onloadend = () => {
     alertEle.style.display = 'none'
+    custLabel.classList.remove('text-danger')
+    custLabel.classList.add('text-success')
+    custLabel.textContent = file.name
   }
   if (rABS) reader.readAsBinaryString(file)
   else reader.readAsArrayBuffer(file)
 }
 
 function process (dataInObject) {
-  const reportBugStr = `Nếu bạn thấy lỗi là do chương trình vui lòng báo lỗi <a href="#" class="alert-link">tại đây</a>`
+  const linkGithub = 'https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues'
+  const reportBugStr = `Nếu bạn thấy lỗi là do chương trình vui lòng báo lỗi <a href="${linkGithub}" target="_blank" class="alert-link">tại đây</a>`
 
   tableBody.innerHTML = ''
   
   if (dataInObject === null) {
-    alertEle.innerHTML = 'Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (như ở bước 1) lên. ' + reportBugStr
+    alertEle.innerHTML = 'Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ' + reportBugStr
     alertEle.style.display = 'block'
     return
   }
@@ -203,5 +209,6 @@ const btn = document.getElementById('submit')
 const textInp = document.getElementById('text-input')
 const alertEle = document.getElementById('alert-error')
 const tableBody = document.getElementById('table-body')
+const custLabel = document.querySelector('.custom-file-label')
 xlf.addEventListener('change', e => handleFile(e.target.files[0]))
 btn.addEventListener('click', e => process(data))

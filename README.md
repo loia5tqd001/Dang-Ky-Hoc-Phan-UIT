@@ -18,7 +18,7 @@
 ---
 
 ## Tạo TKB từ danh sách lớp
-<img src="./captures/tao-tkb.png">
+<img src="./captures/tao-tkb-2.png">
 
 ---
 

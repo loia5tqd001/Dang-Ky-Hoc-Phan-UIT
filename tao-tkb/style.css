@@ -2,6 +2,19 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
+  width: 90vw;
+  margin: 4vw;
+}
+
+html::before {
+  content: '';
+  background-image: url("bg.png");
+  opacity: 0.1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 th, td {
