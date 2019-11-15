@@ -9,7 +9,7 @@ body {
 html::before {
   content: '';
   background-image: url("bg.png");
-  opacity: 0.1;
+  opacity: 0.17;
   position: fixed;
   top: 0;
   left: 0;

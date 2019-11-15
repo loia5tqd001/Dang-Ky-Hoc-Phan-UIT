@@ -110,6 +110,22 @@ function handleSchedulable(processedData) {
     return processedData.schedulable.filter(x => x.Tiet.includes(index + 1))
   })
 
+  // check trung tkb
+  for (const arr of listTiet) {
+    const listThu = arr.map(x => x.Thu)
+    const listUniqueThu = new Set(listThu)
+    const isUnique = listThu.length === listUniqueThu.size
+    if (!isUnique) {
+      const thuBug = listThu.find(x => listThu.count(x) > 1)
+      const bugs = arr.filter(x => x.Thu === thuBug)
+      const bugsDisplay = bugs.map(({MaLop, Thu, Tiet}) => `${MaLop}:Thứ${Thu}Tiết${Tiet}`)
+      return {
+        hasBug: true,
+        message: `Trùng thời khóa biểu: <strong>` + bugsDisplay.join(' - ') + '</strong>. '
+      }
+    }
+  }
+
   let toAppend = ''
   for (let index = 0; index < 10; index++) {
     toAppend += `<tr>`
@@ -132,6 +148,7 @@ function handleSchedulable(processedData) {
     toAppend += `</tr>`
   }
   tableBody.innerHTML += toAppend
+  return { hasBug: false }
 }
 
 function handleUnschedulable(processedData) {
@@ -178,31 +195,66 @@ function handleFile(file) {
   else reader.readAsArrayBuffer(file)
 }
 
-function process (dataInObject) {
+// https://stackoverflow.com/a/6121234/9787887
+Object.defineProperties(Array.prototype, {
+  count: {
+    value: function(value) {
+      return this.filter(x => x == value).length
+    }
+  }
+})
+
+function checkTrungMaMH (filteredClasses) {
+  const verifyStrings = filteredClasses.map(x => x.MaMH + "-" + x.HTGD)
+  const uniqueStrings = new Set(verifyStrings)
+  const isUnique = verifyStrings.length === (uniqueStrings).size
+  if (!isUnique) {
+    const bugs = verifyStrings.filter(x => verifyStrings.count(x) > 1)
+    return {
+      hasBug: true,
+      message: `Trùng mã môn học cho lớp: <strong>` + bugs.join(', ') + '</strong>. '
+    }
+  } else {
+    return {
+      hasBug: false
+    }
+  }
+}
+
+function alertError (message) {
   const linkGithub = 'https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues'
   const reportBugStr = `Nếu bạn thấy lỗi là do chương trình vui lòng báo lỗi <a href="${linkGithub}" target="_blank" class="alert-link">tại đây</a>`
+  alertEle.innerHTML = message + reportBugStr
+  alertEle.style.display = 'block'
+  return
+}
 
+function process (dataInObject) {
   tableBody.innerHTML = ''
   
   if (dataInObject === null) {
-    alertEle.innerHTML = 'Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ' + reportBugStr
-    alertEle.style.display = 'block'
-    return
+    return alertError('Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ')
   }
   const toSchedule = textInp.value.split('\n').map(s => s.trim()).filter(s => s !== '')
   
   const filteredClasses = filterBySchedule(dataInObject, toSchedule)
   if (filteredClasses.length === 0) {
-    alertEle.innerHTML = 'Không tìm thấy mã lớp học (từ bước 2) hợp lệ cho bạn! ' + reportBugStr
-    alertEle.style.display = 'block'
-    return
+    return alertError('Không tìm thấy mã lớp học nào hợp lệ cho bạn! Bạn kiểm tra kĩ chưa? ')
+  } 
+  else {
+    const { hasBug, message } = checkTrungMaMH(filteredClasses)
+    if (hasBug) {
+      return alertError(message)
+    }
   }
   const processedData = classifyBySchedulable(filteredClasses)
-  handleSchedulable(processedData)
+  const { hasBug, message } = handleSchedulable(processedData)
+  if (hasBug) {
+    return alertError(message)
+  }
   handleUnschedulable(processedData)
   alertEle.style.display = 'none'
 }
-// TODO: check trung thoi khoa bieu
 
 const xlf = document.getElementById('xlf')
 const btn = document.getElementById('submit')
