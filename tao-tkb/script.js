@@ -118,10 +118,10 @@ function handleSchedulable(processedData) {
     if (!isUnique) {
       const thuBug = listThu.find(x => listThu.count(x) > 1)
       const bugs = arr.filter(x => x.Thu === thuBug)
-      const bugsDisplay = bugs.map(({MaLop, Thu, Tiet}) => `${MaLop}:Thứ${Thu}Tiết${Tiet}`)
+      const bugsDisplay = bugs.map(({MaLop, Thu, Tiet}) => `<strong>${MaLop}:Thứ${Thu}Tiết${Tiet}</strong>`)
       return {
         hasBug: true,
-        message: `Trùng thời khóa biểu: <strong>` + bugsDisplay.join(' - ') + '</strong>. '
+        message: `Trùng thời khóa biểu: ` + bugsDisplay.join(' - ') + '. '
       }
     }
   }
@@ -253,7 +253,14 @@ function process (dataInObject) {
     return alertError(message)
   }
   handleUnschedulable(processedData)
-  alertEle.style.display = 'none'
+  if (filteredClasses.length === toSchedule.length) {
+    alertEle.style.display = 'none'
+  } else {
+    const listCantFind = toSchedule.filter(x => !filteredClasses.find(({MaLop}) => MaLop === x))
+    const styledListCantFind = listCantFind.map(x => `<strong>${x}</strong>`)
+    const message = `Không thể xếp lịch cho các mã lớp: ${styledListCantFind.join(', ')}. `
+    alertError(message)
+  }
 }
 
 const xlf = document.getElementById('xlf')
