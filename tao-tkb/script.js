@@ -107,7 +107,7 @@ function handleSchedulable(processedData) {
   }
 
   const listTiet = [...Array(10)].map((_, index) => {
-    return processedData.schedulable.filter(x => x.Tiet.includes(index + 1))
+    return processedData.schedulable.filter(x => x.Tiet.includes((index + 1) % 10))
   })
 
   // check trung tkb
