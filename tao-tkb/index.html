@@ -8,14 +8,38 @@
   <script src="./xlsx.full.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="uit.png">
   <title>Tạo TKB</title>
+
+  <style>
+    .ref-link {
+      display: inline-block;
+      transition: transform .2s ease-out;
+    }
+    .ref-link .icon {
+      transition: transform .2s ease-out;
+    }
+    .ref-link:hover .icon {
+      transform: translateX(-2px) scale(1.1);
+    }
+    .ref-link:hover {
+      transform: translateX(3px);
+    }
+  </style>
 
 </head>
 
 <body>
   <div class="col-12">
+
+    <p class="mb-4 animated flash delay-1s">
+      <a class="ref-link" href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT" target="_blank">
+        <i class="icon fas fa-arrow-right"></i> Đi đến full source code và <strong>links + hướng dẫn của tool đăng ký học phần googlesheets</strong>
+      </a>
+    </p>
     
     <!-- title -->
     <h1 class="mt-3 font-weight-bold">Tạo TKB theo mã lớp học</h1>
