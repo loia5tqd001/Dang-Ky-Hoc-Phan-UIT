@@ -1,3 +1,37 @@
+const xlf = document.getElementById('xlf')
+const btn = document.getElementById('submit')
+const textInp = document.getElementById('text-input')
+const alertEle = document.getElementById('alert-error')
+const tableBody = document.getElementById('table-body')
+const custLabel = document.querySelector('.custom-file-label')
+xlf.addEventListener('change', e => handleFile(e.target.files[0]))
+btn.addEventListener('click', e => process(data))
+
+var data = null
+
+const cachedFileExcel = localStorage.getItem('file-excel')
+if (cachedFileExcel) {
+  setDataTkb(JSON.parse(cachedFileExcel))
+} 
+
+function setDataTkb({ dataTkb, fileName }) {
+  if (!dataTkb || !fileName) return
+
+  data = dataTkb
+
+  alertEle.style.display = 'none'
+  custLabel.classList.remove('text-danger')
+  custLabel.classList.add('text-success')
+  custLabel.textContent = fileName
+}
+
+const cachedClassList = localStorage.getItem('class-list')
+if (cachedClassList) {
+  textInp.value = cachedClassList
+  if (data) process(data)
+}
+
+
 // ================================ Upload file
 
 function dataArrayToObject(array) {
@@ -168,8 +202,6 @@ function handleUnschedulable(processedData) {
 
 // ======================== main
 
-var data = null
-
 function handleFile(file) {
   const reader = new FileReader()
   const rABS = !!reader.readAsBinaryString
@@ -183,13 +215,13 @@ function handleFile(file) {
     const dataInArray = [...dataLyThuyet, ...dataThucHanh].filter(
       row => typeof row[0] === 'number'
     )
-    data = dataInArray.map(array => dataArrayToObject(array))
-  }
-  reader.onloadend = () => {
-    alertEle.style.display = 'none'
-    custLabel.classList.remove('text-danger')
-    custLabel.classList.add('text-success')
-    custLabel.textContent = file.name
+
+    const tkb = {
+      dataTkb: dataInArray.map(array => dataArrayToObject(array)),
+      fileName: file.name
+    }
+    setDataTkb(tkb)
+    localStorage.setItem('file-excel', JSON.stringify(tkb))
   }
   if (rABS) reader.readAsBinaryString(file)
   else reader.readAsArrayBuffer(file)
@@ -235,6 +267,7 @@ function process (dataInObject) {
   if (dataInObject === null) {
     return alertError('Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ')
   }
+  localStorage.setItem('class-list', textInp.value)
   const toSchedule = textInp.value.split('\n').map(s => s.trim()).filter(s => s !== '')
   
   const filteredClasses = filterBySchedule(dataInObject, toSchedule)
@@ -263,11 +296,3 @@ function process (dataInObject) {
   }
 }
 
-const xlf = document.getElementById('xlf')
-const btn = document.getElementById('submit')
-const textInp = document.getElementById('text-input')
-const alertEle = document.getElementById('alert-error')
-const tableBody = document.getElementById('table-body')
-const custLabel = document.querySelector('.custom-file-label')
-xlf.addEventListener('change', e => handleFile(e.target.files[0]))
-btn.addEventListener('click', e => process(data))

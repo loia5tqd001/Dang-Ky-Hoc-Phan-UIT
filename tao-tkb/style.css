@@ -44,3 +44,37 @@ th, td {
   text-align: center;
   width: 230px;
 }
+
+.ref-link {
+  display: inline-block;
+  transition: transform .2s ease-out;
+}
+.ref-link .icon {
+  transition: transform .2s ease-out;
+}
+.ref-link:hover .icon {
+  transform: translateX(-2px) scale(1.1);
+}
+.ref-link:hover {
+  transform: translateX(3px);
+}
+
+.update-date {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  transition: all .2s;
+}
+.update-date a {
+  font-weight: bold;
+  color: #777;
+}
+.update-date a:hover {
+  text-decoration: none;
+}
+.update-date span:hover {
+  color: #555;
+}
+.update-date:hover {
+  text-shadow: 0 0 3px #0ff3;
+}
