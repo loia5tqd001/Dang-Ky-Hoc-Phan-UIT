@@ -77,3 +77,21 @@ th, td {
 .update-date:hover {
   text-shadow: 0 0 5px #0ff5;
 }
+
+.feedback {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  transition: all .4s ease-out;
+}
+.feedback:hover {
+  transform: translateX(-2px);
+}
+.feedback i::before {
+  transition: all .4s ease-out;
+}
+.feedback:hover i::before {
+  display: inline-block;
+  transform: scale(1.1);
+}
+
