@@ -63,7 +63,7 @@ if (isCacheValid(cachedFileExcel)) {
     .then(tkbJson => {
       setDataTkb({
         dataTkb: tkbJson.data,
-        fileName: `Đang sử dụng TKB mặc định được server update vào lúc: <strong>${tkbJson['last-update']}</strong>`
+        fileName: `Đang sử dụng TKB mặc định của server update vào lúc: <strong>${tkbJson['last-update']}</strong>`
       })
       checkCacheClassList()
     })
@@ -315,7 +315,7 @@ function process (dataInObject) {
     return alertError('Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ')
   }
   localStorage.setItem('class-list', JSON.stringify([textInp.value, (new Date().toLocaleString())]))
-  const toSchedule = textInp.value.split('\n').map(s => s.trim()).filter(s => s !== '')
+  const toSchedule = textInp.value.toUpperCase().split('\n').map(s => s.trim()).filter(s => s !== '')
   
   const filteredClasses = filterBySchedule(dataInObject, toSchedule)
   if (filteredClasses.length === 0) {
