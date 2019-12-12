@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
+:root {
+  --default-blue: #007bff;
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
   width: 90vw;
@@ -53,10 +57,15 @@ th, td {
   transition: transform .2s ease-out;
 }
 .ref-link:hover .icon {
-  transform: translateX(-2px) scale(1.1);
+  transform: translateX(-2px) scale(1.2);
 }
 .ref-link:hover {
-  transform: translateX(3px);
+  transform: translateX(5px) scale(1.005);
+  text-decoration: none;
+}
+.ref-link:hover .icon,
+.ref-link:hover {
+  color: var(--default-blue);
 }
 
 .update-date {
@@ -73,6 +82,7 @@ th, td {
 }
 .update-date span:hover {
   color: #555;
+  font-weight: bold;
 }
 .update-date:hover {
   text-shadow: 0 0 5px #0ff5;
@@ -84,14 +94,55 @@ th, td {
   top: 40px;
   transition: all .4s ease-out;
 }
-.feedback:hover {
-  transform: translateX(-2px);
+.feedback:hover a,
+.feedback:hover i {
+  color: var(--default-blue);
+}
+.feedback a {
+  position: relative;
+  text-decoration: none;
+}
+.feedback a::before {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  background: var(--default-blue);
+  left: 50%; width: 0;
+  transition: left .2s ease-out, width .2s ease-out;
+}
+.feedback:hover a::before {
+  left: 0; width: 100%;
 }
 .feedback i::before {
   transition: all .4s ease-out;
 }
 .feedback:hover i::before {
   display: inline-block;
-  transform: scale(1.1);
+  animation: bounce 2s;
+}
+@keyframes bounce {
+  0%, 20%, 40% {
+    transform: translateY(0);
+  }
+  10%, 30% {
+    transform: translateY(-7px);
+  }
 }
 
+@media (max-width: 850px) {
+  .ref-link,
+  .feedback,
+  .update-date {
+    display: none;
+  }
+  .custom-file,
+  .custom-file input,
+  .custom-file label {
+    height: calc((3em + 1.5rem) + 4px);
+  }
+  .custom-file label {
+    width: 70%;
+  }
+}
