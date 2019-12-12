@@ -9,11 +9,6 @@ btn.addEventListener('click', e => process(data))
 
 var data = null
 
-const cachedFileExcel = localStorage.getItem('file-excel')
-if (cachedFileExcel) {
-  setDataTkb(JSON.parse(cachedFileExcel))
-} 
-
 function setDataTkb({ dataTkb, fileName }) {
   if (!dataTkb || !fileName) return
 
@@ -22,15 +17,67 @@ function setDataTkb({ dataTkb, fileName }) {
   alertEle.style.display = 'none'
   custLabel.classList.remove('text-danger')
   custLabel.classList.add('text-success')
-  custLabel.textContent = fileName
+  custLabel.innerHTML = fileName
 }
 
-const cachedClassList = localStorage.getItem('class-list')
-if (cachedClassList) {
-  textInp.value = cachedClassList
-  if (data) process(data)
+// check if a date is 3 months away from now
+function isDateStale (dateString) {
+  const noMonths = (date) => date.getFullYear() * 12 + date.getMonth()
+
+  const today = new Date()
+  const lastDay = new Date(dateString)
+  return noMonths(today) - noMonths(lastDay) > 3
 }
 
+// check if cache data is valid (exists?, statle?)
+function isCacheValid (domString) {
+  if (!domString) return false // can't find cache data in localStorage
+  const domData = JSON.parse(domString)
+  return !isDateStale(domData[1]) // cache data is too old
+}
+
+// get cache data about class list
+function checkCacheClassList() {
+  const cachedClassList = localStorage.getItem('class-list')
+  if (isCacheValid(cachedClassList)) {
+    textInp.value = JSON.parse(cachedClassList)[0]
+    if (data) process(data)
+  }
+}
+
+// get cache data of file excel
+const cachedFileExcel = localStorage.getItem('file-excel')
+if (isCacheValid(cachedFileExcel)) {
+  const dataTkb = JSON.parse(cachedFileExcel)[0]
+  setDataTkb(dataTkb)
+  checkCacheClassList()
+} else {
+  fetch('./tkb.json')
+    .then(res => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error()
+      }
+    })
+    .then(tkbJson => {
+      setDataTkb({
+        dataTkb: tkbJson.data,
+        fileName: `Đang sử dụng TKB mặc định được server update vào lúc: <strong>${tkbJson['last-update']}</strong>`
+      })
+      checkCacheClassList()
+    })
+    .catch(err => console.log('Không tìm thấy tkb.json'))
+}
+
+/**
+|--------------------------------------------------
+| Data cache save:
+| const cache = JSON.parse(localStorage.getItem(...))
+| cache[0] is data
+| cache[1] is last saved
+|--------------------------------------------------
+*/
 
 // ================================ Upload file
 
@@ -221,7 +268,7 @@ function handleFile(file) {
       fileName: file.name
     }
     setDataTkb(tkb)
-    localStorage.setItem('file-excel', JSON.stringify(tkb))
+    localStorage.setItem('file-excel', JSON.stringify([tkb, (new Date()).toLocaleString()]))
   }
   if (rABS) reader.readAsBinaryString(file)
   else reader.readAsArrayBuffer(file)
@@ -267,7 +314,7 @@ function process (dataInObject) {
   if (dataInObject === null) {
     return alertError('Có vẻ như bạn chưa tải file excel dữ liệu TKB của trường (ở bước 1) lên. ')
   }
-  localStorage.setItem('class-list', textInp.value)
+  localStorage.setItem('class-list', JSON.stringify([textInp.value, (new Date().toLocaleString())]))
   const toSchedule = textInp.value.split('\n').map(s => s.trim()).filter(s => s !== '')
   
   const filteredClasses = filterBySchedule(dataInObject, toSchedule)
@@ -295,4 +342,3 @@ function process (dataInObject) {
     alertError(message)
   }
 }
-
