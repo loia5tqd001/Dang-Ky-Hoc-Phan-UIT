@@ -1,8 +1,8 @@
 const fs = require('fs')
 const XLSX = require('./xlsx.full.min.js')
-////www.quora.com/How-do-I-read-a-xls-file-in-nodejs
+// https://www.quora.com/How-do-I-read-a-xls-file-in-nodejs
 
-https: function dataArrayToObject(array) {
+function dataArrayToObject(array) {
   return {
     STT: array[0],
     MaMH: array[1],
