@@ -110,21 +110,9 @@ function dataArrayToObject(array) {
 }
 
 function filterBySchedule(data, toSchedule) {
-  const result = []
-  toSchedule = [...toSchedule] // make the outside immutable
-
-  for (const lop of data) {
-    const foundLop = toSchedule.indexOf(lop.MaLop)
-
-    if (foundLop !== -1) {
-      result.push(lop)
-
-      toSchedule.splice(foundLop, 1)
-      if (toSchedule.length === 0) break // got all for toSchedule
-    }
-  }
-
-  return result
+  // 'data' là một mảng toàn bộ các LỚP HỌC PHẦN từ database
+  // 'toSchedule' là mảng các MÃ LỚP HỌC PHẦN
+  return data.filter(it => toSchedule.includes(it.MaLop));
 }
 
 function classifyBySchedulable(classes) {
@@ -284,7 +272,7 @@ Object.defineProperties(Array.prototype, {
 })
 
 function checkTrungMaMH (filteredClasses) {
-  const verifyStrings = filteredClasses.map(x => x.MaMH + "-" + x.HTGD)
+  const verifyStrings = filteredClasses.map(x => x.MaMH + x.HTGD + x.Thu + x.Tiet)
   const uniqueStrings = new Set(verifyStrings)
   const isUnique = verifyStrings.length === (uniqueStrings).size
   if (!isUnique) {
@@ -333,7 +321,9 @@ function process (dataInObject) {
     return alertError(message)
   }
   handleUnschedulable(processedData)
-  if (filteredClasses.length === toSchedule.length) {
+
+  const cantSchedule = toSchedule.filter(it => !filteredClasses.map(x => x.MaLop).includes(it))
+  if (cantSchedule.length === 0) {
     alertEle.style.display = 'none'
   } else {
     const listCantFind = toSchedule.filter(x => !filteredClasses.find(({MaLop}) => MaLop === x))
