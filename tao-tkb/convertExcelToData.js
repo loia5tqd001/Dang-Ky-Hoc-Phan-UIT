@@ -4,6 +4,16 @@ const XLSX = require('./xlsx.full.min.js');
 // https://www.quora.com/How-do-I-read-a-xls-file-in-nodejs
 
 function dataArrayToObject(array) {
+  // convert excel based date (1989-Dec-30) to Js based date (1970-Jan-01)
+  function convertExcelDateToStringDate(excelDate) {
+    // in Excel, based date is 1989-Dec-30: https://stackoverflow.com/questions/36378476/why-does-the-date-returns-31-12-1899-when-1-is-passed-to-it
+    const offsetOfBases = new Date(0) - new Date(1899, 11, 31)
+    const jsDate = new Date(excelDate * 24 * 60 * 60 * 1000 - offsetOfBases)
+    return jsDate.getFullYear() + '-' +
+        (jsDate.getMonth() + 1).toString().padStart(2, '0') + '-' +
+        jsDate.getDate().toString().padStart(2, '0')
+  }
+
   return {
     STT: array[0],
     MaMH: array[1],
@@ -15,17 +25,17 @@ function dataArrayToObject(array) {
     SoTc: array[7],
     ThucHanh: array[8],
     HTGD: array[9],
-    Thu: array[10],
-    Tiet: array[11],
-    CachTuan: array[12],
+    Thu: String(array[10]),
+    Tiet: String(array[11]),
+    CachTuan: String(array[12]),
     PhongHoc: array[13],
-    KhoaHoc: array[14],
-    HocKy: array[15],
-    NamHoc: array[16],
+    KhoaHoc: String(array[14]),
+    HocKy: String(array[15]),
+    NamHoc: String(array[16]),
     HeDT: array[17],
     KhoaQL: array[18],
-    NBD: array[19],
-    NKT: array[20],
+    NBD: typeof array[19] === 'string' ? array[19] : convertExcelDateToStringDate(array[19]),
+    NKT: typeof array[20] === 'string' ? array[20] : convertExcelDateToStringDate(array[20]),
     GhiChu: array[21],
     NgonNgu: array[22],
   };
