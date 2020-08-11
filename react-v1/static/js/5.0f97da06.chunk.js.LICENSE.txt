@@ -4,6 +4,25 @@ object-assign
 @license MIT
 */
 
+/*!
+* Proton v4.1.5
+* https://github.com/drawcall/Proton
+*
+* Copyright 2013-2019, A-JIE
+* Licensed under the MIT license
+* http://www.opensource.org/licenses/mit-license
+*
+*/
+
+/*!
+* RAFManager v0.1.0
+*
+* Copyright 2018-2018, ajiemath <ajiemath@gmail.com>
+* Licensed under the MIT license
+* http://www.opensource.org/licenses/mit-license
+*
+*/
+
 /**
  * @ag-grid-community/core - Advanced Data Grid / Data Table supporting Javascript / React / AngularJS / Web Components
  * @version v23.2.1

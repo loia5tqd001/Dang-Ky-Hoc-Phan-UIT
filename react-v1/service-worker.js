@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Dang-Ky-Hoc-Phan-UIT/react-v1/precache-manifest.378e88e38e9bd816164365bed89e9508.js"
+  "/Dang-Ky-Hoc-Phan-UIT/react-v1/precache-manifest.d60b9758b5f800716068325aba7c2464.js"
 );
 
 self.addEventListener('message', (event) => {
