@@ -1,0 +1,11 @@
+#content {
+  padding: 1rem;
+}
+
+#page-title {
+  display: none;
+}
+
+.leaf {
+  cursor: pointer;
+}

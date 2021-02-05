@@ -1,0 +1,41 @@
+.ag-theme-alpine .ag-cell {
+    /*line-height: 25px; !* Kết hợp với rowHeight để điều chỉnh rowHeight mà text vẫn căn giữa vertically *!*/
+
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.ag-theme-alpine .ag-header-cell, .ag-theme-alpine .ag-header-group-cell {
+    padding-left: 12px;
+    padding-right: 12px;
+
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    background: #f0f0f0;
+}
+
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-color: #fefefe;
+    border-left-color: #fefefe;
+    border-bottom-color: #fefefe;
+}
+
+.ag-theme-alpine .ag-row-hover {
+    /*--ag-row-hover-color: #f6f6f6 !important; !* Kết hợp với animateRows={true} để chỉnh color của row khi hover lên 1 cell thuộc row *!*/
+    background: #fff !important;
+    cursor: pointer;
+}
+
+.ag-cell-focus,.ag-cell-no-focus{
+    border-color: transparent !important;
+}
+
+.odd-row {
+    background: #d7e8f7 !important;
+}
+.even-row {
+    background: #f4eee3 !important;
+}
+
+
