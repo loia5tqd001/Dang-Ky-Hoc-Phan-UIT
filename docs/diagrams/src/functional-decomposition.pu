@@ -1,0 +1,60 @@
+@startwbs functional-decomposition
+
+!include_many _style.pu
+
+<style>
+Node {
+  MaximumWidth 80
+  BackgroundColor white
+  LineColor $DARK
+  :depth(1) {
+    BackgroundColor $LIGHT
+  }
+  :depth(0) {
+    BackgroundColor LightYellow
+  }
+}
+</style>
+
+* Tool Đăng ký học phần UIT
+
+** 0. Tạo nguồn dữ liệu
+*** Tạo dữ liệu lớp mặc định \n(a utility script converts file excel to json)
+*** Tải lên file excel \n(giống bên trên nhưng convert ở runtime lúc app đang chạy thay vì build time)
+*** Crawl trang dkhp.uit.edu.vn
+**** Chuẩn bị script crawl, người dùng copy script
+**** Đọc dữ liệu đã crawl từ người dùng
+**** Lưu dữ liệu ở redux và localStorage (bằng redux-persist)\n(Sau này sẽ chuyển qua indexedDB)
+
+** 1. Soạn thời khoá biểu
+*** Sort, Filter, Pick lớp
+*** Filter dựa trên 1 chuỗi string có mã môn (auto extract mã môn)
+*** Chế độ hiển thị:\n- Bình thường\n- Chỉ hiện môn đã chọn\n- Ẩn môn đã chọn
+*** Hiện số tín chỉ đã chọn
+*** Hiện giao diện thời khoá biểu (Seamlessly kết nối tới tính năng __//2.Vẽ thời khoá biểu//__ )
+*** Hiện các cảnh báo:\n- Trùng môn học (error)\n- Trùng TKB (error)\n- Vượt quá số tin chỉ quy định (warning)\n- Dưới số tín chỉ quy định (warning)
+*** Các thao tác phụ hoạ cho bảng: Pin column, Auto resize, chọn column hiển thị, Reset,...
+*** UI không rối mắt, tách bạch được các lớp\n- Xen kẽ màu row giữa các môn\n- Bold: Tên giảng viên, Thứ, Tiết
+*** Mặc định sort: Hệ ĐT > Khoa QL > Mã lớp > Thứ > Tiết
+
+
+** 2. Vẽ thời khoá biểu
+*** Cho phép người dùng tự input ds lớp\n- Auto extract mã lớp = dữ liệu lớp
+*** Hiển thị ds lớp\n- Cho phép người dùng bỏ chọn 
+*** Hiển thị TKB\n- Copy to clipboard\n- Tải về máy
+
+** 3. Tạo script ĐKHP nhanh
+*** Cho phép người dùng tự input ds lớp\n- Auto extract mã lớp = regex
+*** Hiển thị ds lớp\n- Cho phép người dùng bỏ chọn 
+*** - Hiển thị script (Lớp thường / lớp AV)\n- Sao chép script
+*** Get permanent link url\n- Serverless, url được tạo ra bằng data ds lớp\n- Người nhận link sẽ có loại nguồn ds lớp là "tự input"
+
+
+** Tính năng phụ
+*** 4. Xem giao diện ĐKHP
+*** Hướng dẫn sử dụng: Reactour, Video hướng dẫn
+*** Get permanent link
+*** CTA star github
+*** Các tips ĐKHP
+*** Responsive cho tính năng __//Vẽ thời khoá biểu//__
+@endwbs

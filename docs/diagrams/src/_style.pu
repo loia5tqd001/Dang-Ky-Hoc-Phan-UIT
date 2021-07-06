@@ -1,0 +1,29 @@
+@startuml style
+
+!$DARK = "#053742"
+!$LIGHT = "#A2DBFA"
+!$WHITE = "white"
+
+skinparam Actor {
+  BackgroundColor $WHITE
+  BorderColor $DARK
+  FontColor $DARK
+}
+
+skinparam Usecase {
+  BackgroundColor $LIGHT
+  BorderColor $DARK
+  ArrowColor $DARK
+}
+
+skinparam Note {
+  BackgroundColor $WHITE
+  BorderColor $DARK
+}
+
+skinparam Rectangle {
+  BackgroundColor $WHITE
+  BorderColor $DARK
+}
+
+@enduml

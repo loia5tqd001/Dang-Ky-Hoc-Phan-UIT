@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="281px" preserveAspectRatio="none" style="width:918px;height:281px;background:#FFFFFF;" version="1.1" viewBox="0 0 918 281" width="918px" zoomAndPan="magnify"><defs><filter height="300%" id="fxhl74geptdz6" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[8fc3522a43f8c7199df5e09e5bb0188e]
+entity user--><ellipse cx="47.5" cy="106.5" fill="#FFFFFF" filter="url(#fxhl74geptdz6)" rx="8" ry="8" style="stroke:#053742;stroke-width:1.5;"/><path d="M47.5,114.5 L47.5,141.5 M34.5,122.5 L60.5,122.5 M47.5,141.5 L34.5,156.5 M47.5,141.5 L60.5,156.5 " fill="none" filter="url(#fxhl74geptdz6)" style="stroke:#053742;stroke-width:1.5;"/><text fill="#053742" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="6" y="176.5332">Sinh viên UIT</text><ellipse cx="306.2698" cy="25.454" fill="#A2DBFA" filter="url(#fxhl74geptdz6)" rx="85.2698" ry="19.454" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127" x="242.7698" y="29.1825">Soạn thời khoá biểu</text><ellipse cx="306.6819" cy="98.6364" fill="#A2DBFA" filter="url(#fxhl74geptdz6)" rx="78.6819" ry="18.1364" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111" x="249.5947" y="102.8083">Vẽ thời khoá biểu</text><ellipse cx="306.313" cy="173.2626" fill="#A2DBFA" filter="url(#fxhl74geptdz6)" rx="94.313" ry="21.2626" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="232.313" y="176.9911">Tạo script ĐKHP nhanh</text><ellipse cx="306.5408" cy="249.7082" fill="#A2DBFA" filter="url(#fxhl74geptdz6)" rx="86.5408" ry="19.7082" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130" x="241.5408" y="253.4367">Xem giao diện ĐKHP</text><ellipse cx="598.6887" cy="62.5377" fill="#A2DBFA" filter="url(#fxhl74geptdz6)" rx="80.6887" ry="18.5377" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116" x="540.0015" y="66.4661">Tạo nguồn dữ liệu</text><path d="M740,41 L740,58.5 L679.1,62.5 L740,66.5 L740,83.7031 A0,0 0 0 0 740,83.7031 L909,83.7031 A0,0 0 0 0 909,83.7031 L909,51 L899,41 L740,41 A0,0 0 0 0 740,41 " fill="#FFFFFF" filter="url(#fxhl74geptdz6)" style="stroke:#053742;stroke-width:1.0;"/><path d="M899,41 L899,51 L909,51 L899,41 " fill="#FFFFFF" style="stroke:#053742;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98" x="746" y="59.4951">- Tải lên từ excel</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="148" x="746" y="75.8467">- Crawl từ dkhp.uit.edu.vn</text><!--MD5=[e49fd0f113fe5b125c2ff1e366fcd230]
+link user to Soạn thời khoá biểu--><path d="M89.22,112.62 C98.81,106.98 109.12,101.28 119,96.5 C162.43,75.49 213.79,56.33 251.61,43.22 " fill="none" id="user-to-Soạn thời khoá biểu" style="stroke:#053742;stroke-width:1.0;"/><polygon fill="#053742" points="256.62,41.5,246.808,40.6488,251.8925,43.1282,249.4131,48.2127,256.62,41.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[5932703ef6cbbd287697a8d55c55d0a9]
+link user to Vẽ thời khoá biểu--><path d="M89,128.61 C98.79,126.42 109.24,124.23 119,122.5 C155.3,116.06 195.88,110.63 229.88,106.57 " fill="none" id="user-to-Vẽ thời khoá biểu" style="stroke:#053742;stroke-width:1.0;"/><polygon fill="#053742" points="234.85,105.99,225.4428,103.0737,229.8845,106.5767,226.3815,111.0184,234.85,105.99" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[3e2549c53607bb93854566ea08cd9bb8]
+link user to Tạo script ĐKHP nhanh--><path d="M89.22,144.05 C124.25,148.82 175.94,155.86 220,161.86 " fill="none" id="user-to-Tạo script ĐKHP nhanh" style="stroke:#053742;stroke-width:1.0;"/><polygon fill="#053742" points="225.06,162.55,216.695,157.3512,220.1074,161.8629,215.5957,165.2753,225.06,162.55" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[8afae45442fff033e46b1879c8d2948e]
+link user to Xem giao diện ĐKHP--><path d="M89.25,157.6 C122.18,172.88 169.83,194.63 212,212.5 C226.44,218.62 242.26,225 256.72,230.71 " fill="none" id="user-to-Xem giao diện ĐKHP" style="stroke:#053742;stroke-width:1.0;"/><polygon fill="#053742" points="261.56,232.62,254.6519,225.6002,256.9078,230.7878,251.7203,233.0437,261.56,232.62" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[7d99a78b359c9ae058cc767bb60bf1b7]
+link Soạn thời khoá biểu to Tạo nguồn dữ liệu--><path d="M381.43,34.93 C424.73,40.46 479.27,47.42 522.72,52.96 " fill="none" id="Soạn thời khoá biểu-to-Tạo nguồn dữ liệu" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="527.7,53.59,519.2747,48.4896,522.7397,52.961,518.2683,56.4261,527.7,53.59" style="stroke:#053742;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="432" y="38.9951">«include»</text><!--MD5=[b4007dbd00758d3d3f255ad97499d4ff]
+link Vẽ thời khoá biểu to Tạo nguồn dữ liệu--><path d="M385.13,98.56 C417.13,97.67 454.49,95.47 488,90.5 C506.54,87.75 526.49,83.15 544.21,78.47 " fill="none" id="Vẽ thời khoá biểu-to-Tạo nguồn dữ liệu" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="549.15,77.15,539.4238,75.6004,544.3184,78.4365,541.4823,83.3311,549.15,77.15" style="stroke:#053742;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="432" y="86.9951">«include»</text><!--MD5=[21544fc20d3883060597996f54e04e99]
+@startuml usecase
+
+!include_many _style.pu
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user - - -> (Soạn thời khoá biểu)
+user - - -> (Vẽ thời khoá biểu)
+user - - -> (Tạo script ĐKHP nhanh)
+user - - -> (Xem giao diện ĐKHP)
+(Soạn thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+(Vẽ thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+note right of (Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+
+newpage
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user - - -> (3. Tạo script ĐKHP nhanh)
+user - - -> (1. Soạn thời khoá biểu)
+user - - -> (2. Vẽ thời khoá biểu)
+user - - -> (4. Xem giao diện ĐKHP)
+(1. Soạn thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(2. Vẽ thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(1. Soạn thời khoá biểu) .> (2. Vẽ thời khoá biểu) : <<có thể giúp>>
+(3. Tạo script ĐKHP nhanh) <. (1. Soạn thời khoá biểu) : <<có thể giúp>>
+note right of (0. Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+note right of (1. Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+
+newpage
+
+left to right direction
+
+rectangle "4. Xem giao diện ĐKHP" {
+  actor "Sinh viên UIT" as user4
+  user4 - -> (4.    Xem giao diện ĐKHP)
+}
+
+rectangle "3. Tạo script ĐKHP nhanh" {
+  actor "Sinh viên UIT" as user3
+  user3 - -> (3.    Tạo script ĐKHP nhanh)
+  (3.    Tạo script ĐKHP nhanh) <.. (1.    Soạn thời khoá biểu) : <<có thể giúp>>
+  note right of (1.    Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "2. Vẽ thời khoá biểu" {
+  actor "Sinh viên UIT" as user2
+  user2 - -> (2.   Vẽ thời khoá biểu)
+  (2.   Vẽ thời khoá biểu) <.. (1.   Soạn thời khoá biểu) : <<có thể giúp>>
+  (2.   Vẽ thời khoá biểu) ..> (0.   Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.   Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+  note right of (1.   Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "1. Soạn thời khoá biểu" {
+  actor "Sinh viên UIT" as user1
+  user1 - -> (1.  Soạn thời khoá biểu)
+  (1.  Soạn thời khoá biểu) ..> (0.  Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.  Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+}
+
+@enduml
+
+@startuml usecase
+
+
+
+skinparam Actor {
+  BackgroundColor white
+  BorderColor #053742
+  FontColor #053742
+}
+
+skinparam Usecase {
+  BackgroundColor #A2DBFA
+  BorderColor #053742
+  ArrowColor #053742
+}
+
+skinparam Note {
+  BackgroundColor white
+  BorderColor #053742
+}
+
+skinparam Rectangle {
+  BackgroundColor white
+  BorderColor #053742
+}
+
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user - - -> (Soạn thời khoá biểu)
+user - - -> (Vẽ thời khoá biểu)
+user - - -> (Tạo script ĐKHP nhanh)
+user - - -> (Xem giao diện ĐKHP)
+(Soạn thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+(Vẽ thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+note right of (Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+
+newpage
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user - - -> (3. Tạo script ĐKHP nhanh)
+user - - -> (1. Soạn thời khoá biểu)
+user - - -> (2. Vẽ thời khoá biểu)
+user - - -> (4. Xem giao diện ĐKHP)
+(1. Soạn thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(2. Vẽ thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(1. Soạn thời khoá biểu) .> (2. Vẽ thời khoá biểu) : <<có thể giúp>>
+(3. Tạo script ĐKHP nhanh) <. (1. Soạn thời khoá biểu) : <<có thể giúp>>
+note right of (0. Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+note right of (1. Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+
+newpage
+
+left to right direction
+
+rectangle "4. Xem giao diện ĐKHP" {
+  actor "Sinh viên UIT" as user4
+  user4 - -> (4.    Xem giao diện ĐKHP)
+}
+
+rectangle "3. Tạo script ĐKHP nhanh" {
+  actor "Sinh viên UIT" as user3
+  user3 - -> (3.    Tạo script ĐKHP nhanh)
+  (3.    Tạo script ĐKHP nhanh) <.. (1.    Soạn thời khoá biểu) : <<có thể giúp>>
+  note right of (1.    Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "2. Vẽ thời khoá biểu" {
+  actor "Sinh viên UIT" as user2
+  user2 - -> (2.   Vẽ thời khoá biểu)
+  (2.   Vẽ thời khoá biểu) <.. (1.   Soạn thời khoá biểu) : <<có thể giúp>>
+  (2.   Vẽ thời khoá biểu) ..> (0.   Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.   Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+  note right of (1.   Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "1. Soạn thời khoá biểu" {
+  actor "Sinh viên UIT" as user1
+  user1 - -> (1.  Soạn thời khoá biểu)
+  (1.  Soạn thời khoá biểu) ..> (0.  Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.  Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+}
+
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 19:40:07 ICT 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: US
+--></g></svg>
