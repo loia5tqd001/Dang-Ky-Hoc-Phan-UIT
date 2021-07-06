@@ -17,7 +17,7 @@ function Index(props) {
 
   return (
     <FormControl component="fieldset" className={classes.root}>
-      <FormLabel component="legend">Hướng dẫn cách <b>lấy dữ liệu</b> từ trang dkhp.uit.edu.vn:</FormLabel>
+      <FormLabel component="legend">Hướng dẫn cách lấy dữ liệu từ trang dkhp.uit.edu.vn <i><b>(mỗi bạn sẽ có dữ liệu khác nhau)</b></i>:</FormLabel>
       <li>
         B1:
         <Tooltip title={'Bấm đi'}>
