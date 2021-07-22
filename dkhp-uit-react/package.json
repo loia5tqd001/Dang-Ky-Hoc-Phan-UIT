@@ -29,7 +29,7 @@
     "redux-persist": "^6.0.0",
     "typewriter-effect": "^2.13.1",
     "use-debounce": "^3.4.3",
-    "xlsx": "^0.16.5"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
