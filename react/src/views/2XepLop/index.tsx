@@ -5,12 +5,12 @@ import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 // lodash
 import sortBy from 'lodash/sortBy';
 // components
-import AgGrid from './AgGrid';
-import TrungTkbDialog from './TrungTkbDialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { setIsChiVeTkb } from 'redux/xepTkb/reducer';
+import { setIsChiVeTkb } from 'redux/xepTkb/slice';
 import Tooltip from '@material-ui/core/Tooltip';
+import TrungTkbDialog from './TrungTkbDialog';
+import AgGrid from './AgGrid';
 
 const actionOptions = {
   normal: 'Hiển thị bình thường',
@@ -57,11 +57,7 @@ function Index(props) {
         label={'Chỉ hiển thị những lớp đã chọn'}
       />
       <AgGrid rowData={rowData} setIsDialogOpen={setIsDialogOpen} setLopTrungTkb={setLopTrungTkb} />
-      <TrungTkbDialog
-        isDialogOpen={isDialogOpen}
-        lopTrungTkb={lopTrungTkb}
-        setIsDialogOpen={setIsDialogOpen}
-      />
+      <TrungTkbDialog isDialogOpen={isDialogOpen} lopTrungTkb={lopTrungTkb} setIsDialogOpen={setIsDialogOpen} />
     </div>
   );
 }

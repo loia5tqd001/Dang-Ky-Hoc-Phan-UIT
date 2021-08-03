@@ -1,5 +1,6 @@
-// TODO: convert to TS or use params docs like this file: https://github.com/polemius/recoil-persist/blob/master/index.js
-export function arrayToTkbObject(array) {
+import { ClassModel } from 'models';
+
+export function arrayToTkbObject(array: any[]) {
   // convert excel based date (1989-Dec-30) to Js based date (1970-Jan-01)
   function convertExcelDateToStringDate(excelDate) {
     // in Excel, based date is 1989-Dec-30: https://stackoverflow.com/questions/36378476/why-does-the-date-returns-31-12-1899-when-1-is-passed-to-it
@@ -38,11 +39,11 @@ export function arrayToTkbObject(array) {
     NKT: typeof array[20] === 'string' ? array[20] : convertExcelDateToStringDate(array[20]),
     GhiChu: array[21],
     NgonNgu: array[22],
-  };
+  } as ClassModel;
 }
 
 // from Date object to 'hh:mm dd/MM/yyyy' format
-export function toDateTimeString(date) {
+export function toDateTimeString(date: Date) {
   return (
     date.getHours().toString().padStart(2, '0') +
     ':' +

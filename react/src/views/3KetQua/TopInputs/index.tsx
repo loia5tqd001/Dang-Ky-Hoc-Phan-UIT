@@ -8,7 +8,7 @@ import ScriptDangKyInput from './ScriptDangKyInput';
 import { makeStyles } from '@material-ui/core/styles';
 
 function TopInputs() {
-  const [maLopAV, maLopThuong] = useSelector(selectPhanLoaiMaLopAV);
+  const { maLopAV, maLopThuong } = useSelector(selectPhanLoaiMaLopAV);
   const tongSoTC = useSelector(selectTongSoTC);
   const classes = useStyles({ tongSoTCWaring: tongSoTC < 14 || tongSoTC > 24 });
 
@@ -57,8 +57,7 @@ const useStyles = makeStyles((theme) => ({
     //     } !important`,
     // },
     '& input': {
-      color: (p) =>
-        `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
+      color: (p) => `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
       fontWeight: '500',
     },
   },

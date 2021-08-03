@@ -2,10 +2,9 @@ import React from 'react';
 // ag-grid
 import { AgGridReact } from 'ag-grid-react';
 import './styles.css';
-import { columnDefs, defaultColDef, isSameRow } from './utils';
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/reducer';
+import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
 import {
   selectAgGridColumnState,
   selectAgGridFilterModel,
@@ -14,6 +13,7 @@ import {
 } from 'redux/xepTkb/selectors';
 // others
 import uniq from 'lodash/uniq';
+import { columnDefs, defaultColDef, isSameRow } from './utils';
 import { useDebouncedStoreColumnState } from './hooks';
 
 function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
@@ -54,9 +54,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
             dispatch(setSelectedClasses(e.api.getSelectedRows()));
             return;
           }
-          const cungNgay = selectedClasses.filter(
-            (it) => e.data.Thu !== '*' && it.Thu === e.data.Thu,
-          );
+          const cungNgay = selectedClasses.filter((it) => e.data.Thu !== '*' && it.Thu === e.data.Thu);
           for (const lop of cungNgay) {
             const dsTiet1 = e.data.Tiet.split('');
             const dsTiet2 = lop.Tiet.split('');

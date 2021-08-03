@@ -9,7 +9,7 @@ export default {
   },
   _3KetQua: {
     path: '/3-ket-qua',
-    name: '3. Kết quả',
+    name: '3. Vẽ TKB',
   },
   _4GiaoDienDKHP: {
     path: '/4-giao-dien-dkhp',

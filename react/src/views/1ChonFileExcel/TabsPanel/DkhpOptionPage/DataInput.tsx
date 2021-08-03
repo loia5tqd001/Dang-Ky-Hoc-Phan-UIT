@@ -4,7 +4,7 @@ import { tryParseJson } from './utils';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDataDkhpPage } from 'redux/xepTkb/selectors';
-import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from 'redux/xepTkb/reducer';
+import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from 'redux/xepTkb/slice';
 // mui
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
@@ -30,23 +30,20 @@ function DataInput({ isAnhVan }) {
   const handlePaste = React.useCallback(async () => {
     const clipboardText = await navigator.clipboard.readText();
     const parsedJson = tryParseJson(clipboardText);
-    const invalidJson =
-      !parsedJson || !Array.isArray(parsedJson) || parsedJson.some((it) => !it.MaMH);
+    const invalidJson = !parsedJson || !Array.isArray(parsedJson) || parsedJson.some((it) => !it.MaMH);
     if (invalidJson) {
-      enqueueSnackbar(
-        'Dữ liệu trong clipboard không đúng định dạng. Bạn đã làm theo đúng các bước chưa?',
-        { variant: 'error' },
-      );
+      enqueueSnackbar('Dữ liệu trong clipboard không đúng định dạng. Bạn đã làm theo đúng các bước chưa?', {
+        variant: 'error',
+      });
     } else {
       const isDataAnhVan = parsedJson.some((it) => it.MaMH.startsWith('EN'));
       if (isDataAnhVan === isAnhVan) {
         setText(clipboardText);
         enqueueSnackbar('Paste dữ liệu thành công', { variant: 'success' });
       } else {
-        enqueueSnackbar(
-          'Có lẽ bạn đang muốn paste vào ô dữ liệu lớp ' + (isAnhVan ? 'thường' : 'Anh văn'),
-          { variant: 'error' },
-        );
+        enqueueSnackbar('Có lẽ bạn đang muốn paste vào ô dữ liệu lớp ' + (isAnhVan ? 'thường' : 'Anh văn'), {
+          variant: 'error',
+        });
       }
     }
   }, [setText, enqueueSnackbar, isAnhVan]);
@@ -134,10 +131,7 @@ const useStyles = makeStyles((theme) => ({
       color: (p) => (p.active ? theme.palette.success.dark : theme.palette.grey['600']),
     },
     '& fieldset': {
-      border: (p) =>
-        p.active
-          ? `2px solid ${theme.palette.success.main}`
-          : `1px solid ${theme.palette.grey['600']}`,
+      border: (p) => (p.active ? `2px solid ${theme.palette.success.main}` : `1px solid ${theme.palette.grey['600']}`),
     },
   },
   textField: {

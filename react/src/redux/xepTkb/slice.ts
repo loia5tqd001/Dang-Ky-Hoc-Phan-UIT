@@ -1,19 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import uniq from "lodash/uniq";
+import { Reducer, State } from './types';
 
-export const xepTkbName = 'xepTkb';
-
-// slice definition
-const { actions, reducer } = createSlice({
-  name: xepTkbName,
+// Not sure why it complains about Reducer's type but it works, I don't have time to take care for now!!
+const slice = createSlice<State, Reducer, 'xepTkb'>({
+  name: 'xepTkb',
   initialState: {
-    loaiTkb: 'mac-dinh', // mac-dinh | up-tu-file-excel | su-dung-dkhp-uit
-    dataExcel: {
-      // in the case 'up-tu-file-excel'
-      fileName: null,
-      data: null,
-      lastUpdate: null,
-    },
+    loaiTkb: 'up-tu-file-excel',
+    dataExcel: null,
     dataDkhpPage: {
       lopThuong: '',
       lopAnhVan: '',
@@ -69,7 +62,6 @@ const { actions, reducer } = createSlice({
   },
 });
 
-// export actions and reducer
 export const {
   setLoaiTkb,
   setDataExcel,
@@ -82,5 +74,6 @@ export const {
   setAgGridFilterModel,
   setIsChiVeTkb,
   setTextareChiVeTkb,
-} = actions;
-export default reducer;
+} = slice.actions;
+
+export default slice;

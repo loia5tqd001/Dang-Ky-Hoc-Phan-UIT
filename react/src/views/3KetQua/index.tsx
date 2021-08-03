@@ -1,17 +1,17 @@
 import React from 'react';
-import TopInputs from './TopInputs';
-import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
-import ChiVeTkbInput from './ChiVeTkbInput';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsChiVeTkb } from 'redux/xepTkb/selectors';
-import { setIsChiVeTkb } from 'redux/xepTkb/reducer';
+import { setIsChiVeTkb } from 'redux/xepTkb/slice';
 // mui
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Collapse from '@material-ui/core/Collapse';
+import TopInputs from './TopInputs';
+import ChiVeTkbInput from './ChiVeTkbInput';
+import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
 function Index() {
   const dispatch = useDispatch();

@@ -1,28 +1,16 @@
-import React from 'react';
-// redux
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDataExcel, selectLoaiTkb } from 'redux/xepTkb/selectors';
-import { setLoaiTkb } from 'redux/xepTkb/reducer';
-// components
-import RadioOptions from './RadioOptions';
-import SelectExcelButton from './TabsPanel/SelectExcelButton';
-import DkhpOptionPage from './TabsPanel/DkhpOptionPage';
-import VideoInstruction from './VideoInstruction';
 import Collapse from '@material-ui/core/Collapse';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { selectLoaiTkb } from 'redux/xepTkb/selectors';
+
+import RadioOptions from './RadioOptions';
+import DkhpOptionPage from './TabsPanel/DkhpOptionPage';
+import SelectExcelButton from './TabsPanel/SelectExcelButton';
+import VideoInstruction from './VideoInstruction';
 
 function Index(props) {
-  const dispatch = useDispatch();
   const loaiTkb = useSelector(selectLoaiTkb);
-  const dataExcel = useSelector(selectDataExcel);
-
-  // for better UX: Chuyển radio về "mặc định"
-  // nếu người dùng đã chọn vô radio "tự upload" nhưng lại chưa upload
-  React.useEffect(() => {
-    if (loaiTkb === 'up-tu-file-excel' && dataExcel.data === null) {
-      dispatch(setLoaiTkb('mac-dinh'));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
 
   return (
     <div style={{ maxWidth: 1500 }}>

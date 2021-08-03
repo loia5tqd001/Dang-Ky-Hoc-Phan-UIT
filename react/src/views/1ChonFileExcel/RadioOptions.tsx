@@ -1,8 +1,7 @@
 import React from 'react';
-import DATA from 'data/tkb.json';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoaiTkb } from 'redux/xepTkb/reducer';
+import { setLoaiTkb } from 'redux/xepTkb/slice';
 import { selectLoaiTkb } from 'redux/xepTkb/selectors';
 // mui
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -25,12 +24,6 @@ function RadioOptions() {
         value={loaiTkb}
         onChange={(e) => dispatch(setLoaiTkb(e.target.value))}
       >
-        <FormControlLabel
-          value="mac-dinh"
-          control={<Radio />}
-          label={`Sử dụng tkb mặc định (${DATA[`last-update`]})`}
-          style={{ marginRight: 50, userSelect: 'none' }}
-        />
         <FormControlLabel
           value="up-tu-file-excel"
           control={<Radio />}
