@@ -19,7 +19,7 @@
     max-width: 1500px;
     min-height: 75vh;
     font-size: 1.1em;
-    border: 2px dashed #52a4d3;
+    /* border: 2px dashed #52a4d3; */
     margin-top: 5px;
     /* https://stackoverflow.com/questions/628301/css3s-border-radius-property-and-border-collapsecollapse-dont-mix-how-can-i */
     overflow: hidden;

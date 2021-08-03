@@ -22,13 +22,13 @@
   }
 
   html.js input.form-autocomplete {
-    background-image: url(/misc/throbber-inactive.png);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     background-position: 100% center;
     background-repeat: no-repeat;
   }
 
   html.js input.throbbing {
-    background-image: url(/misc/throbber-active.gif);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     background-position: 100% center;
   }
 
@@ -61,7 +61,8 @@
   }
 
   .resizable-textarea .grippie {
-    background: #eee url(/misc/grippie.png) no-repeat center 2px;
+    background: #eee url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png)
+      no-repeat center 2px;
     border: 1px solid #ddd;
     border-top-width: 0;
     cursor: s-resize;
@@ -87,7 +88,8 @@
   }
 
   a.tabledrag-handle .handle {
-    background: url(/misc/draggable.png) no-repeat 6px 9px;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
+      6px 9px;
     height: 13px;
     margin: -0.4em 0.5em;
     padding: 0.42em 0.5em;
@@ -107,15 +109,18 @@
   }
 
   div.tree-child {
-    background: url(/misc/tree.png) no-repeat 11px center;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
+      11px center;
   }
 
   div.tree-child-last {
-    background: url(/misc/tree-bottom.png) no-repeat 11px center;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
+      11px center;
   }
 
   div.tree-child-horizontal {
-    background: url(/misc/tree.png) no-repeat -11px center;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat -11px
+      center;
   }
 
   .tabledrag-toggle-weight-wrapper {
@@ -147,7 +152,8 @@
   }
 
   .ajax-progress .throbber {
-    background: transparent url(/misc/throbber-active.gif) no-repeat 0px center;
+    background: transparent url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png)
+      no-repeat 0px center;
     float: left;
     height: 15px;
     margin: 2px;
@@ -166,7 +172,8 @@
     width: 16em;
   }
 
-  .container-inline div, .container-inline label {
+  .container-inline div,
+  .container-inline label {
     display: inline;
   }
 
@@ -194,7 +201,8 @@
     height: 1px;
   }
 
-  .element-invisible.element-focusable:active, .element-invisible.element-focusable:focus {
+  .element-invisible.element-focusable:active,
+  .element-invisible.element-focusable:focus {
     position: static !important;
     clip: auto;
     overflow: visible;
@@ -202,7 +210,7 @@
   }
 
   .clearfix:after {
-    content: ".";
+    content: '.';
     display: block;
     height: 0;
     clear: both;
@@ -228,21 +236,23 @@
   }
 
   ul li.expanded {
-    list-style-image: url(/misc/menu-expanded.png);
+    list-style-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     list-style-type: circle;
   }
 
   ul li.collapsed {
-    list-style-image: url(/misc/menu-collapsed.png);
+    list-style-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     list-style-type: disc;
   }
 
   ul li.leaf {
-    list-style-image: url(/misc/menu-leaf.png);
+    list-style-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     list-style-type: square;
   }
 
-  li.expanded, li.collapsed, li.leaf {
+  li.expanded,
+  li.collapsed,
+  li.leaf {
     padding: 0.2em 0.5em 0 0;
     margin: 0;
   }
@@ -255,7 +265,8 @@
     background: #ccc;
   }
 
-  ul.inline, ul.links.inline {
+  ul.inline,
+  ul.links.inline {
     display: inline;
     padding-left: 0;
   }
@@ -338,41 +349,47 @@
   }
 
   div.status {
-    background-image: url(/misc/message-24-ok.png);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     border-color: #be7;
   }
 
-  div.status, .ok {
+  div.status,
+  .ok {
     color: #234600;
   }
 
-  div.status, table tr.ok {
+  div.status,
+  table tr.ok {
     background-color: #f8fff0;
   }
 
   div.warning {
-    background-image: url(/misc/message-24-warning.png);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     border-color: #ed5;
   }
 
-  div.warning, .warning {
+  div.warning,
+  .warning {
     color: #840;
   }
 
-  div.warning, table tr.warning {
+  div.warning,
+  table tr.warning {
     background-color: #fffce5;
   }
 
   div.error {
-    background-image: url(/misc/message-24-error.png);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     border-color: #ed541d;
   }
 
-  div.error, .error {
+  div.error,
+  .error {
     color: #8c2e0b;
   }
 
-  div.error, table tr.error {
+  div.error,
+  table tr.error {
     background-color: #fef5f1;
   }
 
@@ -422,7 +439,8 @@
     border-top: 1px solid #ccc;
   }
 
-  tr.even, tr.odd {
+  tr.even,
+  tr.odd {
     background-color: #eee;
     border-bottom: 1px solid #ccc;
     padding: 0.1em 0.6em;
@@ -450,12 +468,14 @@
     padding: 0;
   }
 
-  .form-item, .form-actions {
+  .form-item,
+  .form-actions {
     margin-top: 1em;
     margin-bottom: 1em;
   }
 
-  tr.odd .form-item, tr.even .form-item {
+  tr.odd .form-item,
+  tr.even .form-item {
     margin-top: 0;
     margin-bottom: 0;
     white-space: nowrap;
@@ -475,28 +495,35 @@
     font-weight: normal;
   }
 
-  .form-checkboxes .form-item, .form-radios .form-item {
+  .form-checkboxes .form-item,
+  .form-radios .form-item {
     margin-top: 0.4em;
     margin-bottom: 0.4em;
   }
 
-  .form-type-radio .description, .form-type-checkbox .description {
+  .form-type-radio .description,
+  .form-type-checkbox .description {
     margin-left: 2.4em;
   }
 
-  input.form-checkbox, input.form-radio {
+  input.form-checkbox,
+  input.form-radio {
     vertical-align: middle;
   }
 
-  .marker, .form-required {
+  .marker,
+  .form-required {
     color: #f00;
   }
 
-  .form-item input.error, .form-item textarea.error, .form-item select.error {
+  .form-item input.error,
+  .form-item textarea.error,
+  .form-item select.error {
     border: 2px solid red;
   }
 
-  .container-inline .form-actions, .container-inline.form-actions {
+  .container-inline .form-actions,
+  .container-inline.form-actions {
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -510,7 +537,8 @@
   }
 
   .more-help-link a {
-    background: url(/misc/help.png) 0 50% no-repeat;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) 0 50%
+      no-repeat;
     padding: 1px 0 1px 20px;
   }
 
@@ -536,12 +564,13 @@
   }
 
   html.js fieldset.collapsible .fieldset-legend {
-    background: url(/misc/menu-expanded.png) 5px 65% no-repeat;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) 5px 65%
+      no-repeat;
     padding-left: 15px;
   }
 
   html.js fieldset.collapsed .fieldset-legend {
-    background-image: url(/misc/menu-collapsed.png);
+    background-image: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
     background-position: 5px 50%;
   }
 
@@ -571,7 +600,8 @@
     background: #ffc;
   }
 
-  td.checkbox, th.checkbox {
+  td.checkbox,
+  th.checkbox {
     text-align: center;
   }
 
@@ -589,7 +619,6 @@
   }
 
   .progress .filled {
-    background: #0072b9 url(/misc/progress.gif);
+    background: #0072b9 url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png);
   }
-
 }
