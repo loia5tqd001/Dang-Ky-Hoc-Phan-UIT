@@ -1,7 +1,7 @@
 import React from 'react';
 // redux
 import { useSelector } from 'react-redux';
-import { selectFinalDataTkb } from '../../redux/xepTkb/selectors';
+import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 // lodash
 import sortBy from 'lodash/sortBy';
 // components
@@ -9,7 +9,7 @@ import AgGrid from './AgGrid';
 import TrungTkbDialog from './TrungTkbDialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { setIsChiVeTkb } from '../../redux/xepTkb/reducer';
+import { setIsChiVeTkb } from 'redux/xepTkb/reducer';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const actionOptions = {

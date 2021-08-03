@@ -4,8 +4,8 @@ import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 import ChiVeTkbInput from './ChiVeTkbInput';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsChiVeTkb } from '../../redux/xepTkb/selectors';
-import { setIsChiVeTkb } from '../../redux/xepTkb/reducer';
+import { selectIsChiVeTkb } from 'redux/xepTkb/selectors';
+import { setIsChiVeTkb } from 'redux/xepTkb/reducer';
 // mui
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -31,7 +31,16 @@ function Index() {
                 size="small"
               />
             }
-            style={!isChiVeTkb ? { opacity: 0.5, transform: 'scale(0.8)', transformOrigin: 'left center', fontStyle: 'italic' } : null}
+            style={
+              !isChiVeTkb
+                ? {
+                    opacity: 0.5,
+                    transform: 'scale(0.8)',
+                    transformOrigin: 'left center',
+                    fontStyle: 'italic',
+                  }
+                : null
+            }
             label={'Chỉ vẽ TKB, không dùng tool Xếp Lớp' + (isChiVeTkb ? '' : '?')}
           />
         </Tooltip>

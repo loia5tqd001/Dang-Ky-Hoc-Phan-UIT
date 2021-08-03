@@ -1,9 +1,9 @@
 import React from 'react';
-import DATA from '../../data/tkb.json';
+import DATA from 'data/tkb.json';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoaiTkb } from '../../redux/xepTkb/reducer';
-import { selectLoaiTkb } from '../../redux/xepTkb/selectors';
+import { setLoaiTkb } from 'redux/xepTkb/reducer';
+import { selectLoaiTkb } from 'redux/xepTkb/selectors';
 // mui
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';

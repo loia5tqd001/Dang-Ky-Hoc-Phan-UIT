@@ -1,8 +1,8 @@
 import React from 'react';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTextareaChiVeTkb } from '../../redux/xepTkb/selectors';
-import { setTextareChiVeTkb } from '../../redux/xepTkb/reducer';
+import { selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
+import { setTextareChiVeTkb } from 'redux/xepTkb/reducer';
 // mui
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';

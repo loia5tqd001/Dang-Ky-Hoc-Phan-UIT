@@ -1,8 +1,8 @@
 import React from 'react';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDataExcel, selectLoaiTkb } from '../../redux/xepTkb/selectors';
-import { setLoaiTkb } from '../../redux/xepTkb/reducer';
+import { selectDataExcel, selectLoaiTkb } from 'redux/xepTkb/selectors';
+import { setLoaiTkb } from 'redux/xepTkb/reducer';
 // components
 import RadioOptions from './RadioOptions';
 import SelectExcelButton from './TabsPanel/SelectExcelButton';

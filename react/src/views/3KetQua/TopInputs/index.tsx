@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectPhanLoaiMaLopAV, selectTongSoTC } from '../../../redux/xepTkb/selectors';
+import { selectPhanLoaiMaLopAV, selectTongSoTC } from 'redux/xepTkb/selectors';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';

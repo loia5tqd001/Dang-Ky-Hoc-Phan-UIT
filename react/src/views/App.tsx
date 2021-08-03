@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import routes from '../data/routes';
-import ParticlesBg from 'particles-bg'
+import routes from 'data/routes';
 // mui
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +33,6 @@ function App() {
               </Switch>
             </Suspense>
           </div>
-          <ParticlesBg type="random" bg />
         </BrowserRouter>
       </ErrorBoundary>
     </div>
@@ -49,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     '& > canvas': {
-      position: 'fixed !important'
-    }
+      position: 'fixed !important',
+    },
   },
   content: {
     flexGrow: 1,

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSnackbar } from 'notistack';
 import html2canvas from 'html2canvas';
 import { useSelector } from 'react-redux';
-import { selectPhanLoaiHocTrenTruong } from '../../../redux/xepTkb/selectors';
+import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
 import { downloadFromCanvas, getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:

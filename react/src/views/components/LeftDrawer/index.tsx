@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import routes from '../../../data/routes';
-import logoUit from '../../../assets/img/logo-uit.png';
+import routes from 'data/routes';
+import logoUit from 'assets/img/logo-uit.png';
 import Typewriter from 'typewriter-effect';
 // mui
 import { makeStyles } from '@material-ui/core/styles';

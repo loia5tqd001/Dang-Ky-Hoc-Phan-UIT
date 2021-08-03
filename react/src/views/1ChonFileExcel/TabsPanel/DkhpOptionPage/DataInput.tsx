@@ -3,8 +3,8 @@ import { useSnackbar } from 'notistack';
 import { tryParseJson } from './utils';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDataDkhpPage } from '../../../../redux/xepTkb/selectors';
-import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from '../../../../redux/xepTkb/reducer';
+import { selectDataDkhpPage } from 'redux/xepTkb/selectors';
+import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from 'redux/xepTkb/reducer';
 // mui
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';

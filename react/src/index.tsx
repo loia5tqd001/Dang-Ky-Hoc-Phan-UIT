@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux';
 // mui
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 // notistack
@@ -21,7 +21,7 @@ LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578
 // color: https://material-ui.com/customization/color/#color
 // theming: https://material-ui.com/customization/theming/
 // global css: https://material-ui.com/customization/globals/
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: `"Montserrat","Roboto", "Helvetica", "Arial", sans-serif`,
   },

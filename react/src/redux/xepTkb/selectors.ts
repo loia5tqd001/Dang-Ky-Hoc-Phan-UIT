@@ -1,7 +1,7 @@
 // export selectors
 import { createSelector } from '@reduxjs/toolkit';
 import { xepTkbName } from './reducer';
-import DATA from '../../data/tkb.json';
+import DATA from 'data/tkb.json';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import partition from 'lodash/partition';

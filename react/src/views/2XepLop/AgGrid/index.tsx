@@ -5,13 +5,13 @@ import './styles.css';
 import { columnDefs, defaultColDef, isSameRow } from './utils';
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setAgGridFilterModel, setSelectedClasses } from '../../../redux/xepTkb/reducer';
+import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/reducer';
 import {
   selectAgGridColumnState,
   selectAgGridFilterModel,
   selectSelectedClasses,
   selectTongSoTC,
-} from '../../../redux/xepTkb/selectors';
+} from 'redux/xepTkb/selectors';
 // others
 import uniq from 'lodash/uniq';
 import { useDebouncedStoreColumnState } from './hooks';
