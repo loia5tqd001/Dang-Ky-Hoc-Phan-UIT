@@ -1,31 +1,17 @@
-const dkhpHref = 'https://dkhp.uit.edu.vn/sinhvien/hocphan/dangky';
-const dkhpAnhVanHref = 'https://dkhp.uit.edu.vn/sinhvien/hocphan/dangky-anhvan';
-
-export const getScriptDkhp = (monDangKy, monDangKyAnhVan = '') => `
-var params = {
-  monDangKy: \`
+export const getScriptDkhp = (monDangKy: string, monDangKyAnhVan = '') =>
+  `
+var monDangKy = \`
 ${monDangKy}
-  \`,
-  monDangKyAnhVan: \`
 ${monDangKyAnhVan}
-  \`,
-  dkhpHref: \`${dkhpHref}\`,
-  dkhpAnhVanHref: \`${dkhpAnhVanHref}\`,
-};
+\`;
 
 ;(function () {
-  if (window.location.href === params.dkhpHref && params.monDangKy) {
-    BypassMathCaptcha();
-    DangKy(params.monDangKy);
-  }
-  if (window.location.href === params.dkhpAnhVanHref && params.monDangKyAnhVan) {
-    BypassMathCaptcha();
-    DangKy(params.monDangKyAnhVan);
-  }
+  BypassMathCaptcha();
+  DangKy(monDangKy);
 })()
 
 function BypassMathCaptcha() {
-  const hasCaptcha = document.querySelector('#edit-captcha-response');
+  var hasCaptcha = document.querySelector('#edit-captcha-response');
   if (hasCaptcha) {
     var answerCaptchaMath = eval(document.querySelector('.captcha .field-prefix')?.textContent.replace('=', '').trim());
     hasCaptcha.value = answerCaptchaMath;
