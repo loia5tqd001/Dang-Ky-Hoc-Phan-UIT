@@ -1,19 +1,21 @@
-import React, { useCallback } from 'react';
-import { useSnackbar } from 'notistack';
-import { tryParseJson } from './utils';
-// redux
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDataDkhpPage } from 'redux/xepTkb/selectors';
-import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from 'redux/xepTkb/slice';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import Popover from '@material-ui/core/Popover';
 // mui
 import { makeStyles } from '@material-ui/core/styles';
-import Popover from '@material-ui/core/Popover';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import { useSnackbar } from 'notistack';
+import React, { useCallback } from 'react';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+
+import { selectDataDkhpPage } from 'redux/xepTkb/selectors';
+import { setDataDkhpLopAnhVan, setDataDkhpLopThuong } from 'redux/xepTkb/slice';
+
+import { tryParseJson } from './utils';
 
 function DataInput({ isAnhVan }) {
   const dispatch = useDispatch();

@@ -1,21 +1,25 @@
-import React from 'react';
-// redux
-import { useSelector, useDispatch } from 'react-redux';
-import { selectIsChiVeTkb } from 'redux/xepTkb/selectors';
-import { setIsChiVeTkb } from 'redux/xepTkb/slice';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 // mui
 import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import Collapse from '@material-ui/core/Collapse';
-import TopInputs from './TopInputs';
-import ChiVeTkbInput from './ChiVeTkbInput';
+import React from 'react';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
+import { setIsChiVeTkb, setTextareChiVeTkb } from 'redux/xepTkb/slice';
+import { extractListMaLop } from 'utils';
+import ScriptDangKyInput from './ScriptDangKyInput';
 import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
 function Index() {
   const dispatch = useDispatch();
-  const isChiVeTkb = useSelector(selectIsChiVeTkb);
+  const khongXepLop = useSelector(selectIsChiVeTkb);
+  const textareaChiVeTkb = useSelector(selectTextareaChiVeTkb);
+  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
 
   return (
     <div style={{ height: '100%', minWidth: '90%' }}>
@@ -24,7 +28,7 @@ function Index() {
           <FormControlLabel
             control={
               <Checkbox
-                checked={isChiVeTkb}
+                checked={khongXepLop}
                 onChange={(e) => dispatch(setIsChiVeTkb(e.target.checked))}
                 name="checkedA"
                 color="primary"
@@ -32,28 +36,66 @@ function Index() {
               />
             }
             style={
-              !isChiVeTkb
+              !khongXepLop
                 ? {
                     opacity: 0.5,
                     transform: 'scale(0.8)',
                     transformOrigin: 'left center',
                     fontStyle: 'italic',
                   }
-                : null
+                : undefined
             }
-            label={'Chỉ vẽ TKB, không dùng tool Xếp Lớp' + (isChiVeTkb ? '' : '?')}
+            label={'Không dùng tool Xếp Lớp' + (khongXepLop ? '' : '?')}
           />
         </Tooltip>
       </FormGroup>
-      <Collapse in={!isChiVeTkb}>
-        <TopInputs />
-      </Collapse>
-      <Collapse in={isChiVeTkb}>
-        <ChiVeTkbInput />
-      </Collapse>
+      <Grid container spacing={2} style={{ marginBottom: 10, maxWidth: 1510 }}>
+        <Grid item xs={6}>
+          <Tooltip title="Bạn chỉ chọn data nguồn ở B1 và nhập danh sách lớp ở đây, không dùng B2">
+            <TextField
+              label={
+                khongXepLop
+                  ? 'Tự nhập danh sách lớp (LƯU Ý COPY PASTE KHÔNG GÕ TỪNG CHỮ)'
+                  : 'Đang dùng dữ liệu từ bước xếp lớp'
+              }
+              fullWidth
+              size="small"
+              multiline
+              rows={2}
+              variant="outlined"
+              onChange={(e) => {
+                dispatch(setTextareChiVeTkb(e.target.value));
+              }}
+              disabled={!khongXepLop}
+              value={khongXepLop ? textareaChiVeTkb : ''}
+            />
+          </Tooltip>
+        </Grid>
+        <ScriptDangKyInput listMaLop={extractListMaLop(cacLop.flat())} />
+      </Grid>
+
       <ThoiKhoaBieuTable />
     </div>
   );
 }
 
 export default Index;
+
+const useStyles = makeStyles((theme) => ({
+  soTCInput: {
+    // '& label': {
+    //   color: (p) =>
+    //     `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
+    // },
+    // '& fieldset': {
+    //   border: (p) =>
+    //     `1px solid ${
+    //       p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main
+    //     } !important`,
+    // },
+    '& input': {
+      color: (p) => `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
+      fontWeight: '500',
+    },
+  },
+}));

@@ -1,14 +1,16 @@
-export const getScriptDkhp = (monDangKy: string, monDangKyAnhVan = '') =>
+export const getScriptDkhp = (listMonDangKy: string[]) =>
   `
+// Chỉ cần thay mỗi môn trên một hàng cho biến monDangKy này là xong
 var monDangKy = \`
-${monDangKy}
-${monDangKyAnhVan}
+${listMonDangKy.join('\n')}
 \`;
 
 ;(function () {
   BypassMathCaptcha();
   DangKy(monDangKy);
 })()
+
+// Lưu ý: Nếu sau này trường update website, các thẻ query không còn đúng nữa, thì bạn liên hệ messenger.com/t/loia5tqd001 để báo mình nhé
 
 function BypassMathCaptcha() {
   var hasCaptcha = document.querySelector('#edit-captcha-response');

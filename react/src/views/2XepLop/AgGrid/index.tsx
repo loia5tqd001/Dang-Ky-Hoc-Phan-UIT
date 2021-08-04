@@ -5,14 +5,10 @@ import './styles.css';
 //redux
 import { useDispatch, useSelector } from 'react-redux';
 import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
-import {
-  selectAgGridColumnState,
-  selectAgGridFilterModel,
-  selectSelectedClasses,
-  selectTongSoTC,
-} from 'redux/xepTkb/selectors';
+import { selectAgGridColumnState, selectAgGridFilterModel, selectSelectedClasses } from 'redux/xepTkb/selectors';
 // others
 import uniq from 'lodash/uniq';
+import { calcTongSoTC } from 'utils';
 import { columnDefs, defaultColDef, isSameRow } from './utils';
 import { useDebouncedStoreColumnState } from './hooks';
 
@@ -22,10 +18,10 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
   const selectedClasses = useSelector(selectSelectedClasses);
   const agGridColumnState = useSelector(selectAgGridColumnState);
   const agGridFilterModel = useSelector(selectAgGridFilterModel);
-  const tongSoTC = useSelector(selectTongSoTC);
+  const tongSoTC = calcTongSoTC(selectedClasses);
 
   const { debouncedStoreColumnState } = useDebouncedStoreColumnState();
-  console.log(tongSoTC ?? 0);
+
   return (
     <div
       className="ag-theme-alpine"

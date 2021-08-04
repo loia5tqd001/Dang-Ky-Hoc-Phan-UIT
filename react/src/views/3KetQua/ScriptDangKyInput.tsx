@@ -1,49 +1,49 @@
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { getScriptDkhp } from './utils';
-// mui
-import { useSnackbar } from 'notistack';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 
-function ScriptDangKyInput({ listMaLop, loaiMaLop }) {
+type Props = {
+  listMaLop: string[];
+};
+
+function ScriptDangKyInput({ listMaLop }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
 
-  const listMaLopString = listMaLop.join('\n');
+  const script = getScriptDkhp(listMaLop);
 
   return (
-    <Grid item xs={5}>
+    <Grid item xs={6} style={{ paddingRight: 0 }}>
       {listMaLop.length > 0 ? (
         <Tooltip title={'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.'}>
-          <CopyToClipboard
-            text={getScriptDkhp(listMaLopString, listMaLopString)}
-            onCopy={() => enqueueSnackbar('Đã sao chép')}
-          >
+          <CopyToClipboard text={script} onCopy={() => enqueueSnackbar('Đã sao chép')}>
             <TextField
               className={classes.textFieldActive}
-              label={'Script đăng ký nhanh các lớp ' + loaiMaLop}
+              label={'Script đăng ký nhanh'}
               fullWidth
               size="small"
               multiline
               rows={2}
               variant="outlined"
-              value={listMaLopString}
+              value={script}
               inputProps={{ readOnly: true }}
             />
           </CopyToClipboard>
         </Tooltip>
       ) : (
         <TextField
-          label={'Script đăng ký nhanh các lớp ' + loaiMaLop}
+          label={'Script đăng ký nhanh'}
           fullWidth
           size="small"
           multiline
           rows={2}
           variant="outlined"
-          value={`Chưa chọn lớp ${loaiMaLop} nào`}
+          value={`Chưa có lớp nào`}
           disabled
         />
       )}

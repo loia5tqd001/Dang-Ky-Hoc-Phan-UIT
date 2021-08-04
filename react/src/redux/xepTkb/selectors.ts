@@ -1,7 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import uniq from 'lodash/uniq';
-import uniqBy from 'lodash/uniqBy';
 import partition from 'lodash/partition';
+import uniq from 'lodash/uniq';
 import slice from './slice';
 import { State } from './types';
 
@@ -26,14 +25,6 @@ export const selectFinalDataTkb = createSelector([selectLoaiTkb, selectDataExcel
 
 export const selectlistHeDT = createSelector([selectFinalDataTkb], (dataTkb) => uniq(dataTkb.map((it) => it.HeDT)));
 
-const selectSelectedClassesUniqueByMaLop = createSelector([selectSelectedClasses], (selectedClasses) =>
-  uniqBy(selectedClasses, 'MaLop'),
-);
-
-export const selectTongSoTC = createSelector([selectSelectedClassesUniqueByMaLop], (classes) =>
-  classes.reduce((acc, cur) => acc + cur.SoTc, 0),
-);
-
 export const selectFilteredMaMH = createSelector(
   [selectFinalDataTkb, selectListMaMHTextarea],
   (finalDataTkb, listMaMHTextarea) => {
@@ -42,12 +33,6 @@ export const selectFilteredMaMH = createSelector(
     return listMaMH.filter((maMH) => textareaUpper.includes(maMH));
   },
 );
-
-export const selectPhanLoaiMaLopAV = createSelector([selectSelectedClassesUniqueByMaLop], (classes) => {
-  const listMaLop = classes.map((it) => it.MaLop);
-  const [maLopAV, maLopThuong] = partition(listMaLop, (it) => it.startsWith('EN'));
-  return { maLopAV, maLopThuong };
-});
 
 export const selectTextareaChiVeTkb = createSelector(
   [selectSlice, selectFinalDataTkb],

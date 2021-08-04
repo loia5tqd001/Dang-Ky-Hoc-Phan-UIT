@@ -3,7 +3,7 @@ module.exports = {
   plugins: ['import'],
   rules: {
     'import/order': [
-      'error',
+      'warn',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object'],
       },
