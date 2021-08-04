@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="307px" preserveAspectRatio="none" style="width:1156px;height:307px;background:#FFFFFF;" version="1.1" viewBox="0 0 1156 307" width="1156px" zoomAndPan="magnify"><defs><filter height="300%" id="fzp6rucrakyhe" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[10d2c5ab8d2d94107390156aafcadf5f]
+entity DuLieuLopHoc--><rect fill="#FFFFFF" filter="url(#fzp6rucrakyhe)" height="37.6094" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="116" x="216.5" y="121.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="226.5" y="146.0332">Dữ liệu lớp học</text><!--MD5=[6425370f8a981869cf9de72fc484b870]
+entity DanhSachLopSeDK--><rect fill="#FFFFFF" filter="url(#fzp6rucrakyhe)" height="37.6094" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="154" x="538.5" y="121.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="548.5" y="146.0332">Danh sách lớp sẽ ĐK</text><!--MD5=[328dc7d10bdf6109703cc72462bb8cd7]
+entity ScriptDKHPNhanh--><rect fill="#FFFFE0" filter="url(#fzp6rucrakyhe)" height="37.6094" style="stroke:#053742;stroke-width:1.5;" width="141" x="966" y="121.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="121" x="976" y="146.0332">Script ĐKHP nhanh</text><!--MD5=[d9fe19b0bf71313f37cc6004e377cfbc]
+entity ThoiKhoaBieu--><rect fill="#FFFFE0" filter="url(#fzp6rucrakyhe)" height="72.8281" style="stroke:#053742;stroke-width:1.5;" width="141" x="736" y="223"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="746" y="247.5332">Giao diện TKB</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="121" x="746" y="265.1426">• Copy to clipboard</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="746" y="282.752">• Tải về máy</text><!--MD5=[a7e0fe13bc64b1d9c7526be0b1002995]
+entity GiaoDienDKHP--><rect fill="#FFFFE0" filter="url(#fzp6rucrakyhe)" height="37.6094" style="stroke:#053742;stroke-width:1.5;" width="153" x="991" y="13"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133" x="1001" y="37.5332">Giao diện ĐKHP mẫu</text><ellipse cx="93.3923" cy="140.3785" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="87.3923" ry="19.8785" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="132" x="27.3923" y="144.107">0. Tạo nguồn dữ liệu</text><ellipse cx="435.4169" cy="140.3834" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="67.4169" ry="15.8834" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="392.4169" y="144.9">1. Soạn TKB</text><ellipse cx="615.2783" cy="31.9557" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="117.7783" ry="25.9557" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="200" x="515.2783" y="35.6842">1'. Tự soạn TKB bằng MS Excel</text><ellipse cx="615.2698" cy="259.454" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="85.2698" ry="19.454" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127" x="551.7698" y="263.1825">2. Vẽ thời khoá biểu</text><ellipse cx="829.3975" cy="140.6795" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="101.3975" ry="22.6795" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="164" x="747.3975" y="144.408">3. Tạo script ĐKHP nhanh</text><ellipse cx="862.4382" cy="32.0876" fill="#A2DBFA" filter="url(#fzp6rucrakyhe)" rx="93.4382" ry="21.0876" style="stroke:#053742;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146" x="789.4382" y="35.8162">4. Xem giao diện ĐKHP</text><!--MD5=[eb7b98a5e091a89314e98b91ddc27197]
+link TaoNguonDuLieu to DuLieuLopHoc--><path d="M181.17,140.5 C191.11,140.5 201.04,140.5 210.97,140.5 " fill="none" id="TaoNguonDuLieu-to-DuLieuLopHoc" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="216.17,140.5,207.17,136.5,211.17,140.5,207.17,144.5,216.17,140.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[9c770930b0957c00ecd98ded7d4af945]
+link DuLieuLopHoc to SoanTKB--><path d="M332.67,140.5 C342.59,140.5 352.51,140.5 362.43,140.5 " fill="none" id="DuLieuLopHoc-to-SoanTKB" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="367.62,140.5,358.62,136.5,362.62,140.5,358.62,144.5,367.62,140.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[d74d9319b51318e0c8c9c453d0cc0d8a]
+link SoanTKB to DanhSachLopSeDK--><path d="M503,140.5 C512.98,140.5 522.96,140.5 532.94,140.5 " fill="none" id="SoanTKB-to-DanhSachLopSeDK" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="538.16,140.5,529.16,136.5,533.16,140.5,529.16,144.5,538.16,140.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[e6231fda1134181acd8bcac4786466fa]
+link TuSoanTKB to DanhSachLopSeDK--><path d="M615.5,58.24 C615.5,75.85 615.5,99.19 615.5,116.33 " fill="none" id="TuSoanTKB-to-DanhSachLopSeDK" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="615.5,121.44,619.5,112.44,615.5,116.44,611.5,112.44,615.5,121.44" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[f2fb652cbeab3a90c7a5d294c94e6b4f]
+link DanhSachLopSeDK to TaoScript--><path d="M692.82,140.5 C702.75,140.5 712.68,140.5 722.6,140.5 " fill="none" id="DanhSachLopSeDK-to-TaoScript" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="727.79,140.5,718.79,136.5,722.79,140.5,718.79,144.5,727.79,140.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[ce9500c2a80f9dc85ef44140d7046bdf]
+link TaoScript to ScriptDKHPNhanh--><path d="M931.38,140.5 C941.17,140.5 950.96,140.5 960.75,140.5 " fill="none" id="TaoScript-to-ScriptDKHPNhanh" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="965.87,140.5,956.87,136.5,960.87,140.5,956.87,144.5,965.87,140.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[ca9e3d0aa63a6a7d6270ab1a614d7030]
+link DuLieuLopHoc to VeTKB--><path d="M327.03,159.52 C391.85,181.77 501.29,219.31 565.11,241.21 " fill="none" id="DuLieuLopHoc-to-VeTKB" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="570,242.89,562.775,236.1968,565.2681,241.2746,560.1903,243.7678,570,242.89" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[942e366aed0519acc1fc936712a993d6]
+link DanhSachLopSeDK to VeTKB--><path d="M615.5,159.52 C615.5,179.7 615.5,212.48 615.5,234.74 " fill="none" id="DanhSachLopSeDK-to-VeTKB" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="615.5,239.87,619.5,230.87,615.5,234.87,611.5,230.87,615.5,239.87" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[821c6418fe5083c69cdaa2bf3ce3f2ac]
+link VeTKB to ThoiKhoaBieu--><path d="M701.3,259.5 C711.1,259.5 720.9,259.5 730.7,259.5 " fill="none" id="VeTKB-to-ThoiKhoaBieu" style="stroke:#053742;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#053742" points="735.82,259.5,726.82,255.5,730.82,259.5,726.82,263.5,735.82,259.5" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[26284fedb41463833cc3ea4067442c90]
+link TaoScript to VeTKB--><!--MD5=[ebcc32135d0a930f8cc230522e628a32]
+link XemDKHP to GiaoDienDKHP--><path d="M956.19,32 C966.06,32 975.94,32 985.81,32 " fill="none" id="XemDKHP-to-GiaoDienDKHP" style="stroke:#053742;stroke-width:1.0;"/><polygon fill="#053742" points="990.98,32,981.98,28,985.98,32,981.98,36,990.98,32" style="stroke:#053742;stroke-width:1.0;"/><!--MD5=[c328028b213f62dafe691727f79212ca]
+@startuml activity
+
+!include_many _style.pu
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK #line.dashed
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh #LightYellow
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+rectangle "Giao diện ĐKHP mẫu" as GiaoDienDKHP #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu
+usecase "1. Soạn TKB" as SoanTKB
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+usecase "4. Xem giao diện ĐKHP" as XemDKHP
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK .right.> TaoScript
+TaoScript .right.> ScriptDKHPNhanh
+DuLieuLopHoc .right.> VeTKB
+DanhSachLopSeDK .down.> VeTKB
+VeTKB .right.> ThoiKhoaBieu
+TaoScript .[hidden].> VeTKB
+XemDKHP -right-> GiaoDienDKHP
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+TaoNguonDuLieu ..right.> DuLieuLopHoc
+DuLieuLopHoc .down.> SoanTKB
+DuLieuLopHoc -down-> VeTKB
+VeTKB -right-> ThoiKhoaBieu
+TuSoanTKB .right.> DanhSachLopSeDK
+SoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -up-> VeTKB
+SoanTKB ..[hidden]right....> VeTKB
+DanhSachLopSeDK .[hidden]up.> ThoiKhoaBieu
+DuLieuLopHoc .[hidden]down.> ThoiKhoaBieu
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh  #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -right-> TaoScript
+TaoScript -right-> ScriptDKHPNhanh
+
+@enduml
+
+@startuml activity
+
+
+
+skinparam Actor {
+  BackgroundColor white
+  BorderColor #053742
+  FontColor #053742
+}
+
+skinparam Usecase {
+  BackgroundColor #A2DBFA
+  BorderColor #053742
+  ArrowColor #053742
+}
+
+skinparam Note {
+  BackgroundColor #A2DBFA
+  BorderColor #053742
+}
+
+skinparam Rectangle {
+  BackgroundColor white
+  BorderColor #053742
+}
+
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK #line.dashed
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh #LightYellow
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+rectangle "Giao diện ĐKHP mẫu" as GiaoDienDKHP #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu
+usecase "1. Soạn TKB" as SoanTKB
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+usecase "4. Xem giao diện ĐKHP" as XemDKHP
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK .right.> TaoScript
+TaoScript .right.> ScriptDKHPNhanh
+DuLieuLopHoc .right.> VeTKB
+DanhSachLopSeDK .down.> VeTKB
+VeTKB .right.> ThoiKhoaBieu
+TaoScript .[hidden].> VeTKB
+XemDKHP -right-> GiaoDienDKHP
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+TaoNguonDuLieu ..right.> DuLieuLopHoc
+DuLieuLopHoc .down.> SoanTKB
+DuLieuLopHoc -down-> VeTKB
+VeTKB -right-> ThoiKhoaBieu
+TuSoanTKB .right.> DanhSachLopSeDK
+SoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -up-> VeTKB
+SoanTKB ..[hidden]right....> VeTKB
+DanhSachLopSeDK .[hidden]up.> ThoiKhoaBieu
+DuLieuLopHoc .[hidden]down.> ThoiKhoaBieu
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh  #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -right-> TaoScript
+TaoScript -right-> ScriptDKHPNhanh
+
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 19:40:07 ICT 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: Cp1252
+Language: en
+Country: US
+--></g></svg>

@@ -1,0 +1,76 @@
+@startuml usecase
+
+!include_many _style.pu
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user ---> (Soạn thời khoá biểu)
+user ---> (Vẽ thời khoá biểu)
+user ---> (Tạo script ĐKHP nhanh)
+user ---> (Xem giao diện ĐKHP)
+(Soạn thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+(Vẽ thời khoá biểu) ..> (Tạo nguồn dữ liệu) : <<include>>
+note right of (Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+
+newpage
+
+left to right direction
+
+actor "Sinh viên UIT" as user
+user ---> (3. Tạo script ĐKHP nhanh)
+user ---> (1. Soạn thời khoá biểu)
+user ---> (2. Vẽ thời khoá biểu)
+user ---> (4. Xem giao diện ĐKHP)
+(1. Soạn thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(2. Vẽ thời khoá biểu) ..> (0. Tạo nguồn dữ liệu) : <<cần>>
+(1. Soạn thời khoá biểu) .> (2. Vẽ thời khoá biểu) : <<có thể giúp>>
+(3. Tạo script ĐKHP nhanh) <. (1. Soạn thời khoá biểu) : <<có thể giúp>>
+note right of (0. Tạo nguồn dữ liệu)
+  - Tải lên từ excel
+  - Crawl từ dkhp.uit.edu.vn
+end note
+note right of (1. Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+
+newpage
+
+left to right direction
+
+rectangle "4. Xem giao diện ĐKHP" {
+  actor "Sinh viên UIT" as user4
+  user4 --> (4.    Xem giao diện ĐKHP)
+}
+
+rectangle "3. Tạo script ĐKHP nhanh" {
+  actor "Sinh viên UIT" as user3
+  user3 --> (3.    Tạo script ĐKHP nhanh)
+  (3.    Tạo script ĐKHP nhanh) <.. (1.    Soạn thời khoá biểu) : <<có thể giúp>>
+  note right of (1.    Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "2. Vẽ thời khoá biểu" {
+  actor "Sinh viên UIT" as user2
+  user2 --> (2.   Vẽ thời khoá biểu)
+  (2.   Vẽ thời khoá biểu) <.. (1.   Soạn thời khoá biểu) : <<có thể giúp>>
+  (2.   Vẽ thời khoá biểu) ..> (0.   Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.   Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+  note right of (1.   Soạn thời khoá biểu): Có thể tự soạn bằng Excel
+}
+
+rectangle "1. Soạn thời khoá biểu" {
+  actor "Sinh viên UIT" as user1
+  user1 --> (1.  Soạn thời khoá biểu)
+  (1.  Soạn thời khoá biểu) ..> (0.  Tạo nguồn dữ liệu) : <<cần>>
+  note right of (0.  Tạo nguồn dữ liệu)
+    - Tải lên từ excel
+    - Crawl từ dkhp.uit.edu.vn
+  end note
+}
+
+@enduml

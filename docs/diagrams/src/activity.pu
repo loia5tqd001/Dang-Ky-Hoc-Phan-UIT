@@ -1,0 +1,64 @@
+@startuml activity
+
+!include_many _style.pu
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK #line.dashed
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh #LightYellow
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+rectangle "Giao diện ĐKHP mẫu" as GiaoDienDKHP #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu
+usecase "1. Soạn TKB" as SoanTKB
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+usecase "4. Xem giao diện ĐKHP" as XemDKHP
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK .right.> TaoScript
+TaoScript .right.> ScriptDKHPNhanh
+DuLieuLopHoc .right.> VeTKB
+DanhSachLopSeDK .down.> VeTKB
+VeTKB .right.> ThoiKhoaBieu
+TaoScript .[hidden].> VeTKB
+XemDKHP -right-> GiaoDienDKHP
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Giao diện TKB\n• Copy to clipboard\n• Tải về máy" as ThoiKhoaBieu #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "2. Vẽ thời khoá biểu" as VeTKB
+TaoNguonDuLieu ..right.> DuLieuLopHoc
+DuLieuLopHoc .down.> SoanTKB
+DuLieuLopHoc -down-> VeTKB
+VeTKB -right-> ThoiKhoaBieu
+TuSoanTKB .right.> DanhSachLopSeDK
+SoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -up-> VeTKB
+SoanTKB ..[hidden]right....> VeTKB
+DanhSachLopSeDK .[hidden]up.> ThoiKhoaBieu
+DuLieuLopHoc .[hidden]down.> ThoiKhoaBieu
+
+newpage
+
+rectangle "Dữ liệu lớp học" as DuLieuLopHoc #line.dashed
+rectangle "Danh sách lớp sẽ ĐK" as DanhSachLopSeDK
+rectangle "Script ĐKHP nhanh" as ScriptDKHPNhanh  #LightYellow
+usecase "0. Tạo nguồn dữ liệu" as TaoNguonDuLieu #line.dashed
+usecase "1. Soạn TKB" as SoanTKB #line.dashed
+usecase "1'. Tự soạn TKB bằng MS Excel" as TuSoanTKB #line.dashed
+usecase "3. Tạo script ĐKHP nhanh" as TaoScript
+TaoNguonDuLieu .right.> DuLieuLopHoc
+DuLieuLopHoc .right.> SoanTKB
+SoanTKB .right.> DanhSachLopSeDK
+TuSoanTKB .down.> DanhSachLopSeDK
+DanhSachLopSeDK -right-> TaoScript
+TaoScript -right-> ScriptDKHPNhanh
+
+@enduml
