@@ -18,3 +18,10 @@ export function extractListMaLop(classes: ClassModel[]) {
 export function isMonChung(lop: ClassModel) {
   return /^(SS0|PE00)/g.test(lop.MaMH) && lop.MaMH !== 'SS004'; // Kỹ năng nghề nghiệp (SS004) không phải là môn học chung
 }
+
+export function isChungMon(classA: ClassModel, classB: ClassModel, distinguishThucHanh = true) {
+  if (distinguishThucHanh === false) {
+    return classA.MaMH === classB.MaMH;
+  }
+  return classA.MaMH === classB.MaMH && classA.ThucHanh === classB.ThucHanh;
+}

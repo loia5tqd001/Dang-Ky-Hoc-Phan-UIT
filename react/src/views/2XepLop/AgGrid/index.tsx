@@ -14,7 +14,7 @@ import {
   selectSelectedClasses,
 } from 'redux/xepTkb/selectors';
 import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
-import { calcTongSoTC, isMonChung } from 'utils';
+import { calcTongSoTC, isChungMon, isMonChung } from 'utils';
 import { TTrungTkb } from '..';
 import { useDebouncedStoreColumnState } from './hooks';
 import SoTinChi from './SoTinChi';
@@ -96,7 +96,8 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
               return selected?.some((it) => it.MaLop === data.MaLop);
             }
             if (viewMode === 'Ẩn môn đã chọn') {
-              return !selected?.some((it) => it.MaMH === data.MaMH);
+              const chungMonVsLopDaChon = selected?.some((it) => isChungMon(it, data));
+              return !chungMonVsLopDaChon;
             }
             return false;
           })();
@@ -121,7 +122,8 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
             dispatch(setSelectedClasses(e.api.getSelectedRows()));
             return;
           }
-          if (selectedClasses.some((it) => it.MaMH === data.MaMH && it.MaLop !== data.MaLop)) {
+          // môn Anh Văn có thẻ 2 record chung môn, nhưng mà mã lớp giống nhau
+          if (selectedClasses.some((it) => isChungMon(it, data) && it.MaLop !== data.MaLop)) {
             enqueueSnackbar('Môn học này đã chọn rồi', { variant: 'error' });
             e.node.setSelected(false);
             return;
