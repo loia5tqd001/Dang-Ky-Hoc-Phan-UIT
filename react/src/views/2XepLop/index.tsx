@@ -1,23 +1,15 @@
+import sortBy from 'lodash/sortBy';
+import { ClassModel } from 'models';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
-import sortBy from 'lodash/sortBy';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { setIsChiVeTkb } from 'redux/xepTkb/slice';
-import Tooltip from '@material-ui/core/Tooltip';
-import { ClassModel } from 'models';
-import { calcTongSoTC } from 'utils';
-import TrungTkbDialog from './TrungTkbDialog';
 import AgGrid from './AgGrid';
 import TopInputs from './TopInputs';
-import BottomInfo from './BottomInfo';
+import TrungTkbDialog from './TrungTkbDialog';
 
-const actionOptions = {
-  normal: 'Hiển thị bình thường',
-  onlyOnFilter: 'Chỉ hiển thị môn học trong bộ lọc',
-  onlyPicked: 'Chỉ hiển thị những lớp đã pick',
-  hidePicked: 'Ẩn những môn học đã pick',
+export type TTrungTkb = {
+  master: ClassModel | null;
+  slave: ClassModel | null;
 };
 
 function Index(props) {
@@ -40,14 +32,12 @@ function Index(props) {
   }, [dataTkb]);
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [lopTrungTkb, setLopTrungTkb] = React.useState({ master: null, slave: null });
+  const [lopTrungTkb, setLopTrungTkb] = React.useState<TTrungTkb>({ master: null, slave: null });
 
   return (
     <div style={{ minWidth: '100%' }}>
       <TopInputs />
       <AgGrid rowData={rowData} setIsDialogOpen={setIsDialogOpen} setLopTrungTkb={setLopTrungTkb} />
-      <BottomInfo rowCount={rowData.length} tongSoTC={calcTongSoTC(dataTkb)} />{' '}
-      {/* TODO: rowCount khong con chinh xac */}
       <TrungTkbDialog isDialogOpen={isDialogOpen} lopTrungTkb={lopTrungTkb} setIsDialogOpen={setIsDialogOpen} />
     </div>
   );

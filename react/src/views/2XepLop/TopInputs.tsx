@@ -1,24 +1,23 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { setHeDaoTaoFiltered, setListMaMHTextarea } from 'redux/xepTkb/slice';
-import {
-  selectFilteredMaMH,
-  selectlistHeDT,
-  selectHeDaoTaoFiltered,
-  selectListMaMHTextarea,
-} from 'redux/xepTkb/selectors';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import SettingsIcon from '@material-ui/icons/Settings';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectFilteredMaMH,
+  selectHeDaoTaoFiltered,
+  selectlistHeDT,
+  selectListMaMHTextarea,
+} from 'redux/xepTkb/selectors';
+import { setHeDaoTaoFiltered, setListMaMHTextarea } from 'redux/xepTkb/slice';
 
 function TopInputs() {
   const dispatch = useDispatch();
@@ -27,7 +26,7 @@ function TopInputs() {
   const heDaoTaoFiltered = useSelector(selectHeDaoTaoFiltered);
   const listFilteredMaMH = useSelector(selectFilteredMaMH);
 
-  const options = ['Ẩn môn đã chọn'];
+  const options = ['Ẩn môn đã chọn', 'Chỉ hiện lớp đã chọn'];
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -38,7 +37,6 @@ function TopInputs() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const ITEM_HEIGHT = 48;
 
   return (
     <Grid container spacing={2} style={{ marginBottom: 10 }}>
@@ -73,7 +71,9 @@ function TopInputs() {
           options={listHeDT}
           // disableCloseOnSelect
           value={heDaoTaoFiltered}
-          onChange={(_, values) => dispatch(setHeDaoTaoFiltered(values))}
+          onChange={(_, value) => {
+            dispatch(setHeDaoTaoFiltered(value));
+          }}
           fullWidth
           size="small"
           // limitTags={2}
@@ -95,7 +95,7 @@ function TopInputs() {
         />
         <div>
           <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }}>
-            <SettingsIcon />
+            <VisibilityIcon />
           </IconButton>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
             {options.map((option) => (

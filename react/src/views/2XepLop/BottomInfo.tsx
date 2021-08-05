@@ -6,24 +6,12 @@ import { useSelector } from 'react-redux';
 import { selectSelectedClasses } from 'redux/xepTkb/selectors';
 import { calcTongSoTC } from 'utils';
 
-type Props = {
-  rowCount: number;
-};
-
-function BottomInfo({ rowCount }: Props) {
+function BottomInfo() {
   const cacLop = useSelector(selectSelectedClasses);
   const tongSoTC = calcTongSoTC(cacLop);
 
   return (
     <Box mt={1} display="flex" justifyContent="space-between">
-      <TextField disabled size="small" variant="standard" value={'Số dòng: ' + rowCount} />
-
-      {/*{isTrungTkb ? (*/}
-      {/*  <Alert severity="error" style={{ marginBottom: -15 }}>*/}
-      {/*    <strong>Trùng thời khóa biểu!!!</strong>*/}
-      {/*  </Alert>*/}
-      {/*) : null}*/}
-
       <Tooltip
         title={
           tongSoTC < 14

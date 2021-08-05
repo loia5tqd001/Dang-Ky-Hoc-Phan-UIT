@@ -29,6 +29,11 @@
     margin: 0.5em 0;
   }
 
+
+  #logo {
+    height: 140px;
+  }
+
   .summary {
     margin-bottom: 15px;
     font-weight: 300;
@@ -170,13 +175,7 @@
     background-image: -ms-linear-gradient(top, white 0%, #e6e6e6 100%);
     background-image: -moz-linear-gradient(top, white 0%, #e6e6e6 100%);
     background-image: -o-linear-gradient(top, white 0%, #e6e6e6 100%);
-    background-image: webkit-gradient(
-      linear,
-      left top,
-      left bottom,
-      color-stop(0, white),
-      color-stop(1, #e6e6e6)
-    );
+    background-image: webkit-gradient(linear, left top, left bottom, color-stop(0, white), color-stop(1, #e6e6e6));
     background-image: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
   }
 
@@ -1826,16 +1825,14 @@
   }
 
   .navbar .nav > li.first:nth-child(1) {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0
-      4px;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0 4px;
     text-indent: -9999px;
     width: 40px;
     padding-left: 10px;
   }
 
   .navbar .nav > li.active:nth-child(1) {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0
-      4px;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0 4px;
     text-indent: -9999px;
     width: 40px;
     padding-left: 10px;
@@ -1923,8 +1920,8 @@
   }
 
   #sidebar-first .block-menu .content ul li a {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
-      scroll 0 11px rgba(0, 0, 0, 0);
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat scroll 0 11px
+      rgba(0, 0, 0, 0);
     color: #0088cc;
     font-size: 14px;
     font-weight: normal;
@@ -2012,8 +2009,8 @@
   }
 
   .sidebar h2 {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) repeat-x
-      scroll left bottom #ffffff;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) repeat-x scroll left bottom
+      #ffffff;
     border-bottom: 1px solid #e6e6e6;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -2059,8 +2056,7 @@
   }
 
   #organization {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) repeat
-      scroll 0 0 #083158;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) repeat scroll 0 0 #083158;
     border-top: 1px solid #184978;
     color: #6991b7;
     margin: auto;
@@ -2178,8 +2174,8 @@
   }
 
   .footer-content ul li a {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
-      scroll 0 10px rgba(0, 0, 0, 0);
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat scroll 0 10px
+      rgba(0, 0, 0, 0);
     font-weight: normal;
     line-height: 16px;
     margin: 0;
@@ -2226,8 +2222,8 @@
   }
 
   .sidebar .block table td a {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
-      scroll 0 10px rgba(0, 0, 0, 0);
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat scroll 0 10px
+      rgba(0, 0, 0, 0);
     font-weight: normal;
     line-height: 16px;
     margin: 0;
@@ -2308,8 +2304,7 @@
 
   .block-panels-mini .item-list ul li,
   .block-views .item-list ul li {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0
-      4px;
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat 0 4px;
     list-style: none;
     padding-left: 12px;
   }
@@ -2342,8 +2337,7 @@
   }
 
   ul.links li.node-readmore a {
-    background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top, #fff 0%, #ddd 100%) repeat scroll 0
-      0;
+    background: rgba(0, 0, 0, 0) -moz-linear-gradient(center top, #fff 0%, #ddd 100%) repeat scroll 0 0;
     border-color: #ddd #bbb #999;
     border-image: none;
     border-radius: 11px;
@@ -2659,16 +2653,14 @@
 
   #user-login-form #edit-name,
   #user-login #edit-name {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
-      scroll 0 -3px rgba(0, 0, 0, 0);
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat scroll 0 -3px rgba(0, 0, 0, 0);
     padding-left: 24px;
     max-width: 84%;
   }
 
   #user-login-form #edit-pass,
   #user-login #edit-pass {
-    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat
-      scroll 0 -79px rgba(0, 0, 0, 0);
+    background: url(https://tuoitre.uit.edu.vn/wp-content/uploads/2015/07/logo-uit.png) no-repeat scroll 0 -79px rgba(0, 0, 0, 0);
     padding-left: 24px;
     max-width: 84%;
   }

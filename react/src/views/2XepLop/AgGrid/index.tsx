@@ -1,32 +1,56 @@
-import React from 'react';
-// ag-grid
+import { GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import './styles.css';
-//redux
-import { useDispatch, useSelector } from 'react-redux';
-import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
-import { selectAgGridColumnState, selectAgGridFilterModel, selectSelectedClasses } from 'redux/xepTkb/selectors';
-// others
 import uniq from 'lodash/uniq';
-import { calcTongSoTC } from 'utils';
-import { columnDefs, defaultColDef, isSameRow } from './utils';
+import { ClassModel } from 'models';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectAgGridColumnState,
+  selectAgGridFilterModel,
+  selectHeDaoTaoFiltered,
+  selectSelectedClasses,
+} from 'redux/xepTkb/selectors';
+import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
+import { calcTongSoTC, isMonChung } from 'utils';
+import { TTrungTkb } from '..';
 import { useDebouncedStoreColumnState } from './hooks';
+import SoTinChi from './SoTinChi';
+import './styles.css';
+import { columnDefs, defaultColDef, isSameRow } from './utils';
 
-function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
+type Props = {
+  rowData: ClassModel[];
+  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setLopTrungTkb: React.Dispatch<React.SetStateAction<TTrungTkb>>;
+};
+
+export let agGridApi: GridApi | null = null;
+
+function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
   const dispatch = useDispatch();
 
   const selectedClasses = useSelector(selectSelectedClasses);
   const agGridColumnState = useSelector(selectAgGridColumnState);
   const agGridFilterModel = useSelector(selectAgGridFilterModel);
   const tongSoTC = calcTongSoTC(selectedClasses);
+  const heDaoTaoFiltered = useSelector(selectHeDaoTaoFiltered);
+  const lastHeDaoTaoFiltered = React.useRef<string | null>(heDaoTaoFiltered);
 
   const { debouncedStoreColumnState } = useDebouncedStoreColumnState();
+
+  React.useEffect(() => {
+    // TODO: Refactor this tricky code
+    if (heDaoTaoFiltered !== lastHeDaoTaoFiltered.current) {
+      lastHeDaoTaoFiltered.current = heDaoTaoFiltered;
+      agGridApi?.onFilterChanged();
+    }
+  }, [heDaoTaoFiltered]);
 
   return (
     <div
       className="ag-theme-alpine"
       style={{
-        height: 'calc(100vh - 140px)',
+        height: 'calc(100vh - 100px)',
         fontFamily: 'inherit',
       }}
     >
@@ -34,13 +58,29 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
         columnDefs={columnDefs({ soTc: tongSoTC })}
         defaultColDef={defaultColDef}
         rowData={rowData}
-        headerHeight={30}
+        headerHeight={22}
         animateRows={false}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
         rowClassRules={{
           'odd-row': 'data.color & 1',
           'even-row': '!(data.color & 1)',
+        }}
+        isExternalFilterPresent={() => {
+          return Boolean(lastHeDaoTaoFiltered.current);
+        }}
+        doesExternalFilterPass={(node) => {
+          const data = node.data as ClassModel;
+          return isMonChung(data) || data.HeDT === lastHeDaoTaoFiltered.current;
+        }}
+        frameworkComponents={{
+          countTinChi: SoTinChi,
+        }}
+        statusBar={{
+          statusPanels: [
+            { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'right' },
+            { statusPanel: 'countTinChi', align: 'left' },
+          ],
         }}
         onRowSelected={(e) => {
           if (e.node.isSelected() && selectedClasses.find((it) => isSameRow(it, e.data))) {
@@ -69,6 +109,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
           dispatch(setSelectedClasses(e.api.getSelectedRows()));
         }}
         onGridReady={(params) => {
+          agGridApi = params.api;
           if (agGridColumnState) {
             params.columnApi.setColumnState(agGridColumnState);
             params.api.setFilterModel(agGridFilterModel);
@@ -90,6 +131,10 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
         suppressDragLeaveHidesColumns
         suppressColumnVirtualisation
         getRowHeight={() => 30}
+        viewportRowModelBufferSize={rowData.length - 100}
+        rowBuffer={100}
+        suppressAnimationFrame={true}
+        suppressColumnMoveAnimation={true}
       />
     </div>
   );

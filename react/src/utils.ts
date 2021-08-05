@@ -14,3 +14,7 @@ export function extractListMaLop(classes: ClassModel[]) {
   const unique = uniqMaLop(classes);
   return unique.map((it) => it.MaLop);
 }
+
+export function isMonChung(lop: ClassModel) {
+  return /^(SS0|PE00)/g.test(lop.MaMH) && lop.MaMH !== 'SS004'; // Kỹ năng nghề nghiệp (SS004) không phải là môn học chung
+}

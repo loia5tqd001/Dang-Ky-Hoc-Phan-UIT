@@ -4,6 +4,7 @@
   padding-left: 10px;
   padding-right: 10px;
   line-height: 28px;
+  letter-spacing: 0.5px;
 }
 
 .ag-theme-alpine .ag-header-cell,
@@ -27,6 +28,15 @@
   /*--ag-row-hover-color: #f6f6f6 !important; !* Kết hợp với animateRows={true} để chỉnh color của row khi hover lên 1 cell thuộc row *!*/
   background: #fff !important;
   cursor: pointer;
+}
+
+.ag-theme-alpine .ag-root-wrapper {
+  background: inherit;
+}
+
+.ag-theme-alpine .ag-status-name-value {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .ag-cell-focus,

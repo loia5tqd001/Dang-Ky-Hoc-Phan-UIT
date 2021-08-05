@@ -31,14 +31,14 @@ export interface State {
 
 export interface Reducer {
   setLoaiTkb: (state: Draft<State>, action: PayloadAction<State['loaiTkb']>) => void;
-  setDataExcel: (state, action: PayloadAction<State['dataExcel']>) => void;
-  setDataDkhpLopThuong: (state, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
-  setDataDkhpLopAnhVan: (state, action: PayloadAction<State['dataDkhpPage']['lopAnhVan']>) => void;
-  setListMaMHTextarea: (state, action: PayloadAction<State['listMaMHTextarea']>) => void;
-  setHeDaoTaoFiltered: (state, action: PayloadAction<State['heDaoTaoFiltered']>) => void;
-  setSelectedClasses: (state, action: PayloadAction<State['selectedClasses']>) => void;
-  setAgGridColumnState: (state, action: PayloadAction<State['agGridColumnState']>) => void;
-  setAgGridFilterModel: (state, action: PayloadAction<State['agGridFilterModel']>) => void;
-  setIsChiVeTkb: (state, action: PayloadAction<State['isChiVeTkb']>) => void;
-  setTextareChiVeTkb: (state, action: PayloadAction<State['textareaChiVeTkb']>) => void;
+  setDataExcel: (state: Draft<State>, action: PayloadAction<State['dataExcel']>) => void;
+  setDataDkhpLopThuong: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
+  setDataDkhpLopAnhVan: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopAnhVan']>) => void;
+  setListMaMHTextarea: (state: Draft<State>, action: PayloadAction<State['listMaMHTextarea']>) => void;
+  setHeDaoTaoFiltered: (state: Draft<State>, action: PayloadAction<State['heDaoTaoFiltered']>) => void;
+  setSelectedClasses: (state: Draft<State>, action: PayloadAction<State['selectedClasses']>) => void;
+  setAgGridColumnState: (state: Draft<State>, action: PayloadAction<State['agGridColumnState']>) => void;
+  setAgGridFilterModel: (state: Draft<State>, action: PayloadAction<State['agGridFilterModel']>) => void;
+  setIsChiVeTkb: (state: Draft<State>, action: PayloadAction<State['isChiVeTkb']>) => void;
+  setTextareChiVeTkb: (state: Draft<State>, action: PayloadAction<State['textareaChiVeTkb']>) => void;
 }

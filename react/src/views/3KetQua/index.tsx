@@ -49,7 +49,7 @@ function Index() {
           />
         </Tooltip>
       </FormGroup>
-      <Grid container spacing={2} style={{ marginBottom: 10, maxWidth: 1510 }}>
+      <Grid container spacing={2} style={{ marginBottom: 5, maxWidth: 1510 }}>
         <Grid item xs={6}>
           <Tooltip title={khongXepLop ? 'Mỗi lớp một hàng' : ''}>
             <TextField
