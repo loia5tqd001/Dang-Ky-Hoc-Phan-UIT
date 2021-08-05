@@ -17,6 +17,7 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     selectedClasses: [], // [{}, {}]
     agGridColumnState: null,
     agGridFilterModel: null,
+    customViewMode: 'Bình thường',
 
     // in case Buoc 3 chi ve TKB chu khong dung Buoc 2 Xep Lop
     isChiVeTkb: false,
@@ -53,6 +54,9 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     setAgGridFilterModel: (state, { payload }) => {
       state.agGridFilterModel = payload;
     },
+    setCustomViewMode: (state, { payload }) => {
+      state.customViewMode = payload;
+    },
     setIsChiVeTkb: (state, { payload }) => {
       state.isChiVeTkb = payload;
     },
@@ -74,6 +78,7 @@ export const {
   setAgGridFilterModel,
   setIsChiVeTkb,
   setTextareChiVeTkb,
+  setCustomViewMode,
 } = slice.actions;
 
 export default slice;

@@ -2,11 +2,14 @@ import { GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import uniq from 'lodash/uniq';
 import { ClassModel } from 'models';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectAgGridColumnState,
   selectAgGridFilterModel,
+  selectCustomViewMode,
+  selectFilteredMonHoc,
   selectHeDaoTaoFiltered,
   selectSelectedClasses,
 } from 'redux/xepTkb/selectors';
@@ -24,27 +27,41 @@ type Props = {
   setLopTrungTkb: React.Dispatch<React.SetStateAction<TTrungTkb>>;
 };
 
-export let agGridApi: GridApi | null = null;
-
 function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const selectedClasses = useSelector(selectSelectedClasses);
   const agGridColumnState = useSelector(selectAgGridColumnState);
   const agGridFilterModel = useSelector(selectAgGridFilterModel);
   const tongSoTC = calcTongSoTC(selectedClasses);
   const heDaoTaoFiltered = useSelector(selectHeDaoTaoFiltered);
-  const lastHeDaoTaoFiltered = React.useRef<string | null>(heDaoTaoFiltered);
+  const filteredMonHoc = useSelector(selectFilteredMonHoc);
+  const [agGridApi, setAgGridApi] = React.useState<GridApi | null>(null);
+  const viewMode = useSelector(selectCustomViewMode);
 
   const { debouncedStoreColumnState } = useDebouncedStoreColumnState();
 
   React.useEffect(() => {
-    // TODO: Refactor this tricky code
-    if (heDaoTaoFiltered !== lastHeDaoTaoFiltered.current) {
-      lastHeDaoTaoFiltered.current = heDaoTaoFiltered;
-      agGridApi?.onFilterChanged();
-    }
-  }, [heDaoTaoFiltered]);
+    if (!filteredMonHoc.length) return;
+
+    agGridApi?.setFilterModel({
+      ...agGridApi?.getFilterModel(),
+      TenMH: {
+        type: 'set',
+        values: filteredMonHoc.map((it) => it.TenMH),
+      },
+    });
+  }, [agGridApi, filteredMonHoc]);
+
+  React.useEffect(() => {
+    const gridApi = agGridApi;
+    if (!gridApi) return;
+
+    setTimeout(() => {
+      gridApi?.onFilterChanged();
+    }, 0);
+  }, [agGridApi, viewMode, heDaoTaoFiltered]);
 
   return (
     <div
@@ -67,38 +84,57 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
           'even-row': '!(data.color & 1)',
         }}
         isExternalFilterPresent={() => {
-          return Boolean(lastHeDaoTaoFiltered.current);
+          return Boolean(heDaoTaoFiltered) || viewMode !== 'Bình thường';
         }}
         doesExternalFilterPass={(node) => {
           const data = node.data as ClassModel;
-          return isMonChung(data) || data.HeDT === lastHeDaoTaoFiltered.current;
+          const passedHeDaoTao = !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
+          const passedViewMode = (() => {
+            if (viewMode === 'Bình thường') return true;
+            const selected = agGridApi?.getSelectedRows() as ClassModel[];
+            if (viewMode === 'Xem lớp đã chọn') {
+              return selected?.some((it) => it.MaLop === data.MaLop);
+            }
+            if (viewMode === 'Ẩn môn đã chọn') {
+              return !selected?.some((it) => it.MaMH === data.MaMH);
+            }
+            return false;
+          })();
+          return passedHeDaoTao && passedViewMode;
         }}
         frameworkComponents={{
           countTinChi: SoTinChi,
         }}
         statusBar={{
           statusPanels: [
+            { statusPanel: 'agSelectedRowCountComponent', align: 'right' },
             { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'right' },
             { statusPanel: 'countTinChi', align: 'left' },
           ],
         }}
         onRowSelected={(e) => {
-          if (e.node.isSelected() && selectedClasses.find((it) => isSameRow(it, e.data))) {
+          const data = e.data as ClassModel;
+          if (e.node.isSelected() && selectedClasses.find((it) => isSameRow(it, data))) {
             return;
           }
           if (!e.node.isSelected()) {
             dispatch(setSelectedClasses(e.api.getSelectedRows()));
             return;
           }
-          const cungNgay = selectedClasses.filter((it) => e.data.Thu !== '*' && it.Thu === e.data.Thu);
+          if (selectedClasses.some((it) => it.MaMH === data.MaMH && it.MaLop !== data.MaLop)) {
+            enqueueSnackbar('Môn học này đã chọn rồi', { variant: 'error' });
+            e.node.setSelected(false);
+            return;
+          }
+          const cungNgay = selectedClasses.filter((it) => data.Thu !== '*' && it.Thu === data.Thu);
           for (const lop of cungNgay) {
-            const dsTiet1 = e.data.Tiet.split('');
+            const dsTiet1 = data.Tiet.split('');
             const dsTiet2 = lop.Tiet.split('');
             const dsTiet = [...dsTiet1, ...dsTiet2];
             const trungTkb = dsTiet.length !== uniq(dsTiet).length;
             if (trungTkb) {
               setLopTrungTkb({
-                master: e.data,
+                master: data,
                 slave: lop,
               });
               setIsDialogOpen(true);
@@ -109,7 +145,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
           dispatch(setSelectedClasses(e.api.getSelectedRows()));
         }}
         onGridReady={(params) => {
-          agGridApi = params.api;
+          setAgGridApi(params.api);
           if (agGridColumnState) {
             params.columnApi.setColumnState(agGridColumnState);
             params.api.setFilterModel(agGridFilterModel);

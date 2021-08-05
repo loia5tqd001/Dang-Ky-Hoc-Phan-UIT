@@ -1,32 +1,31 @@
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectFilteredMaMH,
+  selectCustomViewMode,
+  selectFilteredMonHoc,
   selectHeDaoTaoFiltered,
   selectlistHeDT,
   selectListMaMHTextarea,
 } from 'redux/xepTkb/selectors';
-import { setHeDaoTaoFiltered, setListMaMHTextarea } from 'redux/xepTkb/slice';
+import { setCustomViewMode, setHeDaoTaoFiltered, setListMaMHTextarea } from 'redux/xepTkb/slice';
+import { VIEW_MODES } from 'redux/xepTkb/types';
 
 function TopInputs() {
   const dispatch = useDispatch();
   const listMaMHTextarea = useSelector(selectListMaMHTextarea);
   const listHeDT = useSelector(selectlistHeDT);
   const heDaoTaoFiltered = useSelector(selectHeDaoTaoFiltered);
-  const listFilteredMaMH = useSelector(selectFilteredMaMH);
+  const filteredMonHoc = useSelector(selectFilteredMonHoc);
+  const customViewMode = useSelector(selectCustomViewMode);
 
-  const options = ['Ẩn môn đã chọn', 'Chỉ hiện lớp đã chọn'];
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -54,14 +53,24 @@ function TopInputs() {
         </Tooltip>
       </Grid>
       <Grid item xs={4}>
-        <Tooltip title={'Kết quả từ ô input bên trái'}>
+        <Tooltip
+          title={
+            <div style={{ whiteSpace: 'pre-line' }}>
+              {filteredMonHoc.map((it, index) => index + 1 + '. ' + it.MaMH + ' - ' + it.TenMH).join('\n')}
+            </div>
+          }
+        >
           <TextField
             label={'Các mã môn học được lọc ra'}
             disabled
             fullWidth
             size="small"
             variant="outlined"
-            value={listFilteredMaMH?.length > 0 ? listFilteredMaMH.join(' ') : 'Chưa có mã môn học nào được lọc ra'}
+            value={
+              filteredMonHoc?.length > 0
+                ? filteredMonHoc.map((it) => it.MaMH).join(' ')
+                : 'Chưa có mã môn học nào được lọc ra'
+            }
           />
         </Tooltip>
       </Grid>
@@ -76,37 +85,26 @@ function TopInputs() {
           }}
           fullWidth
           size="small"
-          // limitTags={2}
-          // renderOption={(option, { selected }) => (
-          //   <>
-          //     <Checkbox
-          //       icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-          //       checkedIcon={<CheckBoxIcon fontSize="small" />}
-          //       style={{ marginRight: 8 }}
-          //       checked={selected}
-          //       color="primary"
-          //     />
-          //     {option}
-          //   </>
-          // )}
           renderInput={(params) => (
             <TextField {...params} variant="outlined" label="Hệ đào tạo" placeholder="Lọc theo hệ đào tạo" />
           )}
         />
         <div>
-          <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }}>
-            <VisibilityIcon />
-          </IconButton>
+          <Tooltip title={customViewMode}>
+            <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }}>
+              <VisibilityIcon />
+            </IconButton>
+          </Tooltip>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            {options.map((option) => (
-              <MenuItem key={option} selected={option === 'Pyxis'} onClick={() => {}}>
-                <Checkbox
-                  icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                  checkedIcon={<CheckBoxIcon fontSize="small" />}
-                  style={{ marginRight: 8 }}
-                  checked={true}
-                  color="primary"
-                />
+            {VIEW_MODES.map((option) => (
+              <MenuItem
+                key={option}
+                selected={option === customViewMode}
+                onClick={() => {
+                  dispatch(setCustomViewMode(option));
+                  handleClose();
+                }}
+              >
                 {option}
               </MenuItem>
             ))}

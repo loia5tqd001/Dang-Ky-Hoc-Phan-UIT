@@ -1,13 +1,10 @@
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// mui
 import FormGroup from '@material-ui/core/FormGroup';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import React from 'react';
-// redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
 import { setIsChiVeTkb, setTextareChiVeTkb } from 'redux/xepTkb/slice';
@@ -80,22 +77,3 @@ function Index() {
 }
 
 export default Index;
-
-const useStyles = makeStyles((theme) => ({
-  soTCInput: {
-    // '& label': {
-    //   color: (p) =>
-    //     `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
-    // },
-    // '& fieldset': {
-    //   border: (p) =>
-    //     `1px solid ${
-    //       p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main
-    //     } !important`,
-    // },
-    '& input': {
-      color: (p) => `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
-      fontWeight: '500',
-    },
-  },
-}));

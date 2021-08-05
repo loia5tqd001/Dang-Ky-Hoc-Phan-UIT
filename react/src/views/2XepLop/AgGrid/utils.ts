@@ -1,6 +1,7 @@
 import { ColDef } from 'ag-grid-community';
+import { ClassModel } from 'models';
 
-export const isSameRow = (r1, r2) => {
+export const isSameRow = (r1: ClassModel, r2: ClassModel) => {
   return r1.MaLop + r1.Thu + r1.Tiet === r2.MaLop + r2.Thu + r2.Tiet;
 };
 
@@ -9,6 +10,7 @@ export const defaultColDef = {
   autoHeight: true,
   sortable: true,
   menuTabs: ['filterMenuTab'],
+  filterParams: { buttons: ['apply', 'reset'], closeOnApply: true },
 } as ColDef;
 
 export const columnDefs = ({ soTc }) =>
