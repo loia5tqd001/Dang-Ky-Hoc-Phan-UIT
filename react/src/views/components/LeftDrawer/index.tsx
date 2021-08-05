@@ -11,9 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import YouTubeIcon from '@material-ui/icons/YouTube';
+import MoodBadIcon from '@material-ui/icons/MoodBad';
 // github-stars
 import GitHubButton from 'react-github-btn';
 
@@ -49,33 +47,9 @@ function Index() {
 
         {/* Icons with link */}
         <Box m={1} style={{ margin: 'auto auto 0' }}>
-          <Tooltip title="https://www.facebook.com/loia5tqd001">
-            <a
-              href="https://www.facebook.com/loia5tqd001"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ marginRight: 10 }}
-            >
-              <FacebookIcon color="primary" fontSize="large" />
-            </a>
-          </Tooltip>
-          <Tooltip title="https://www.github.com/loia5tqd001">
-            <a
-              href="https://github.com/loia5tqd001"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ marginRight: 10 }}
-            >
-              <GitHubIcon color="primary" fontSize="large" />
-            </a>
-          </Tooltip>
-          <Tooltip title="https://www.youtube.com/channel/UCon9VN0fA7ezNQLc-mheUvA">
-            <a
-              href="https://www.youtube.com/channel/UCon9VN0fA7ezNQLc-mheUvA"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <YouTubeIcon color="primary" fontSize="large" />
+          <Tooltip title="Gửi feedback">
+            <a href="https://www.facebook.com/messages/t/loia5tqd001" target="_blank" rel="noopener noreferrer">
+              <MoodBadIcon color="primary" fontSize="large" />
             </a>
           </Tooltip>
         </Box>
