@@ -46,13 +46,13 @@ function Index() {
         </List>
 
         {/* Icons with link */}
-        <Box m={1} style={{ margin: 'auto auto 0' }}>
-          <Tooltip title="Gửi feedback">
+        <Tooltip title="Gửi feedback" placement="top">
+          <Box m={1} style={{ margin: 'auto auto 0' }}>
             <a href="https://www.facebook.com/messages/t/loia5tqd001" target="_blank" rel="noopener noreferrer">
               <MoodBadIcon color="primary" fontSize="large" />
             </a>
-          </Tooltip>
-        </Box>
+          </Box>
+        </Tooltip>
         {/* Typewriter */}
         <Box className={classes.typewriterWrapper}>
           <Typewriter

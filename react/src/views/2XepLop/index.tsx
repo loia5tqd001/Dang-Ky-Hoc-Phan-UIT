@@ -1,16 +1,17 @@
 import React from 'react';
-// redux
 import { useSelector } from 'react-redux';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
-// lodash
 import sortBy from 'lodash/sortBy';
-// components
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { setIsChiVeTkb } from 'redux/xepTkb/slice';
 import Tooltip from '@material-ui/core/Tooltip';
+import { ClassModel } from 'models';
+import { calcTongSoTC } from 'utils';
 import TrungTkbDialog from './TrungTkbDialog';
 import AgGrid from './AgGrid';
+import TopInputs from './TopInputs';
+import BottomInfo from './BottomInfo';
 
 const actionOptions = {
   normal: 'Hiển thị bình thường',
@@ -31,32 +32,22 @@ function Index(props) {
       if (cur.MaMH === last.MaMH) {
         cur = { ...cur, color: last.color };
       } else {
-        cur = { ...cur, color: last.color + 1 };
+        cur = { ...cur, color: (last.color || 0) + 1 };
       }
 
       return [...acc, cur];
-    }, []);
+    }, [] as ClassModel[]);
   }, [dataTkb]);
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [lopTrungTkb, setLopTrungTkb] = React.useState({ master: null, slave: null });
 
-  const [onlyChecked, setOnlyChecked] = React.useState(false);
-
   return (
     <div style={{ minWidth: '100%' }}>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={onlyChecked}
-            onChange={(e) => setOnlyChecked(e.target.checked)}
-            color="primary"
-            size="small"
-          />
-        }
-        label={'Chỉ hiển thị những lớp đã chọn'}
-      />
+      <TopInputs />
       <AgGrid rowData={rowData} setIsDialogOpen={setIsDialogOpen} setLopTrungTkb={setLopTrungTkb} />
+      <BottomInfo rowCount={rowData.length} tongSoTC={calcTongSoTC(dataTkb)} />{' '}
+      {/* TODO: rowCount khong con chinh xac */}
       <TrungTkbDialog isDialogOpen={isDialogOpen} lopTrungTkb={lopTrungTkb} setIsDialogOpen={setIsDialogOpen} />
     </div>
   );

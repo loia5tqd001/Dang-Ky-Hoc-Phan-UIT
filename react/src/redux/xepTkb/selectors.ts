@@ -10,7 +10,7 @@ export const selectLoaiTkb = createSelector([selectSlice], (slice) => slice.loai
 export const selectDataExcel = createSelector([selectSlice], (slice) => slice.dataExcel);
 export const selectDataDkhpPage = createSelector([selectSlice], (slice) => slice.dataDkhpPage);
 export const selectListMaMHTextarea = createSelector([selectSlice], (slice) => slice.listMaMHTextarea);
-export const selectListHeDTDropdown = createSelector([selectSlice], (slice) => slice.listHeDTDropdown);
+export const selectHeDaoTaoFiltered = createSelector([selectSlice], (slice) => slice.heDaoTaoFiltered);
 export const selectSelectedClasses = createSelector([selectSlice], (slice) => slice.selectedClasses);
 export const selectAgGridColumnState = createSelector([selectSlice], (slice) => slice.agGridColumnState);
 export const selectAgGridFilterModel = createSelector([selectSlice], (slice) => slice.agGridFilterModel);

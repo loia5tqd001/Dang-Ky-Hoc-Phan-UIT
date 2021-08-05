@@ -18,7 +18,8 @@ export interface State {
   };
 
   listMaMHTextarea: string;
-  listHeDTDropdown: string[]; // ['CQUI', 'CLC', ...]
+  heDaoTaoFiltered: string | null;
+  // heDaoTaoFiltered: string[]; // ['CQUI', 'CLC', ...]
   selectedClasses: ClassModel[];
   agGridColumnState: ColumnState[] | null;
   agGridFilterModel: any | null;
@@ -34,7 +35,7 @@ export interface Reducer {
   setDataDkhpLopThuong: (state, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
   setDataDkhpLopAnhVan: (state, action: PayloadAction<State['dataDkhpPage']['lopAnhVan']>) => void;
   setListMaMHTextarea: (state, action: PayloadAction<State['listMaMHTextarea']>) => void;
-  setListHeDTDropdown: (state, action: PayloadAction<State['listHeDTDropdown']>) => void;
+  setHeDaoTaoFiltered: (state, action: PayloadAction<State['heDaoTaoFiltered']>) => void;
   setSelectedClasses: (state, action: PayloadAction<State['selectedClasses']>) => void;
   setAgGridColumnState: (state, action: PayloadAction<State['agGridColumnState']>) => void;
   setAgGridFilterModel: (state, action: PayloadAction<State['agGridFilterModel']>) => void;

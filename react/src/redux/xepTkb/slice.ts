@@ -13,7 +13,7 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     },
 
     listMaMHTextarea: '',
-    listHeDTDropdown: ['CQUI'], // ['CQUI', 'CLC', ...]
+    heDaoTaoFiltered: 'CQUI',
     selectedClasses: [], // [{}, {}]
     agGridColumnState: null,
     agGridFilterModel: null,
@@ -41,8 +41,8 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     setListMaMHTextarea: (state, { payload }) => {
       state.listMaMHTextarea = payload;
     },
-    setListHeDTDropdown: (state, { payload }) => {
-      state.listHeDTDropdown = payload;
+    setHeDaoTaoFiltered: (state, { payload }) => {
+      state.heDaoTaoFiltered = payload;
     },
     setSelectedClasses: (state, { payload }) => {
       state.selectedClasses = payload;
@@ -68,7 +68,7 @@ export const {
   setDataDkhpLopThuong,
   setDataDkhpLopAnhVan,
   setListMaMHTextarea,
-  setListHeDTDropdown,
+  setHeDaoTaoFiltered,
   setSelectedClasses,
   setAgGridColumnState,
   setAgGridFilterModel,

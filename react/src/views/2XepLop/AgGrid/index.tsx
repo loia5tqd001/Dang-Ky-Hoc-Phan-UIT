@@ -26,7 +26,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
     <div
       className="ag-theme-alpine"
       style={{
-        height: '90vh',
+        height: 'calc(100vh - 140px)',
         fontFamily: 'inherit',
       }}
     >
@@ -35,7 +35,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
         defaultColDef={defaultColDef}
         rowData={rowData}
         headerHeight={30}
-        animateRows={true}
+        animateRows={false}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
         rowClassRules={{
@@ -89,6 +89,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }) {
         onColumnValueChanged={debouncedStoreColumnState}
         suppressDragLeaveHidesColumns
         suppressColumnVirtualisation
+        getRowHeight={() => 30}
       />
     </div>
   );
