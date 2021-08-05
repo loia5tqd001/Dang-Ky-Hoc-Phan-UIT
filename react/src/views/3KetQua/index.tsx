@@ -51,7 +51,7 @@ function Index() {
       </FormGroup>
       <Grid container spacing={2} style={{ marginBottom: 10, maxWidth: 1510 }}>
         <Grid item xs={6}>
-          <Tooltip title="Bạn chỉ chọn data nguồn ở B1 và nhập danh sách lớp ở đây, không dùng B2">
+          <Tooltip title={khongXepLop ? 'Mỗi lớp một hàng' : ''}>
             <TextField
               label={
                 khongXepLop

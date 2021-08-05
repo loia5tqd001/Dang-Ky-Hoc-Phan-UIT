@@ -30,12 +30,12 @@ function RadioOptions() {
           label="Upload file excel"
           style={{ marginRight: 50, userSelect: 'none' }}
         />
-        <FormControlLabel
+        {/* <FormControlLabel
           value="su-dung-dkhp-uit"
           control={<Radio />}
           label="Sử dụng trang dkhp.uit.edu.vn"
           style={{ marginRight: 50, userSelect: 'none' }}
-        />
+        /> */}
       </RadioGroup>
     </FormControl>
   );

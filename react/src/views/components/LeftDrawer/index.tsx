@@ -26,11 +26,7 @@ function Index() {
         {/* Logo */}
         <Box mx={5} my={5}>
           <Tooltip title="Tool đăng ký học phần UIT">
-            <a
-              href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT" target="_blank" rel="noopener noreferrer">
               <img src={logoUit} alt="logo uit" style={{ width: '100%', marginTop: 20 }} />
             </a>
           </Tooltip>

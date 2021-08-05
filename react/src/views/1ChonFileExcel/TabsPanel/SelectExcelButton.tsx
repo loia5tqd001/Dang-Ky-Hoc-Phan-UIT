@@ -71,5 +71,8 @@ const useStyles = makeStyles((theme) => ({
   button: {
     color: theme.palette.success.main,
     borderColor: theme.palette.success.light,
+    '&:hover': {
+      borderColor: theme.palette.success.main,
+    },
   },
 }));

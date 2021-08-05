@@ -13,16 +13,16 @@ function VideoInstruction() {
           height: '42vw',
           position: 'relative',
           zIndex: 1,
-          margin: '50px 0  50px',
+          margin: '30px 0  50px',
         }}
       >
         <FormLabel component="legend" style={{ paddingBottom: 5 }}>
-          Video hướng dẫn:
+          Video hướng dẫn (Sẽ update video mới sau):
         </FormLabel>
-        {/* <Skeleton variant="rect" width="100%" style={{ position: 'absolute', zIndex: -1 }}>
+        <Skeleton variant="rect" width="100%" style={{ position: 'absolute', zIndex: -1 }}>
           <div style={{ paddingTop: '56%' }} />
-        </Skeleton> */}
-        {/* <iframe
+        </Skeleton>
+        <iframe
           title={' '}
           width="100%"
           height="100%"
@@ -30,7 +30,7 @@ function VideoInstruction() {
           frameBorder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-        /> */}
+        />
       </Box>
     </FormControl>
   );
