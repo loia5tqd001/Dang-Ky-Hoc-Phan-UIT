@@ -1,7 +1,7 @@
 import React from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-class ErrorBoundary extends React.Component {
+class ErrorBoundary extends React.Component<{ fallback?: React.ReactDOM }, { hasErrored: boolean }> {
   constructor(props) {
     super(props);
 

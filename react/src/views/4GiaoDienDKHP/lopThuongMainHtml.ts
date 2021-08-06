@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 // Convert HTML to JSX: https://stackoverflow.com/a/45058774/9787887
 export default `
     <div class="container">

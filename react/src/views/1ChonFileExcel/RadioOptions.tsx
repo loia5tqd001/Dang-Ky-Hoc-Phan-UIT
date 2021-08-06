@@ -22,7 +22,7 @@ function RadioOptions() {
         aria-label="options"
         name="options"
         value={loaiTkb}
-        onChange={(e) => dispatch(setLoaiTkb(e.target.value))}
+        onChange={(e) => dispatch(setLoaiTkb(e.target.value as any))}
       >
         <FormControlLabel
           value="up-tu-file-excel"

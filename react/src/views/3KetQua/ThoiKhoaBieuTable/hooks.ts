@@ -101,15 +101,17 @@ export const usePhanLoaiHocTrenTruong = () => {
     */
 
 export const useProcessImageTkb = () => {
-  const tkbTableRef = React.useRef(null);
+  const tkbTableRef = React.useRef<HTMLTableElement>(null);
   const { enqueueSnackbar } = useSnackbar();
 
   // sap chép hình ảnh tkb vào clipboard
   const [isCopyingToClipboard, setIsCopyingToClipboard] = React.useState(false);
   const onHandleCopyToClipboard = React.useCallback(async () => {
+    if (!tkbTableRef.current) return;
     setIsCopyingToClipboard(true);
     const canvas = await html2canvas(tkbTableRef.current);
     canvas.toBlob((blob) => {
+      // @ts-ignore
       navigator.clipboard.write([new window.ClipboardItem({ [blob.type]: blob })]);
       setIsCopyingToClipboard(false);
       enqueueSnackbar('Sao chép ảnh thành công, Ctrl+V để xem kết quả.', { variant: 'success' });
@@ -119,6 +121,7 @@ export const useProcessImageTkb = () => {
   // tải hình ảnh tkb về máy
   const [isSavingToComputer, setIsSavingToComputer] = React.useState(false);
   const onHandleSavingToComputer = React.useCallback(async () => {
+    if (!tkbTableRef.current) return;
     setIsSavingToComputer(true);
     const canvas = await html2canvas(tkbTableRef.current);
     downloadFromCanvas(canvas, 'thoikhoabieu.png');

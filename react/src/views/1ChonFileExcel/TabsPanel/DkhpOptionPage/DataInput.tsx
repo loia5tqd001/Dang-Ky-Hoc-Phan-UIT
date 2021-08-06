@@ -3,7 +3,7 @@ import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 // mui
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -125,7 +125,7 @@ export default DataInput;
 
 // styles below:
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, { active: boolean }>((theme) => ({
   root: {
     minWidth: 270,
     '& label': {

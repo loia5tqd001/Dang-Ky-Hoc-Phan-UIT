@@ -1,8 +1,8 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import uniq from 'lodash/uniq';
+import { isMonChung } from 'utils';
 import { Reducer, State } from './types';
 
-// Not sure why it complains about Reducer's type but it works, I don't have time to take care for now!!
 const slice = createSlice<State, Reducer, 'xepTkb'>({
   name: 'xepTkb',
   initialState: {
@@ -44,11 +44,15 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
       state.listMaMHTextarea = payload;
     },
     setTenMonHocFilter: (state, { payload }) => {
-      state.listMaMHTextarea = uniq(
-        current(state)
-          .dataExcel?.data.filter((it) => payload.includes(it.TenMH))
-          .map((it) => it.MaMH),
-      ).join(' ');
+      state.listMaMHTextarea =
+        uniq(
+          current(state)
+            .dataExcel?.data.filter(
+              // && (isMonChung(it) || it.HeDT === current(state).heDaoTaoFiltered) là để fix bug nhiều môn trùng tên môn nhưng khác mã lớp
+              (it) => payload.includes(it.TenMH) && (isMonChung(it) || it.HeDT === current(state).heDaoTaoFiltered),
+            )
+            .map((it) => it.MaMH),
+        ).join(' ') + ' ';
     },
     setHeDaoTaoFiltered: (state, { payload }) => {
       state.heDaoTaoFiltered = payload;

@@ -4,7 +4,7 @@ import { ClassModel } from 'models';
 
 export const VIEW_MODES = ['Bình thường', 'Ẩn môn đã chọn', 'Xem lớp đã chọn'] as const;
 
-export interface State {
+export type State = {
   loaiTkb: 'up-tu-file-excel' | 'su-dung-dkhp-uit';
   // "dataExcel" only available when "loaiTkb" is "up-tu-file-excel"
   // I can declare that explicitly with typescript but it will hurt the readability
@@ -29,9 +29,9 @@ export interface State {
   // in case Buoc 3 chi ve TKB chu khong dung Buoc 2 Xep Lop
   isChiVeTkb: boolean;
   textareaChiVeTkb: string;
-}
+};
 
-export interface Reducer {
+export type Reducer = {
   setLoaiTkb: (state: Draft<State>, action: PayloadAction<State['loaiTkb']>) => void;
   setDataExcel: (state: Draft<State>, action: PayloadAction<State['dataExcel']>) => void;
   setDataDkhpLopThuong: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
@@ -45,4 +45,4 @@ export interface Reducer {
   setCustomViewMode: (state: Draft<State>, action: PayloadAction<State['customViewMode']>) => void;
   setIsChiVeTkb: (state: Draft<State>, action: PayloadAction<State['isChiVeTkb']>) => void;
   setTextareChiVeTkb: (state: Draft<State>, action: PayloadAction<State['textareaChiVeTkb']>) => void;
-}
+};

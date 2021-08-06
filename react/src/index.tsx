@@ -25,7 +25,9 @@ LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578
 // global css: https://material-ui.com/customization/globals/
 const theme = createTheme({
   typography: {
-    fontFamily: `"Montserrat","Roboto", "Helvetica", "Arial", sans-serif`,
+    fontFamily: `"Montserrat", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji'`,
   },
   palette: {
     primary: { main: lightBlue[800] },

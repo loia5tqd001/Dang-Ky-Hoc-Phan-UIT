@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Theme } from '@material-ui/core';
 import { calcTongSoTC } from 'utils';
 import ClassCell from './ClassCell';
 import TableHead from './TableHead';
@@ -68,7 +68,7 @@ function Index() {
           ))}
           {khongHocTrenTruong.map((lop, index) => (
             <tr key={index}>
-              <td colSpan="7" className="cell-class">
+              <td colSpan={7} className="cell-class">
                 <ClassCell {...lop} />
               </td>
             </tr>
@@ -81,7 +81,7 @@ function Index() {
 
 export default Index;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles<Theme, { tongSoTCWaring: boolean }>((theme) => ({
   soTCInput: {
     // '& label': {
     //   color: (p) =>

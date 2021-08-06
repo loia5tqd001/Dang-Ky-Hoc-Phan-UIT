@@ -50,7 +50,7 @@ function TopInputs() {
           }
         >
           <TextField
-            label="Bộ lọc môn thông minh"
+            label="Bộ lọc môn"
             placeholder={'IT004 IT005 IT006 EN006 SS004 IT008'}
             fullWidth
             size="small"

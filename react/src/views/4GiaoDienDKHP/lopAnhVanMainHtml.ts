@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default `
     <div class="container">
       <div id="main-content" class="row main-content">
