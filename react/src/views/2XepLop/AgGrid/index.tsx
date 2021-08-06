@@ -13,7 +13,7 @@ import {
   selectHeDaoTaoFiltered,
   selectSelectedClasses,
 } from 'redux/xepTkb/selectors';
-import { setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
+import { setAgGridFilterModel, setListMaMHTextarea, setSelectedClasses, setTenMonHocFilter } from 'redux/xepTkb/slice';
 import { calcTongSoTC, isChungMon, isMonChung } from 'utils';
 import { TTrungTkb } from '..';
 import { useDebouncedStoreColumnState } from './hooks';
@@ -42,6 +42,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
 
   const { debouncedStoreColumnState } = useDebouncedStoreColumnState();
 
+  // Mỗi khi filter môn học change => apply ColumnFilter: https://www.ag-grid.com/react-grid/filtering/
   React.useEffect(() => {
     if (!filteredMonHoc.length) return;
 
@@ -54,6 +55,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
     });
   }, [agGridApi, filteredMonHoc]);
 
+  // Mỗi khi viewMode hoặc Hệ đào tạo filter change => apply externalFilter: https://www.ag-grid.com/react-grid/filter-external/
   React.useEffect(() => {
     const gridApi = agGridApi;
     if (!gridApi) return;
@@ -62,6 +64,19 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
       gridApi?.onFilterChanged();
     }, 0);
   }, [agGridApi, viewMode, heDaoTaoFiltered]);
+
+  // đéo hiểu sao phải bỏ trong getRowClass không là data bị cũ
+  // const dictColor = React.useMemo(() => {
+  //   return uniqBy(
+  //     agGridApi?.getRenderedNodes().map((it) => it.data as ClassModel),
+  //     'MaMH',
+  //   ).reduce((acc, cur, index) => {
+  //     acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+  //     return acc;
+  //   }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+  // }, [agGridApi]);
+
+  // agGridApi?.refreshCells();
 
   return (
     <div
@@ -79,16 +94,45 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
         animateRows={false}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
-        rowClassRules={{
-          'odd-row': 'data.color & 1',
-          'even-row': '!(data.color & 1)',
-        }}
+        // rowClassRules={{
+        //   'odd-row': ({ data, api }: { data: ClassModel; api: GridApi }) => {
+        //     const dictColor = uniqBy(
+        //       api?.getRenderedNodes().map((it) => it.data as ClassModel),
+        //       'MaMH',
+        //     ).reduce((acc, cur, index) => {
+        //       acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+        //       return acc;
+        //     }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+        //     return dictColor[data.MaMH] === 'odd-row';
+        //   },
+        //   'even-row': ({ data, api }: { data: ClassModel; api: GridApi }) => {
+        //     const dictColor = uniqBy(
+        //       api?.getRenderedNodes().map((it) => it.data as ClassModel),
+        //       'MaMH',
+        //     ).reduce((acc, cur, index) => {
+        //       acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+        //       return acc;
+        //     }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+        //     return dictColor[data.MaMH] === 'even-row';
+        //   },
+        // }}
+        // getRowClass={(params) => {
+        //   // đéo hiểu sao phải bỏ trong getRowClass (bị gọi nhiều lần => lag) không là data bị cũ
+        //   const dictColor = uniqBy(
+        //     (params.api as GridApi)?.getRenderedNodes().map((it) => it.data as ClassModel),
+        //     'MaMH',
+        //   ).reduce((acc, cur, index) => {
+        //     acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+        //     return acc;
+        //   }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+
+        //   return dictColor[(params.data as ClassModel).MaMH];
+        // }}
         isExternalFilterPresent={() => {
           return Boolean(heDaoTaoFiltered) || viewMode !== 'Bình thường';
         }}
         doesExternalFilterPass={(node) => {
           const data = node.data as ClassModel;
-          const passedHeDaoTao = !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
           const passedViewMode = (() => {
             if (viewMode === 'Bình thường') return true;
             const selected = agGridApi?.getSelectedRows() as ClassModel[];
@@ -97,10 +141,14 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
             }
             if (viewMode === 'Ẩn môn đã chọn') {
               const chungMonVsLopDaChon = selected?.some((it) => isChungMon(it, data));
-              return !chungMonVsLopDaChon;
+              return !chungMonVsLopDaChon; // || sameRowVsLopDaChon;
             }
             return false;
           })();
+          const passedHeDaoTao = !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
+          // Xem lớp đã chọn mà lớp đã chọn không thoả filter hệ đào tạo / filter môn học thì có nên hiện k nhỉ?
+          // viewMode === 'Xem lớp đã chọn' || !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
+
           return passedHeDaoTao && passedViewMode;
         }}
         frameworkComponents={{
@@ -160,7 +208,17 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
             });
           }
         }}
-        onFilterChanged={({ api }) => dispatch(setAgGridFilterModel(api.getFilterModel()))}
+        onFilterChanged={(e) => {
+          const api = e.api as GridApi;
+          const tenMhFilterInstance = api.getFilterInstance('TenMH');
+          if (tenMhFilterInstance?.isFilterActive()) {
+            const filterValues = tenMhFilterInstance.getModel().values as string[] | undefined;
+            dispatch(setTenMonHocFilter(filterValues || []));
+          } else {
+            dispatch(setListMaMHTextarea(''));
+          }
+          dispatch(setAgGridFilterModel(api.getFilterModel()));
+        }}
         onColumnVisible={debouncedStoreColumnState}
         onColumnPinned={debouncedStoreColumnState}
         onColumnResized={debouncedStoreColumnState}

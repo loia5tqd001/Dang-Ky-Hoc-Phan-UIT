@@ -37,6 +37,7 @@ export interface Reducer {
   setDataDkhpLopThuong: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
   setDataDkhpLopAnhVan: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopAnhVan']>) => void;
   setListMaMHTextarea: (state: Draft<State>, action: PayloadAction<State['listMaMHTextarea']>) => void;
+  setTenMonHocFilter: (state: Draft<State>, action: PayloadAction<ClassModel['TenMH'][]>) => void;
   setHeDaoTaoFiltered: (state: Draft<State>, action: PayloadAction<State['heDaoTaoFiltered']>) => void;
   setSelectedClasses: (state: Draft<State>, action: PayloadAction<State['selectedClasses']>) => void;
   setAgGridColumnState: (state: Draft<State>, action: PayloadAction<State['agGridColumnState']>) => void;

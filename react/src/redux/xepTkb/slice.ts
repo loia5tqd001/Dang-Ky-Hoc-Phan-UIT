@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
+import uniq from 'lodash/uniq';
 import { Reducer, State } from './types';
 
 // Not sure why it complains about Reducer's type but it works, I don't have time to take care for now!!
@@ -42,6 +43,13 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     setListMaMHTextarea: (state, { payload }) => {
       state.listMaMHTextarea = payload;
     },
+    setTenMonHocFilter: (state, { payload }) => {
+      state.listMaMHTextarea = uniq(
+        current(state)
+          .dataExcel?.data.filter((it) => payload.includes(it.TenMH))
+          .map((it) => it.MaMH),
+      ).join(' ');
+    },
     setHeDaoTaoFiltered: (state, { payload }) => {
       state.heDaoTaoFiltered = payload;
     },
@@ -79,6 +87,7 @@ export const {
   setIsChiVeTkb,
   setTextareChiVeTkb,
   setCustomViewMode,
+  setTenMonHocFilter,
 } = slice.actions;
 
 export default slice;

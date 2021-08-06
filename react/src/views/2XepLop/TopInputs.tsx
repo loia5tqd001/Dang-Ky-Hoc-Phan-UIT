@@ -39,8 +39,16 @@ function TopInputs() {
 
   return (
     <Grid container spacing={2} style={{ marginBottom: 10 }}>
-      <Grid item xs={4}>
-        <Tooltip title="Copy paste từ https://daa.uit.edu.vn/content/chuong-trinh-dao-tao-tu-khoa-7-tro-di">
+      <Grid item xs={8}>
+        <Tooltip
+          // title="Copy paste từ https://daa.uit.edu.vn/content/chuong-trinh-dao-tao-tu-khoa-7-tro-di"
+          title={
+            <div style={{ whiteSpace: 'pre-line' }}>
+              <p>Copy paste từ https://daa.uit.edu.vn/content/chuong-trinh-dao-tao-tu-khoa-7-tro-di</p>
+              {filteredMonHoc.map((it, index) => index + 1 + '. ' + it.MaMH + ' - ' + it.TenMH).join('\n')}
+            </div>
+          }
+        >
           <TextField
             label="Bộ lọc môn thông minh"
             placeholder={'IT004 IT005 IT006 EN006 SS004 IT008'}
@@ -49,28 +57,6 @@ function TopInputs() {
             variant="outlined"
             value={listMaMHTextarea}
             onChange={(e) => dispatch(setListMaMHTextarea(e.target.value))}
-          />
-        </Tooltip>
-      </Grid>
-      <Grid item xs={4}>
-        <Tooltip
-          title={
-            <div style={{ whiteSpace: 'pre-line' }}>
-              {filteredMonHoc.map((it, index) => index + 1 + '. ' + it.MaMH + ' - ' + it.TenMH).join('\n')}
-            </div>
-          }
-        >
-          <TextField
-            label={'Các mã môn học được lọc ra'}
-            disabled
-            fullWidth
-            size="small"
-            variant="outlined"
-            value={
-              filteredMonHoc?.length > 0
-                ? filteredMonHoc.map((it) => it.MaMH).join(' ')
-                : 'Chưa có mã môn học nào được lọc ra'
-            }
           />
         </Tooltip>
       </Grid>

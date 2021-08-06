@@ -3,7 +3,10 @@ export interface ClassModel {
   MaMH: string;
   MaLop: string;
   TenMH: string;
+  TenGV: string | undefined;
+  MaGV: string | undefined;
   SiSo: string;
+  PhongHoc: string | undefined;
   SoTc: number;
   ThucHanh: number;
   HTGD: string;
