@@ -17,7 +17,7 @@ function VideoInstruction() {
         }}
       >
         <FormLabel component="legend" style={{ paddingBottom: 5 }}>
-          Video hướng dẫn (Sẽ update video mới sau):
+          Video hướng dẫn:
         </FormLabel>
         <Skeleton variant="rect" width="100%" style={{ position: 'absolute', zIndex: -1 }}>
           <div style={{ paddingTop: '56%' }} />
@@ -26,7 +26,7 @@ function VideoInstruction() {
           title={' '}
           width="100%"
           height="100%"
-          src="https://www.youtube.com/embed/KmW7qu52dpE"
+          src="https://www.youtube.com/embed/NW5ShqomZBE"
           frameBorder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
