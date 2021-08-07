@@ -33,7 +33,7 @@ function App() {
                 <Route path={routes._1ChonFileExcel.path} component={ChonFileExcel} exact />
                 <Route path={routes._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1} exact />
                 <Route path={routes._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1} exact />
-                <Route path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} exact />
+                <Route path={routes._4GiaoDienDKHP.path} component={dataTkb.length ? GiaoDienDKHP : NeedStep1} exact />
                 <Route path={'*'} render={() => <Redirect to={routes._1ChonFileExcel.path} />} />
               </Switch>
             </Suspense>

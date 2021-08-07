@@ -10,9 +10,9 @@ const keyVersions = ['dkhp-uit-react-v-1'] as const;
 
 // only keyVersions[0] is the key being used, all are staled and need to be removed
 // @NOTE: More official approach though: https://blog.bam.tech/developer-news/redux-persist-how-it-works-and-how-to-change-the-structure-of-your-persisted-store
-keyVersions.slice(1).forEach((key) => {
-  localStorage.removeItem('persist:' + key);
-});
+// keyVersions.slice(1).forEach((key) => {
+//   localStorage.removeItem('persist:' + key);
+// });
 
 const persistConfig = {
   key: keyVersions[0],

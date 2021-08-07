@@ -18,6 +18,7 @@ export const selectAgGridColumnState = createSelector([selectSlice], (slice) => 
 export const selectAgGridFilterModel = createSelector([selectSlice], (slice) => slice.agGridFilterModel);
 export const selectCustomViewMode = createSelector([selectSlice], (slice) => slice.customViewMode);
 export const selectIsChiVeTkb = createSelector([selectSlice], (slice) => slice.isChiVeTkb);
+export const selectTextareaChiVeTkb = createSelector([selectSlice], (slice) => slice.textareaChiVeTkb);
 
 // Data cuối cùng dùng để xếp TKB, phụ thuộc vô loại TKB
 // nếu người dùng chọn mặc định thì return data của mặc định
@@ -34,14 +35,6 @@ export const selectFilteredMonHoc = createSelector(
     const textareaUpper = listMaMHTextarea.toUpperCase();
     const listMonHoc = uniqBy(finalDataTkb, 'MaMH').map((it) => pick(it, 'MaMH', 'TenMH'));
     return listMonHoc.filter((monHoc) => textareaUpper.includes(monHoc.MaMH));
-  },
-);
-
-export const selectTextareaChiVeTkb = createSelector(
-  [selectSlice, selectFinalDataTkb],
-  ({ textareaChiVeTkb }, finalDataTkb) => {
-    const listMaLop = uniq(finalDataTkb.map((it) => it.MaLop));
-    return listMaLop.filter((maLop) => textareaChiVeTkb.includes(maLop)).join('  ');
   },
 );
 

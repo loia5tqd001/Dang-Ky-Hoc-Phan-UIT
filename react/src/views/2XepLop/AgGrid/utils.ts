@@ -38,7 +38,7 @@ export const columnDefs = ({ soTc }) =>
     { headerName: 'TÊN GIẢNG VIÊN', field: 'TenGV', width: 250, filter: true, cellStyle: { fontWeight: 600 } },
     { headerName: `SỐ TC (${soTc})`, field: 'SoTc', width: 125, filter: true },
     { headerName: 'THỨ', field: 'Thu', width: 85, filter: true, cellStyle: { fontWeight: 600 } },
-    { headerName: 'TIẾT', field: 'Tiet', width: 80, cellStyle: { fontWeight: 600 }, suppressMenu: true },
+    { headerName: 'TIẾT', field: 'Tiet', width: 80, cellStyle: { fontWeight: 600 }, filter: true },
     { headerName: 'HỆ ĐT', field: 'HeDT', width: 90, suppressMenu: true },
     { headerName: 'KHOA QL', field: 'KhoaQL', width: 120, filter: true },
     { headerName: 'HTGD', field: 'HTGD', width: 85, suppressMenu: true },

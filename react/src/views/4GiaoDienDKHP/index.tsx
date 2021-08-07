@@ -11,11 +11,16 @@ import banner from './Đăng ký học phần _ Đăng ký học phần_files/ba
 
 import lopThuongMainHtml from './lopThuongMainHtml';
 import lopAnhVanMainHtml from './lopAnhVanMainHtml';
+import { useSelector } from 'react-redux';
+import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
+import { phanLoaiAV } from 'utils';
 
 function Index() {
   const [currentPage, setCurrentPage] = React.useState('thuong'); // thuong | anh-van
+  const finalTkb = useSelector(selectFinalDataTkb);
+  const { lopAv, lopThuong } = phanLoaiAV(finalTkb);
   const currentMainHtml = React.useMemo(() => {
-    return (currentPage === 'thuong' ? lopThuongMainHtml : lopAnhVanMainHtml)
+    return (currentPage === 'thuong' ? lopThuongMainHtml(lopThuong) : lopAnhVanMainHtml(lopAv))
       .replace(/onclick=".*"/g, `onclick="return false"`)
       .replace(/type="submit"/g, `type="button"`)
       .replace(/href=".*"/g, `href="javascript:"`);
@@ -27,11 +32,7 @@ function Index() {
         Đây là trang chỉ có chức năng giúp các bạn làm quen với giao diện ĐKHP của trường!!!
       </h2>
       <a className="element-invisible element-focusable">Skip to content</a>
-      <a
-        className="element-invisible element-focusable"
-        data-target=".nav-collapse"
-        data-toggle="collapse"
-      >
+      <a className="element-invisible element-focusable" data-target=".nav-collapse" data-toggle="collapse">
         Skip to navigation
       </a>
       <div id="header" className="clearfix header" role="banner">
@@ -113,12 +114,7 @@ function Index() {
         </div>
       </div>
       {/* MAIN */}
-      <div
-        id="main"
-        className="clearfix main"
-        role="main"
-        dangerouslySetInnerHTML={{ __html: currentMainHtml }}
-      />
+      <div id="main" className="clearfix main" role="main" dangerouslySetInnerHTML={{ __html: currentMainHtml }} />
 
       {/* /#main, /#main-wrapper */}
       <div id="footer" className="clearfix site-footer" role="contentinfo">

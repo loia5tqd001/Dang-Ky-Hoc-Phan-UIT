@@ -46,13 +46,13 @@ export function renderRowHtmlStep4(lop: ClassModel) {
   </div>
 </td>
 <td>${lop.MaMH}</td>
-<td ${lop.ThucHanh ? 'style="color:#ff8040"' : ''}>${lop.MaLop}</td>
+<td${lop.ThucHanh ? ' style="color:#ff8040"' : ''}>${lop.MaLop}</td>
 <td>${lop.TenMH}${(() => {
     if (lop.HTGD === 'HT1') return ' (HT1 - Học cách <strong>2</strong> tuần)';
     if (lop.HTGD === 'HT2') return ' (HT2)';
     return '';
   })()}</td>
-<td>${lop.KhoaQL}</td>
+${lop.MaMH.startsWith('EN') ? '' : `<td>${lop.KhoaQL}</td>`}
 <td>${lop.SoTc}</td>
 <td>Thứ ${lop.Thu}, Tiết ${lop.Tiet}, ${lop.PhongHoc || ''}<br></td>
 <td>${lop.TenGV || ''} - ${lop.MaGV || ''}</td>

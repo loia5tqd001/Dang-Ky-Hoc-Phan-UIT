@@ -50,11 +50,7 @@ function Index() {
         <Grid item xs={6}>
           <Tooltip title={khongXepLop ? 'Mỗi lớp một hàng' : ''}>
             <TextField
-              label={
-                khongXepLop
-                  ? 'Tự nhập danh sách lớp (LƯU Ý COPY PASTE KHÔNG GÕ TỪNG CHỮ)'
-                  : 'Đang dùng dữ liệu từ bước xếp lớp'
-              }
+              label={khongXepLop ? 'Tự nhập danh sách lớp (mỗi mã lớp một hàng)' : 'Đang dùng dữ liệu từ bước xếp lớp'}
               fullWidth
               size="small"
               multiline
