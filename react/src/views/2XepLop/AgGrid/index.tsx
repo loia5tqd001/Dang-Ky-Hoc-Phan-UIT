@@ -44,6 +44,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
 
   // Mỗi khi filter môn học change => apply ColumnFilter: https://www.ag-grid.com/react-grid/filtering/
   React.useEffect(() => {
+    agGridApi?.hideOverlay();
     if (!filteredMonHoc.length) return;
 
     agGridApi?.setFilterModel({
@@ -57,11 +58,8 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
 
   // Mỗi khi viewMode hoặc Hệ đào tạo filter change => apply externalFilter: https://www.ag-grid.com/react-grid/filter-external/
   React.useEffect(() => {
-    const gridApi = agGridApi;
-    if (!gridApi) return;
-
     setTimeout(() => {
-      gridApi?.onFilterChanged();
+      agGridApi?.onFilterChanged();
     }, 0);
   }, [agGridApi, viewMode, heDaoTaoFiltered]);
 
@@ -89,7 +87,6 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
       <AgGridReact
         columnDefs={columnDefs({ soTc: tongSoTC })}
         defaultColDef={defaultColDef}
-        rowData={rowData}
         headerHeight={22}
         animateRows={false}
         rowSelection="multiple"
@@ -194,8 +191,12 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
           }
           dispatch(setSelectedClasses(e.api.getSelectedRows()));
         }}
+        // rowData={rowData}
         onGridReady={(params) => {
           setAgGridApi(params.api);
+          params.api.setRowData(rowData);
+          params.api.showLoadingOverlay();
+
           if (agGridColumnState) {
             params.columnApi.setColumnState(agGridColumnState);
             params.api.setFilterModel(agGridFilterModel);
