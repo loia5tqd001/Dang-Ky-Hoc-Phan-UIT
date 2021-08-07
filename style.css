@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+:root {
+  --default-blue: #007bff;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  width: 90vw;
+  margin: 4vw;
+}
+
+html::before {
+  content: '';
+  background-image: url("bg.png");
+  opacity: 0.17;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+th, td {
+  padding: 0.1em;
+  border: 1px solid #ddd;
+}
+
+#schedule-table table thead tr th {
+  background-color: #eee;
+  text-align: center;
+  width: 3%;
+}
+
+#schedule-table table tr {
+  background: #ccc !important;
+  border-bottom: 1px solid #ddd;
+  background-color: transparent;
+}
+
+#schedule-table table tr td.lesson-center_bold {
+  text-align: center;
+  font-weight: bold;
+}
+
+.class-center_white {
+  background-color: #fff;
+  text-align: center;
+  width: 230px;
+}
+
+.ref-link {
+  display: inline-block;
+  transition: transform .2s ease-out;
+}
+.ref-link .icon {
+  transition: transform .2s ease-out;
+}
+.ref-link:hover .icon {
+  transform: translateX(-2px) scale(1.2);
+}
+.ref-link:hover {
+  transform: translateX(5px) scale(1.005);
+  text-decoration: none;
+}
+.ref-link:hover .icon,
+.ref-link:hover {
+  color: var(--default-blue);
+}
+
+.update-date {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  transition: all .2s;
+}
+.update-date a {
+  color: #777;
+}
+.update-date a:hover {
+  text-decoration: none;
+}
+.update-date span:hover {
+  color: #555;
+  font-weight: bold;
+}
+.update-date:hover {
+  text-shadow: 0 0 5px #0ff5;
+}
+
+.feedback {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  transition: all .4s ease-out;
+}
+.feedback:hover a,
+.feedback:hover i {
+  color: var(--default-blue);
+}
+.feedback a {
+  position: relative;
+  text-decoration: none;
+}
+.feedback a::before {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  background: var(--default-blue);
+  left: 50%; width: 0;
+  transition: left .2s ease-out, width .2s ease-out;
+}
+.feedback:hover a::before {
+  left: 0; width: 100%;
+}
+.feedback i::before {
+  transition: all .4s ease-out;
+}
+.feedback:hover i::before {
+  display: inline-block;
+  animation: bounce 2s;
+}
+@keyframes bounce {
+  0%, 20%, 40% {
+    transform: translateY(0);
+  }
+  10%, 30% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (max-width: 850px) {
+  .ref-link,
+  .feedback,
+  .update-date {
+    display: none;
+  }
+  .custom-file,
+  .custom-file input,
+  .custom-file label {
+    height: calc((3em + 1.5rem) + 4px);
+  }
+  .custom-file label {
+    width: 70%;
+  }
+}
