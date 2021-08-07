@@ -14,11 +14,12 @@ import lopAnhVanMainHtml from './lopAnhVanMainHtml';
 import { useSelector } from 'react-redux';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 import { phanLoaiAV } from 'utils';
+import sortBy from 'lodash/sortBy';
 
 function Index() {
   const [currentPage, setCurrentPage] = React.useState('thuong'); // thuong | anh-van
   const finalTkb = useSelector(selectFinalDataTkb);
-  const { lopAv, lopThuong } = phanLoaiAV(finalTkb);
+  const { lopAv, lopThuong } = React.useMemo(() => phanLoaiAV(sortBy(finalTkb, 'MaLop')), [finalTkb]);
   const currentMainHtml = React.useMemo(() => {
     return (currentPage === 'thuong' ? lopThuongMainHtml(lopThuong) : lopAnhVanMainHtml(lopAv))
       .replace(/onclick=".*"/g, `onclick="return false"`)
