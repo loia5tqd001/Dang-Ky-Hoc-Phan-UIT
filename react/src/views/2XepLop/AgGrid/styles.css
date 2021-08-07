@@ -34,8 +34,8 @@
 
 .ag-theme-alpine .ag-row-hover {
   /*--ag-row-hover-color: #f6f6f6 !important; !* Kết hợp với animateRows={true} để chỉnh color của row khi hover lên 1 cell thuộc row *!*/
-  /* background: #fff !important; */
-  background: #d7e8f7 !important;
+  background: #fff !important;
+  /* background: #d7e8f7 !important; */
   cursor: pointer;
 }
 

@@ -1,6 +1,7 @@
 import { GridApi } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import { ClassModel } from 'models';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -113,18 +114,18 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
         //     return dictColor[data.MaMH] === 'even-row';
         //   },
         // }}
-        // getRowClass={(params) => {
-        //   // đéo hiểu sao phải bỏ trong getRowClass (bị gọi nhiều lần => lag) không là data bị cũ
-        //   const dictColor = uniqBy(
-        //     (params.api as GridApi)?.getRenderedNodes().map((it) => it.data as ClassModel),
-        //     'MaMH',
-        //   ).reduce((acc, cur, index) => {
-        //     acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
-        //     return acc;
-        //   }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+        getRowClass={(params) => {
+          // đéo hiểu sao phải bỏ trong getRowClass (bị gọi nhiều lần => lag) không là data bị cũ
+          const dictColor = uniqBy(
+            (params.api as GridApi)?.getRenderedNodes().map((it) => it.data as ClassModel),
+            'MaMH',
+          ).reduce((acc, cur, index) => {
+            acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+            return acc;
+          }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
 
-        //   return dictColor[(params.data as ClassModel).MaMH];
-        // }}
+          return dictColor[(params.data as ClassModel).MaMH];
+        }}
         isExternalFilterPresent={() => {
           return Boolean(heDaoTaoFiltered) || viewMode !== 'Bình thường';
         }}
