@@ -25,7 +25,7 @@ function Index(props) {
   }, [dispatch]);
 
   return (
-    <div style={{ maxWidth: 1500 }}>
+    <div style={{ maxWidth: 1500, margin: 'auto' }}>
       <RadioOptions />
       <Collapse in={loaiTkb === 'up-tu-file-excel'}>
         <SelectExcelButton />

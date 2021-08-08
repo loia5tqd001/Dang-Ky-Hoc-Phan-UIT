@@ -19,7 +19,7 @@ function Index() {
   const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
 
   return (
-    <div style={{ height: '100%', minWidth: '90%' }}>
+    <div style={{ height: '100%', minWidth: '90%', display: 'grid', placeContent: 'center' }}>
       <FormGroup row style={{ marginBottom: 5 }}>
         <Tooltip title="Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2">
           <FormControlLabel
