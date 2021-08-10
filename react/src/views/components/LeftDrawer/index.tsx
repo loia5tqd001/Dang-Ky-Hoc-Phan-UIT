@@ -1,9 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import routes from 'data/routes';
+import routes from 'routes';
 import logoUit from 'assets/img/logo-uit.png';
 import Typewriter from 'typewriter-effect';
-// mui
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -12,7 +11,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
-// github-stars
 import GitHubButton from 'react-github-btn';
 
 function Index() {

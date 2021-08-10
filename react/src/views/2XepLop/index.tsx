@@ -16,19 +16,7 @@ function Index(props) {
   const dataTkb = useSelector(selectFinalDataTkb);
 
   const rowData = React.useMemo(() => {
-    const sorted = sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
-    return sorted.reduce((acc, cur, index) => {
-      if (index === 0) return [{ ...cur, color: 0 }];
-
-      const last = acc[index - 1];
-      if (cur.MaMH === last.MaMH) {
-        cur = { ...cur, color: last.color };
-      } else {
-        cur = { ...cur, color: (last.color || 0) + 1 };
-      }
-
-      return [...acc, cur];
-    }, [] as ClassModel[]);
+    return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
   }, [dataTkb]);
 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);

@@ -21,7 +21,7 @@ function ScriptDangKyInput({ listMaLop }: Props) {
     <Grid item xs={6} style={{ paddingRight: 0 }}>
       {listMaLop.length > 0 ? (
         <Tooltip title={'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.'}>
-          <CopyToClipboard text={script} onCopy={() => enqueueSnackbar('Đã sao chép')}>
+          <CopyToClipboard text={script} onCopy={() => enqueueSnackbar('Đã sao chép', { variant: 'success' })}>
             <TextField
               className={classes.textFieldActive}
               label={'Script đăng ký nhanh'}

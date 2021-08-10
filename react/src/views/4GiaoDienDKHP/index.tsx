@@ -9,23 +9,17 @@ import './Đăng ký học phần _ Đăng ký học phần_files/css_nTr55mbZYl
 import './Đăng ký học phần _ Đăng ký học phần_files/custom.css';
 import banner from './Đăng ký học phần _ Đăng ký học phần_files/banner.jpg';
 
-import lopThuongMainHtml from './lopThuongMainHtml';
-import lopAnhVanMainHtml from './lopAnhVanMainHtml';
 import { useSelector } from 'react-redux';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 import { phanLoaiAV } from 'utils';
 import sortBy from 'lodash/sortBy';
+import LopAnhVan from './LopAnhVan';
+import LopThuong from './LopThuong';
 
 function Index() {
-  const [currentPage, setCurrentPage] = React.useState('thuong'); // thuong | anh-van
+  const [currentPage, setCurrentPage] = React.useState<'thuong' | 'anh-van'>('thuong');
   const finalTkb = useSelector(selectFinalDataTkb);
   const { lopAv, lopThuong } = React.useMemo(() => phanLoaiAV(sortBy(finalTkb, 'MaLop')), [finalTkb]);
-  const currentMainHtml = React.useMemo(() => {
-    return (currentPage === 'thuong' ? lopThuongMainHtml(lopThuong) : lopAnhVanMainHtml(lopAv))
-      .replace(/onclick=".*"/g, `onclick="return false"`)
-      .replace(/type="submit"/g, `type="button"`)
-      .replace(/href=".*"/g, `href="javascript:"`);
-  }, [currentPage]);
 
   return (
     <div className="giao-dien-dkhp">
@@ -115,7 +109,9 @@ function Index() {
         </div>
       </div>
       {/* MAIN */}
-      <div id="main" className="clearfix main" role="main" dangerouslySetInnerHTML={{ __html: currentMainHtml }} />
+      <div id="main" className="clearfix main" role="main">
+        {currentPage === 'thuong' ? <LopThuong classes={lopThuong} /> : <LopAnhVan classes={lopAv} />}
+      </div>
 
       {/* /#main, /#main-wrapper */}
       <div id="footer" className="clearfix site-footer" role="contentinfo">

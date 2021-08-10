@@ -21,7 +21,4 @@ export interface ClassModel {
   NBD: string;
   NKT: string;
   NgonNgu: string;
-
-  // util fields
-  color?: number;
 }

@@ -1,4 +1,4 @@
-import routes from 'data/routes';
+import routes from 'routes';
 import { Link } from 'react-router-dom';
 
 function NeedStep1(props) {

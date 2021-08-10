@@ -1,6 +1,6 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import routes from 'data/routes';
+import routes from 'routes';
 import React, { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
