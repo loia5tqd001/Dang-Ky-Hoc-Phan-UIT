@@ -1,20 +1,6 @@
 # Tool Đăng Ký Học Phần UIT
 
-## TODO:
-
-- [ ] **Optimize: Ứng dụng vẫn còn chậm, lag**
-- [ ] **Fix: Màu ken xẽ ở bước (2) xếp lớp chưa đúng**
-- [ ] **Fix: Trường cho phép đăng ký xen kẽ lớp thực hành HT1 cách tuần nhưng hiện tại tool chưa cho phép**
-- [ ] Fix-Bug: Khi filter Hệ Đào tạo đang là rỗng, chọn sang CLC/CQUI,... không có tác dụng, phải loai lại trang mới chạy đúng
-- [ ] Fix: Nhiều state bị reset, persist them (can't make it impulsively, need to carefully design first though)
-- [ ] **Improve: Nếu lớp nào không chọn được (do trùng TKB, môn đã chọn rồi) thì đánh dấu dòng đó để người dùng phân biệt ngay từ cái nhìn đầu tiên luôn.**
-- [ ] Change: Đổi con mắt ở bước 2 thành 1 Select giống Hệ đào tạo filter
-
----
-
-- [ ] Viết đầy đủ testcase cho các nghiệp vụ với unit test, ensure happy path to work reliably, apply them to the CI/CD pineline
-- [ ] Refactor AgGrid
-- [ ] Config lại project với React18 (transition) maybe để fix performance issue, and config proper TSConfig, Prettier(ignore), Eslint(ignore), Editorconfig, Commitlint, Husky,...
+## [ 👉 TODOLIST](https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/20)
 
 ## Giới thiệu
 
