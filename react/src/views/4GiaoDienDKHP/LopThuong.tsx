@@ -1,5 +1,6 @@
 import { ClassModel } from 'models';
 import React from 'react';
+import captchaImage from 'assets/img/image_captcha.jpg';
 import { Row } from './Row';
 
 type Props = {
@@ -38,15 +39,15 @@ export const LopThuong: React.FC<Props> = (props) => {
                           <br />
                           Tên sinh viên:{' '}
                           <em>
-                            <strong>Nguyễn Huỳnh Lợi</strong>
+                            <strong>Nguyễn Văn Diu Ai Ti</strong>
                           </em>
                           <br />
                           Mã sinh viên:{' '}
                           <em>
-                            <strong>17520702</strong>
+                            <strong>17526969</strong>
                           </em>
                           <br />
-                          Ngày sinh: 10-10-1999 <br />
+                          Ngày sinh: 31-02-1999 <br />
                           Giới tính: Nam <br />
                           Khoa : CNPM
                           <br />
@@ -225,6 +226,28 @@ export const LopThuong: React.FC<Props> = (props) => {
                             </div>
                           </fieldset>
                           <h3 style={{ color: '#0000FF', textAlign: 'center' }}>DANH SÁCH LỚP HỌC ĐANG MỞ</h3>
+                          <div className="captcha">
+                            <input type="hidden" name="captcha_sid" defaultValue="1218592" />
+                            <input type="hidden" name="captcha_token" defaultValue="70c47cdc1d0e685c686318e2f6516ef2" />
+                            <img src={captchaImage} width="144" height="60" alt="CAPTCHA" title="Image CAPTCHA" />
+                            <div className="form-item form-type-textfield form-item-captcha-response">
+                              <label>
+                                What code is in the image?{' '}
+                                <span className="form-required" title="This field is required.">
+                                  *
+                                </span>
+                              </label>
+                              <input
+                                type="text"
+                                id="edit-captcha-response"
+                                name="captcha_response"
+                                defaultValue=""
+                                size={15}
+                                className="form-text required"
+                              />
+                              <div className="description">Enter the characters shown in the image.</div>
+                            </div>
+                          </div>
                           <input
                             type="button"
                             id="edit-submit2"
@@ -232,37 +255,6 @@ export const LopThuong: React.FC<Props> = (props) => {
                             defaultValue="Đăng ký"
                             className="form-submit"
                           />
-                          <div className="form-item form-type-textfield form-item-captcha" style={{ clear: 'both' }}>
-                            <div className="captcha">
-                              <input type="hidden" name="captcha_sid" defaultValue={195845} />
-                              <input
-                                type="hidden"
-                                name="captcha_token"
-                                defaultValue="fb109325358045dfa5fc7a07f0213f55"
-                              />
-                              <div className="form-item form-type-textfield form-item-captcha-response">
-                                <label htmlFor="edit-captcha-response">
-                                  Math question{' '}
-                                  <span className="form-required" title="This field is required.">
-                                    *
-                                  </span>
-                                </label>
-                                <span className="field-prefix">7 + 8 = </span>{' '}
-                                <input
-                                  type="text"
-                                  id="edit-captcha-response"
-                                  name="captcha_response"
-                                  size={4}
-                                  maxLength={2}
-                                  className="form-text required"
-                                  autoComplete="off"
-                                />
-                                <div className="description">
-                                  Solve this simple math problem and enter the result. E.g. for 1+3, enter 4.
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                           <div className="table_lophoc_wrapper" id="table_lophoc_wrapper">
                             <table
                               className="sticky-header"

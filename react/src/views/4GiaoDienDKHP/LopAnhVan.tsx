@@ -38,15 +38,15 @@ export const LopAnhVan: React.FC<Props> = (props) => {
                           <br />
                           Tên sinh viên:{' '}
                           <em>
-                            <strong>Nguyễn Huỳnh Lợi</strong>
+                            <strong>Nguyễn Văn Diu Ai Ti</strong>
                           </em>
                           <br />
                           Mã sinh viên:{' '}
                           <em>
-                            <strong>17520702</strong>
+                            <strong>17526969</strong>
                           </em>
                           <br />
-                          Ngày sinh: 10-10-1999 <br />
+                          Ngày sinh: 31-02-1999 <br />
                           Giới tính: Nam <br />
                           Khoa : CNPM
                           <br />
