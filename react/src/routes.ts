@@ -11,8 +11,8 @@ export default {
     path: '/3-ket-qua',
     name: '3. Vẽ TKB và script',
   },
-  _4GiaoDienDKHP: {
-    path: '/4-giao-dien-dkhp',
-    name: '4. Giao diện ĐKHP',
-  },
+  // _4GiaoDienDKHP: {
+  //   path: '/4-giao-dien-dkhp',
+  //   name: '4. Giao diện ĐKHP',
+  // },
 } as const;
