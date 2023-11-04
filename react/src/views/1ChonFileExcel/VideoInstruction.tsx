@@ -13,7 +13,7 @@ function VideoInstruction() {
           height: '42vw',
           position: 'relative',
           zIndex: 1,
-          margin: '30px 0  50px',
+          margin: '0 0  50px',
         }}
       >
         <FormLabel component="legend" style={{ paddingBottom: 5 }}>

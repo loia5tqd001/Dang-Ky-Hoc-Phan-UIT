@@ -10,7 +10,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
-import MoodBadIcon from '@material-ui/icons/MoodBad';
+import FeedbackIcon from '@material-ui/icons/FeedbackOutlined';
 import GitHubButton from 'react-github-btn';
 
 function Index() {
@@ -47,7 +47,7 @@ function Index() {
         <Tooltip title="Gửi feedback" placement="top">
           <Box m={1} style={{ margin: 'auto auto 0' }}>
             <a href="https://www.facebook.com/messages/t/loia5tqd001" target="_blank" rel="noopener noreferrer">
-              <MoodBadIcon color="primary" fontSize="large" />
+              <FeedbackIcon color="primary" fontSize="large" />
             </a>
           </Box>
         </Tooltip>

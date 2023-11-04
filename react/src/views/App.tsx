@@ -13,7 +13,6 @@ import ScrollToTop from './components/ScrollToTop';
 const ChonFileExcel = lazy(() => import('./1ChonFileExcel'));
 const XepLop = lazy(() => import('./2XepLop'));
 const KetQua = lazy(() => import('./3KetQua'));
-const GiaoDienDKHP = lazy(() => import('./4GiaoDienDKHP'));
 
 type PersistedRouteProps = {
   path: string;
@@ -33,16 +32,6 @@ function PersistedRoute(props: PersistedRouteProps) {
   );
 }
 
-function RoutesNeedStep1() {
-  return (
-    <>
-      <PersistedRoute path={routes._3KetQua.path} component={KetQua} />
-      <PersistedRoute path={routes._2XepLop.path} component={XepLop} />
-      {/* <PersistedRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} /> */}
-    </>
-  );
-}
-
 function App() {
   const classes = useStyles();
   const dataTkb = useSelector(selectFinalDataTkb);
@@ -56,7 +45,9 @@ function App() {
           <div className={classes.content}>
             <Suspense fallback={<LinearProgress />}>
               <PersistedRoute path={routes._1ChonFileExcel.path} component={ChonFileExcel} />
-              {dataTkb.length ? <RoutesNeedStep1 /> : <NeedStep1Warning />}
+              <PersistedRoute path={routes._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
+              <PersistedRoute path={routes._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
+              {/* <PersistedRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} /> */}
               <PersistedRoute path={'*'} component={() => <Redirect to={routes._1ChonFileExcel.path} />} />
             </Suspense>
           </div>
