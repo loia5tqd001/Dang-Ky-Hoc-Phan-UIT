@@ -1,7 +1,7 @@
 import routes from 'routes';
 import { Link } from 'react-router-dom';
 
-function NeedStep1(props) {
+function NeedStep1Warning() {
   return (
     <div style={{ textAlign: 'center' }}>
       <h2>Có vẻ như bạn chưa chọn file excel ở bước 1</h2>
@@ -10,4 +10,4 @@ function NeedStep1(props) {
   );
 }
 
-export default NeedStep1;
+export default NeedStep1Warning;
