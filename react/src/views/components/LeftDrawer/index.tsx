@@ -12,13 +12,30 @@ import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
 import FeedbackIcon from '@material-ui/icons/FeedbackOutlined';
 import GitHubButton from 'react-github-btn';
+import { IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/KeyboardArrowLeft';
+import clsx from 'clsx';
+import { useDrawerContext } from '../../../contexts';
 
 function Index() {
   const classes = useStyles();
+  const [open, setOpen] = useDrawerContext();
 
   return (
-    <nav className={classes.drawer} aria-label="mailbox folders">
-      <Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
+    <nav className={classes.drawer}>
+      <Drawer
+        classes={{ paper: classes.drawerPaper }}
+        className={clsx(classes.drawer, {
+          [classes.drawerClose]: !open,
+        })}
+        variant="permanent"
+        open={open}
+      >
+        <Box mx={5} style={{ margin: '0 auto 0' }}>
+          <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)}>
+            <MenuIcon />
+          </IconButton>
+        </Box>
         {/* Logo */}
         <Box mx={5} my={5}>
           <Tooltip title="Tool đăng ký học phần UIT">
@@ -88,8 +105,13 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
-      flexShrink: 0,
+      // flexShrink: 0,
     },
+  },
+  drawerClose: {
+    // width: 0,
+    // flexShrink: 0,
+    // transform: 'translateX(-110px)',
   },
   drawerPaper: {
     width: drawerWidth,

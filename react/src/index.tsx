@@ -17,6 +17,7 @@ import App from './views/App';
 // ag-grid
 import 'ag-grid-enterprise/dist/styles/ag-grid.css';
 import 'ag-grid-enterprise/dist/styles/ag-theme-alpine.css';
+import { DrawerProvider } from './contexts';
 
 LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578eb9cab60c42d78');
 
@@ -41,8 +42,10 @@ ReactDOM.render(
     <PersistGate persistor={persistor}>
       <SnackbarProvider>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
+          <DrawerProvider>
+            <CssBaseline />
+            <App />
+          </DrawerProvider>
         </ThemeProvider>
       </SnackbarProvider>
     </PersistGate>
