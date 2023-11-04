@@ -8,9 +8,7 @@ import { State } from './types';
 
 const selectSlice = (state) => state[slice.name] as State;
 
-export const selectLoaiTkb = createSelector([selectSlice], (slice) => slice.loaiTkb);
 export const selectDataExcel = createSelector([selectSlice], (slice) => slice.dataExcel);
-export const selectDataDkhpPage = createSelector([selectSlice], (slice) => slice.dataDkhpPage);
 export const selectListMaMHTextarea = createSelector([selectSlice], (slice) => slice.listMaMHTextarea);
 export const selectHeDaoTaoFiltered = createSelector([selectSlice], (slice) => slice.heDaoTaoFiltered);
 export const selectSelectedClasses = createSelector([selectSlice], (slice) => slice.selectedClasses);
@@ -20,11 +18,8 @@ export const selectCustomViewMode = createSelector([selectSlice], (slice) => sli
 export const selectIsChiVeTkb = createSelector([selectSlice], (slice) => slice.isChiVeTkb);
 export const selectTextareaChiVeTkb = createSelector([selectSlice], (slice) => slice.textareaChiVeTkb);
 
-// Data cuối cùng dùng để xếp TKB, phụ thuộc vô loại TKB
-// nếu người dùng chọn mặc định thì return data của mặc định
-// nếu người dùng chọn tự upload thì return data tự upload ở trên
-export const selectFinalDataTkb = createSelector([selectLoaiTkb, selectDataExcel], (loaiTkb, dataExcel) => {
-  return dataExcel?.data || [];
+export const selectFinalDataTkb = createSelector([selectDataExcel], (dataExcel) => {
+  return dataExcel?.data || []; // there used to be a complicatd logic here, but now it's just this
 });
 
 export const selectlistHeDT = createSelector([selectFinalDataTkb], (dataTkb) => uniq(dataTkb.map((it) => it.HeDT)));

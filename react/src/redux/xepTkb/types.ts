@@ -5,19 +5,11 @@ import { ClassModel } from 'models';
 export const VIEW_MODES = ['Bình thường', 'Ẩn môn đã chọn', 'Xem lớp đã chọn'] as const;
 
 export type State = {
-  loaiTkb: 'up-tu-file-excel' | 'su-dung-dkhp-uit';
-  // "dataExcel" only available when "loaiTkb" is "up-tu-file-excel"
-  // I can declare that explicitly with typescript but it will hurt the readability
-  // Here is how to do it: https://stackoverflow.com/questions/56949513/typescript-type-of-a-property-dependent-on-another-property-within-the-same-obj
   dataExcel: {
     fileName: string;
     data: ClassModel[];
     lastUpdate: string;
   } | null;
-  dataDkhpPage: {
-    lopThuong: string;
-    lopAnhVan: string;
-  };
 
   listMaMHTextarea: string;
   heDaoTaoFiltered: string | null;
@@ -32,10 +24,7 @@ export type State = {
 };
 
 export type Reducer = {
-  setLoaiTkb: (state: Draft<State>, action: PayloadAction<State['loaiTkb']>) => void;
   setDataExcel: (state: Draft<State>, action: PayloadAction<State['dataExcel']>) => void;
-  setDataDkhpLopThuong: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopThuong']>) => void;
-  setDataDkhpLopAnhVan: (state: Draft<State>, action: PayloadAction<State['dataDkhpPage']['lopAnhVan']>) => void;
   setListMaMHTextarea: (state: Draft<State>, action: PayloadAction<State['listMaMHTextarea']>) => void;
   setTenMonHocFilter: (state: Draft<State>, action: PayloadAction<ClassModel['TenMH'][]>) => void;
   setHeDaoTaoFiltered: (state: Draft<State>, action: PayloadAction<State['heDaoTaoFiltered']>) => void;

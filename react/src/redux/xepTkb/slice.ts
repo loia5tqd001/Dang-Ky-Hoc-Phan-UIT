@@ -6,12 +6,7 @@ import { Reducer, State } from './types';
 const slice = createSlice<State, Reducer, 'xepTkb'>({
   name: 'xepTkb',
   initialState: {
-    loaiTkb: 'up-tu-file-excel',
     dataExcel: null,
-    dataDkhpPage: {
-      lopThuong: '',
-      lopAnhVan: '',
-    },
 
     listMaMHTextarea: '',
     heDaoTaoFiltered: 'CQUI',
@@ -25,19 +20,8 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     textareaChiVeTkb: '',
   },
   reducers: {
-    setLoaiTkb: (state, { payload }) => {
-      state.loaiTkb = payload;
-    },
     setDataExcel: (state, { payload }) => {
       state.dataExcel = payload;
-      state.selectedClasses = [];
-    },
-    setDataDkhpLopThuong: (state, { payload }) => {
-      state.dataDkhpPage.lopThuong = payload;
-      state.selectedClasses = [];
-    },
-    setDataDkhpLopAnhVan: (state, { payload }) => {
-      state.dataDkhpPage.lopAnhVan = payload;
       state.selectedClasses = [];
     },
     setListMaMHTextarea: (state, { payload }) => {
@@ -79,10 +63,7 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
 });
 
 export const {
-  setLoaiTkb,
   setDataExcel,
-  setDataDkhpLopThuong,
-  setDataDkhpLopAnhVan,
   setListMaMHTextarea,
   setHeDaoTaoFiltered,
   setSelectedClasses,
