@@ -55,7 +55,7 @@ function App() {
               <PersistedRoute path={routes._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
               <PersistedRoute path={routes._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
               {/* <PersistedRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} /> */}
-              {/* <PersistedRoute path={'*'} component={() => <Redirect to={routes._1ChonFileExcel.path} />} /> */}
+              <PersistedRoute path={'/'} component={() => <Redirect to={routes._1ChonFileExcel.path} />} />
             </Suspense>
           </div>
         </BrowserRouter>
