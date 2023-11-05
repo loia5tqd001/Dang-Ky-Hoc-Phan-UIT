@@ -114,51 +114,51 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
         //     return dictColor[data.MaMH] === 'even-row';
         //   },
         // }}
-        getRowClass={(params) => {
-          // đéo hiểu sao phải bỏ trong getRowClass (bị gọi nhiều lần => lag) không là data bị cũ
-          const dictColor = uniqBy(
-            (params.api as GridApi)?.getRenderedNodes().map((it) => it.data as ClassModel),
-            'MaMH',
-          ).reduce((acc, cur, index) => {
-            acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
-            return acc;
-          }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
+        // getRowClass={(params) => {
+        //   // đéo hiểu sao phải bỏ trong getRowClass (bị gọi nhiều lần => lag) không là data bị cũ
+        //   const dictColor = uniqBy(
+        //     (params.api as GridApi)?.getRenderedNodes().map((it) => it.data as ClassModel),
+        //     'MaMH',
+        //   ).reduce((acc, cur, index) => {
+        //     acc[cur.MaMH] = index % 2 ? 'odd-row' : 'even-row';
+        //     return acc;
+        //   }, {} as Record<ClassModel['MaMH'], 'odd-row' | 'even-row'>);
 
-          return dictColor[(params.data as ClassModel).MaMH];
-        }}
+        //   return dictColor[(params.data as ClassModel).MaMH];
+        // }}
         isExternalFilterPresent={() => {
           return Boolean(heDaoTaoFiltered) || viewMode !== 'Bình thường';
         }}
-        doesExternalFilterPass={(node) => {
-          const data = node.data as ClassModel;
-          const passedViewMode = (() => {
-            if (viewMode === 'Bình thường') return true;
-            const selected = agGridApi?.getSelectedRows() as ClassModel[];
-            if (viewMode === 'Xem lớp đã chọn') {
-              return selected?.some((it) => it.MaLop === data.MaLop);
-            }
-            if (viewMode === 'Ẩn môn đã chọn') {
-              const chungMonVsLopDaChon = selected?.some((it) => isChungMon(it, data));
-              return !chungMonVsLopDaChon; // || sameRowVsLopDaChon;
-            }
-            return false;
-          })();
-          const passedHeDaoTao = !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
-          // Xem lớp đã chọn mà lớp đã chọn không thoả filter hệ đào tạo / filter môn học thì có nên hiện k nhỉ?
-          // viewMode === 'Xem lớp đã chọn' || !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
+        // doesExternalFilterPass={(node) => {
+        //   const data = node.data as ClassModel;
+        //   const passedViewMode = (() => {
+        //     if (viewMode === 'Bình thường') return true;
+        //     const selected = agGridApi?.getSelectedRows() as ClassModel[];
+        //     if (viewMode === 'Xem lớp đã chọn') {
+        //       return selected?.some((it) => it.MaLop === data.MaLop);
+        //     }
+        //     if (viewMode === 'Ẩn môn đã chọn') {
+        //       const chungMonVsLopDaChon = selected?.some((it) => isChungMon(it, data));
+        //       return !chungMonVsLopDaChon; // || sameRowVsLopDaChon;
+        //     }
+        //     return false;
+        //   })();
+        //   const passedHeDaoTao = !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
+        //   // Xem lớp đã chọn mà lớp đã chọn không thoả filter hệ đào tạo / filter môn học thì có nên hiện k nhỉ?
+        //   // viewMode === 'Xem lớp đã chọn' || !heDaoTaoFiltered || isMonChung(data) || data.HeDT === heDaoTaoFiltered;
 
-          return passedHeDaoTao && passedViewMode;
-        }}
-        frameworkComponents={{
-          countTinChi: SoTinChi,
-        }}
-        statusBar={{
-          statusPanels: [
-            { statusPanel: 'agSelectedRowCountComponent', align: 'right' },
-            { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'right' },
-            { statusPanel: 'countTinChi', align: 'left' },
-          ],
-        }}
+        //   return passedHeDaoTao && passedViewMode;
+        // }}
+        // frameworkComponents={{
+        //   countTinChi: SoTinChi,
+        // }}
+        // statusBar={{
+        //   statusPanels: [
+        //     { statusPanel: 'agSelectedRowCountComponent', align: 'right' },
+        //     { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'right' },
+        //     { statusPanel: 'countTinChi', align: 'left' },
+        //   ],
+        // }}
         onRowSelected={(e) => {
           const data = e.data as ClassModel;
           if (e.node.isSelected() && selectedClasses.find((it) => isSameRow(it, data))) {
@@ -199,7 +199,7 @@ function Index({ rowData, setIsDialogOpen, setLopTrungTkb }: Props) {
           params.api.showLoadingOverlay();
 
           if (agGridColumnState) {
-            params.columnApi.setColumnState(agGridColumnState);
+            // params.columnApi.setColumnState(agGridColumnState);
             params.api.setFilterModel(agGridFilterModel);
           }
           if (selectedClasses.length) {

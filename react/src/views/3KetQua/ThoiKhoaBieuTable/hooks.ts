@@ -1,6 +1,6 @@
-import React from 'react';
-import { useSnackbar } from 'notistack';
 import html2canvas from 'html2canvas';
+import { enqueueSnackbar } from 'notistack';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
 import { downloadFromCanvas, getTietIndex } from './utils';
@@ -102,7 +102,6 @@ export const usePhanLoaiHocTrenTruong = () => {
 
 export const useProcessImageTkb = () => {
   const tkbTableRef = React.useRef<HTMLTableElement>(null);
-  const { enqueueSnackbar } = useSnackbar();
 
   // sap chép hình ảnh tkb vào clipboard
   const [isCopyingToClipboard, setIsCopyingToClipboard] = React.useState(false);
@@ -116,7 +115,7 @@ export const useProcessImageTkb = () => {
       setIsCopyingToClipboard(false);
       enqueueSnackbar('Sao chép ảnh thành công, Ctrl+V để xem kết quả.', { variant: 'success' });
     });
-  }, [enqueueSnackbar, tkbTableRef]);
+  }, [tkbTableRef]);
 
   // tải hình ảnh tkb về máy
   const [isSavingToComputer, setIsSavingToComputer] = React.useState(false);

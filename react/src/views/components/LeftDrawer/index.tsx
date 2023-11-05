@@ -3,17 +3,17 @@ import { NavLink } from 'react-router-dom';
 import routes from 'routes';
 import logoUit from 'assets/img/logo-uit.png';
 import Typewriter from 'typewriter-effect';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Box from '@material-ui/core/Box';
-import Tooltip from '@material-ui/core/Tooltip';
-import FeedbackIcon from '@material-ui/icons/FeedbackOutlined';
+import makeStyles from '@mui/styles/makeStyles';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
+import FeedbackIcon from '@mui/icons-material/FeedbackOutlined';
 import GitHubButton from 'react-github-btn';
-import { IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/KeyboardArrowLeft';
+import { IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import clsx from 'clsx';
 import { useDrawerContext } from '../../../contexts';
 
@@ -31,11 +31,14 @@ function Index() {
         variant="permanent"
         open={open}
       >
-        <Box mx={5} style={{ margin: '0 auto 0' }}>
-          <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)}>
-            <MenuIcon />
-          </IconButton>
+        <Box className={classes.drawerTopCollapse}>
+          <Tooltip title="Collapse">
+            <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)} size="large">
+              <MenuIcon style={{ margin: '0 auto 0' }} />
+            </IconButton>
+          </Tooltip>
         </Box>
+
         {/* Logo */}
         <Box mx={5} my={5}>
           <Tooltip title="Tool đăng ký học phần UIT">
@@ -113,6 +116,14 @@ const useStyles = makeStyles((theme) => ({
     // flexShrink: 0,
     // transform: 'translateX(-110px)',
   },
+  drawerTopCollapse: {
+    background: '#f7dce733',
+    color: theme.palette.primary.main,
+    fontWeight: 'bolder',
+    borderBottom: '1px solid #ccc',
+    display: 'grid',
+    placeItems: 'center',
+  },
   drawerPaper: {
     width: drawerWidth,
     background: '#f2f1e3f0',
@@ -128,7 +139,8 @@ const useStyles = makeStyles((theme) => ({
     background: '#f7dce733',
     color: theme.palette.primary.main,
     fontWeight: 'bolder',
-    borderColor: '#ccc',
+    borderTop: '1px solid #ccc',
+    borderBottom: '1px solid #ccc',
   },
   githubStarWrapper: {
     minHeight: 45,

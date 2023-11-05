@@ -1,11 +1,11 @@
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Autocomplete from '@mui/material/Autocomplete';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -77,7 +77,7 @@ function TopInputs() {
         />
         <div>
           <Tooltip title={customViewMode}>
-            <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }}>
+            <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }} size="large">
               <VisibilityIcon />
             </IconButton>
           </Tooltip>

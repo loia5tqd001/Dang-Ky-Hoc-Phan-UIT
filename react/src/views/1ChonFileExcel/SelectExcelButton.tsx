@@ -4,12 +4,11 @@ import XLSX from 'xlsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDataExcel } from 'redux/xepTkb/selectors';
 import { setDataExcel } from 'redux/xepTkb/slice';
-// mui
-import { makeStyles } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
-import { useSnackbar } from 'notistack';
+import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import { enqueueSnackbar } from 'notistack';
 import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
@@ -18,7 +17,6 @@ function SelectExcelButton() {
   const dispatch = useDispatch();
   const dataExcel = useSelector(selectDataExcel);
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleUploadFileExcel = React.useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -61,7 +59,7 @@ function SelectExcelButton() {
       if (rABS) reader.readAsBinaryString(file);
       else reader.readAsArrayBuffer(file);
     },
-    [dispatch, enqueueSnackbar],
+    [dispatch],
   );
 
   return (

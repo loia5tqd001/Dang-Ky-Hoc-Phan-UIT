@@ -1,10 +1,8 @@
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import { useSnackbar } from 'notistack';
-import React from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import makeStyles from '@mui/styles/makeStyles';
+import { enqueueSnackbar } from 'notistack';
 import { getScriptDkhp } from './utils';
 
 type Props = {
@@ -12,7 +10,6 @@ type Props = {
 };
 
 function ScriptDangKyInput({ listMaLop }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
 
   const script = getScriptDkhp(listMaLop);
@@ -21,19 +18,27 @@ function ScriptDangKyInput({ listMaLop }: Props) {
     <Grid item xs={6} style={{ paddingRight: 0 }}>
       {listMaLop.length > 0 ? (
         <Tooltip title={'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.'}>
-          <CopyToClipboard text={script} onCopy={() => enqueueSnackbar('Đã sao chép', { variant: 'success' })}>
-            <TextField
-              className={classes.textFieldActive}
-              label={'Script đăng ký nhanh'}
-              fullWidth
-              size="small"
-              multiline
-              rows={2}
-              variant="outlined"
-              value={script}
-              inputProps={{ readOnly: true }}
-            />
-          </CopyToClipboard>
+          <TextField
+            onClick={() => {
+              navigator.clipboard.writeText(script).then(
+                () => {
+                  enqueueSnackbar('Đã sao chép', { variant: 'success' });
+                },
+                () => {
+                  enqueueSnackbar('Không thể sao chép', { variant: 'error' });
+                },
+              );
+            }}
+            className={classes.textFieldActive}
+            label={'Script đăng ký nhanh'}
+            fullWidth
+            size="small"
+            multiline
+            rows={2}
+            variant="outlined"
+            value={script}
+            inputProps={{ readOnly: true }}
+          />
         </Tooltip>
       ) : (
         <TextField

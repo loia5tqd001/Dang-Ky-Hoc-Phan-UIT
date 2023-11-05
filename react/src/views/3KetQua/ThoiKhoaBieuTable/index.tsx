@@ -1,14 +1,15 @@
 import React from 'react';
 // components
 // mui
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import './styles.css';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { calcTongSoTC } from 'utils';
 import ClassCell from './ClassCell';
 import TableHead from './TableHead';
