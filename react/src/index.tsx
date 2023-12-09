@@ -10,7 +10,6 @@ import { persistor, store } from './redux';
 
 import 'ag-grid-enterprise/styles/ag-grid.css';
 import 'ag-grid-enterprise/styles/ag-theme-alpine.css';
-import { DrawerProvider } from './contexts';
 import App from './views/App';
 
 declare module '@mui/styles/defaultTheme' {
@@ -49,10 +48,8 @@ ReactDOM.render(
       <SnackbarProvider>
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <DrawerProvider>
-              <CssBaseline />
-              <App />
-            </DrawerProvider>
+            <CssBaseline />
+            <App />
           </ThemeProvider>
         </StyledEngineProvider>
       </SnackbarProvider>

@@ -16,7 +16,7 @@ import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import clsx from 'clsx';
 import { styled } from '@mui/styles';
-import { useDrawerContext } from '../../../contexts';
+import { useDrawerStore } from '../../../zus';
 
 const openedMixin = (theme) =>
   ({
@@ -56,26 +56,28 @@ const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
   }),
 }));
 
-function Index() {
+function LeftDrawer() {
   const classes = useStyles();
-  const [open, setOpen] = useDrawerContext();
+  const toggleDrawer = useDrawerStore((s) => s.toggleDrawer);
+  const isOpen = useDrawerStore((s) => s.isDrawerOpen);
+  const isCollapsed = !isOpen;
 
   return (
     <nav className={classes.drawer}>
       <Drawer
         classes={{
           paper: clsx(classes.drawerPaper, {
-            [classes.drawerClose]: !open,
+            [classes.drawerClose]: isCollapsed,
           }),
         }}
         className={clsx(classes.drawer)}
         variant="permanent"
-        open={open}
+        open={isOpen} // TODO: when page loads with open=false, the drawer will display stupidly when expanding
       >
         <Box className={classes.drawerTopCollapse}>
-          <Tooltip title={open ? 'Collapse' : 'Expand'}>
-            <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)} size="large">
-              <MenuIcon className={clsx(classes.collapseIcon, !open && classes.collapseIconCollapsed)} />
+          <Tooltip title={isOpen ? 'Collapse' : 'Expand'}>
+            <IconButton color="inherit" onClick={toggleDrawer} size="large">
+              <MenuIcon className={clsx(classes.collapseIcon, isCollapsed && classes.collapseIconCollapsed)} />
             </IconButton>
           </Tooltip>
         </Box>
@@ -84,7 +86,7 @@ function Index() {
         <Box mx={5} my={5} style={{ height: 120, marginTop: 60 }}>
           <Tooltip title="Tool đăng ký học phần UIT">
             <a href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT" target="_blank" rel="noopener noreferrer">
-              <img src={logoUit} alt="logo uit" className={clsx(classes.img, !open && classes.imgCollapsed)} />
+              <img src={logoUit} alt="logo uit" className={clsx(classes.img, isCollapsed && classes.imgCollapsed)} />
             </a>
           </Tooltip>
         </Box>
@@ -100,7 +102,7 @@ function Index() {
               to={route.path}
               activeClassName={classes.menuItemActive}
             >
-              <ListItemText primary={open ? route.name : `${index + 1}.`} />
+              <ListItemText primary={isOpen ? route.name : `${index + 1}.`} />
             </ListItem>
           ))}
         </List>
@@ -115,7 +117,7 @@ function Index() {
         </Tooltip>
 
         {/* Typewriter */}
-        <Box className={clsx(classes.typewriterWrapper, classes.etc, !open && classes.etcCollapsed)}>
+        <Box className={clsx(classes.typewriterWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
           <Typewriter
             options={{
               strings: ['Give feedback', 'Like & Share', 'Star'],
@@ -127,7 +129,7 @@ function Index() {
 
         {/* Github stars */}
         <Tooltip title="Hãy vào star giúp nhé">
-          <Box className={clsx(classes.githubStarWrapper, classes.etc, !open && classes.etcCollapsed)}>
+          <Box className={clsx(classes.githubStarWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
             <GitHubButton
               href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/stargazers"
               data-icon="octicon-star"
@@ -142,7 +144,7 @@ function Index() {
   );
 }
 
-export default Index;
+export default LeftDrawer;
 
 // styles below:
 

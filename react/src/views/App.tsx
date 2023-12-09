@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 import clsx from 'clsx';
-import { useDrawerContext } from '../contexts';
+import { useDrawerStore } from '../zus';
 import ErrorBoundary from './components/ErrorBoundary';
 import LeftDrawer from './components/LeftDrawer';
 import NeedStep1Warning from './components/NeedStep1';
@@ -51,7 +51,7 @@ function PersistedRoute(props: PersistedRouteProps) {
 function App() {
   const classes = useStyles();
   const dataTkb = useSelector(selectFinalDataTkb);
-  const [open] = useDrawerContext();
+  const isDrawerOpen = useDrawerStore((s) => s.isDrawerOpen);
 
   return (
     <div className={classes.root}>
@@ -61,7 +61,7 @@ function App() {
           <LeftDrawer />
           <div
             className={clsx(classes.content, {
-              [classes.contentShift]: open,
+              [classes.contentShift]: isDrawerOpen,
             })}
           >
             <Suspense fallback={<LinearProgress />}>
