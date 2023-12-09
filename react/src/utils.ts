@@ -58,3 +58,7 @@ export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
   if (tiet === '*') return ['*'];
   return tiet.split('');
 };
+
+export const log = (...args: any[]) => {
+  window.__DEBUG__ && console.log(...args);
+};

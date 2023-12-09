@@ -1,6 +1,6 @@
 .ag-theme-alpine {
   --ag-header-background-color: #f4f9f2;
-  --ag-background-color: #fff9;
+  /* --ag-background-color: #fff9; */
   /* TODO: customize better color theming */
   /* --ag-alpine-active-color: rgba(244,238,239, 1);
   --ag-selected-row-background-color: rgba(244,238,239, 0.3);
@@ -49,8 +49,14 @@
   content: none;
 }
 
-.ag-theme-alpine .ag-cell-normal {
+.ag-theme-alpine .ag-cell-normal,
+.ag-theme-alpine .ag-root-wrapper {
   background-color: inherit;
+
+}
+.ag-theme-alpine .ag-sticky-top, 
+.ag-theme-alpine .ag-dnd-ghost {
+  background-color: #F4EEE5;
 }
 
 .ag-theme-alpine .ag-header-cell,
@@ -79,10 +85,6 @@
 
 .ag-theme-alpine .ag-row-hover {
   cursor: pointer;
-}
-
-.ag-theme-alpine .ag-root-wrapper {
-  background: inherit;
 }
 
 .ag-theme-alpine .ag-status-name-value {

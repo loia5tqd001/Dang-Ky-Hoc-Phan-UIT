@@ -1,22 +1,17 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { pick } from 'lodash';
 import partition from 'lodash/partition';
 import uniq from 'lodash/uniq';
-import uniqBy from 'lodash/uniqBy';
-import { calcTongSoTC, getBuoiFromTiet } from '../../utils';
 import { ClassModel } from '../../models';
+import { calcTongSoTC, getBuoiFromTiet } from '../../utils';
 import slice from './slice';
 import { State } from './types';
 
 const selectSlice = (state) => state[slice.name] as State;
 
 export const selectDataExcel = createSelector([selectSlice], (slice) => slice.dataExcel);
-export const selectListMaMHTextarea = createSelector([selectSlice], (slice) => slice.listMaMHTextarea);
 export const selectSelectedClasses = createSelector([selectSlice], (slice) => slice.selectedClasses);
 export const selectAgGridColumnState = createSelector([selectSlice], (slice) => slice.agGridColumnState);
 export const selectAgGridFilterModel = createSelector([selectSlice], (slice) => slice.agGridFilterModel);
-// TODO: remove
-export const selectCustomViewMode = createSelector([selectSlice], (slice) => slice.customViewMode);
 export const selectIsChiVeTkb = createSelector([selectSlice], (slice) => slice.isChiVeTkb);
 export const selectTextareaChiVeTkb = createSelector([selectSlice], (slice) => slice.textareaChiVeTkb);
 
@@ -34,16 +29,6 @@ export const selectFinalDataTkb = createSelector([selectDataExcel], (dataExcel) 
 export const selectlistHeDT = createSelector([selectFinalDataTkb], (dataTkb) => uniq(dataTkb.map((it) => it.HeDT)));
 
 export const selectTongSoTcSelected = createSelector([selectSelectedClasses], calcTongSoTC);
-
-// TODO: remove
-export const selectFilteredMonHoc = createSelector(
-  [selectFinalDataTkb, selectListMaMHTextarea],
-  (finalDataTkb, listMaMHTextarea) => {
-    const textareaUpper = listMaMHTextarea.toUpperCase();
-    const listMonHoc = uniqBy(finalDataTkb, 'MaMH').map((it) => pick(it, 'MaMH', 'TenMH'));
-    return listMonHoc.filter((monHoc) => textareaUpper.includes(monHoc.MaMH));
-  },
-);
 
 // chi dung cho buoc 3 (ve tkb)
 export const selectPhanLoaiHocTrenTruong = createSelector(

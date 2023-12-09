@@ -5,6 +5,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
 import { calcTongSoTC, getTongSoTcJudgement } from 'utils';
+import { COLORS } from '../../../constants';
 import ClassCell from './ClassCell';
 import RowHocTrenTruong from './RowHocTrenTruong';
 import TableHead from './TableHead';
@@ -56,11 +57,6 @@ function Index() {
 }
 
 export default Index;
-
-const COLORS = {
-  SUCCESS: 'green',
-  ERROR: 'red',
-};
 
 const getColor = (isError: boolean) => (isError ? COLORS.ERROR : COLORS.SUCCESS);
 
