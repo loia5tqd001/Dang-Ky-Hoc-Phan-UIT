@@ -4,11 +4,9 @@ import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
+import { selectIsChiVeTkb, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
 import { setIsChiVeTkb, setTextareChiVeTkb } from 'redux/xepTkb/slice';
-import { extractListMaLop } from 'utils';
 import ScriptDangKyInput from './ScriptDangKyInput';
 import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
@@ -16,7 +14,6 @@ function Index() {
   const dispatch = useDispatch();
   const khongXepLop = useSelector(selectIsChiVeTkb);
   const textareaChiVeTkb = useSelector(selectTextareaChiVeTkb);
-  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
 
   return (
     <div style={{ height: '100%', minWidth: '90%', display: 'grid', placeContent: 'center' }}>
@@ -64,9 +61,8 @@ function Index() {
             />
           </Tooltip>
         </Grid>
-        <ScriptDangKyInput listMaLop={extractListMaLop(cacLop.flat())} />
+        <ScriptDangKyInput />
       </Grid>
-
       <ThoiKhoaBieuTable />
     </div>
   );

@@ -1,28 +1,19 @@
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import Autocomplete from '@mui/material/Autocomplete';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectCustomViewMode,
-  selectFilteredMonHoc,
-  selectHeDaoTaoFiltered,
-  selectlistHeDT,
-  selectListMaMHTextarea,
-} from 'redux/xepTkb/selectors';
-import { setCustomViewMode, setHeDaoTaoFiltered, setListMaMHTextarea } from 'redux/xepTkb/slice';
+import { selectCustomViewMode, selectFilteredMonHoc, selectListMaMHTextarea } from 'redux/xepTkb/selectors';
+import { setCustomViewMode, setListMaMHTextarea } from 'redux/xepTkb/slice';
 import { VIEW_MODES } from 'redux/xepTkb/types';
 
 function TopInputs() {
   const dispatch = useDispatch();
   const listMaMHTextarea = useSelector(selectListMaMHTextarea);
-  const listHeDT = useSelector(selectlistHeDT);
-  const heDaoTaoFiltered = useSelector(selectHeDaoTaoFiltered);
   const filteredMonHoc = useSelector(selectFilteredMonHoc);
   const customViewMode = useSelector(selectCustomViewMode);
 
@@ -39,7 +30,7 @@ function TopInputs() {
 
   return (
     <Grid container spacing={2} style={{ marginBottom: 10 }}>
-      <Grid item xs={8}>
+      <Grid item flex={1}>
         <Tooltip
           // title="Copy paste từ https://daa.uit.edu.vn/content/chuong-trinh-dao-tao-tu-khoa-7-tro-di"
           title={
@@ -60,21 +51,7 @@ function TopInputs() {
           />
         </Tooltip>
       </Grid>
-      <Grid item xs={4} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <Autocomplete
-          // multiple
-          options={listHeDT}
-          // disableCloseOnSelect
-          value={heDaoTaoFiltered}
-          onChange={(_, value) => {
-            dispatch(setHeDaoTaoFiltered(value));
-          }}
-          fullWidth
-          size="small"
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Hệ đào tạo" placeholder="Lọc theo hệ đào tạo" />
-          )}
-        />
+      <Grid item style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <div>
           <Tooltip title={customViewMode}>
             <IconButton onClick={handleClick} color="primary" style={{ padding: 0 }} size="large">

@@ -1,9 +1,8 @@
-import html2canvas from 'html2canvas';
-import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
-import { downloadFromCanvas, getTietIndex } from './utils';
+import { getDanhSachTiet } from '../../../utils';
+import { getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
 const rowDataExample = [
@@ -20,17 +19,29 @@ const rowDataExample = [
 ];
 */
 
+export const CELL = {
+  /** không có lớp học vào thời điểm này */
+  ABSENT: null,
+  /** có lớp học vào thời điểm này, nhưng sẽ được render đè bởi cell khác (lớp có tiết 12345 thì chỉ tiết 1 là phải render) */
+  OCCUPIED: 'xx',
+} as const;
+export const OCCUPIED_CELL = 'xx';
+
 const initRowData = () => [
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 1
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 2
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 3
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 4
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 5
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 6
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 7
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 8
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 9
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 10
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 1
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 2
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 3
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 4
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 5
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 6
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 7
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 8
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 9
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 10
+
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 11
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 12
+  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 13
 ];
 
 // Phân loại data thành các lớp học trên trường & các lớp HT2
@@ -42,15 +53,20 @@ export const usePhanLoaiHocTrenTruong = () => {
     const rowData = initRowData();
 
     for (const lop of hocTrenTruong) {
-      const listTiet = lop.Tiet.split('');
+      const listTiet = getDanhSachTiet(lop.Tiet);
 
       const tietBatDau = listTiet[0];
       rowData[getTietIndex(tietBatDau)]['Thu' + lop.Thu] = lop;
 
       for (let i = 1; i < listTiet.length; i++) {
-        rowData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = 'xx';
+        rowData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = CELL.OCCUPIED;
       }
     }
+
+    const khongCoLopBuoiToi = rowData.slice(-3).every((tiet) => {
+      return Object.values(tiet).every((cell) => cell === CELL.ABSENT);
+    });
+    if (khongCoLopBuoiToi) rowData.splice(-3);
 
     return rowData;
   }, [hocTrenTruong]);
@@ -99,39 +115,3 @@ export const usePhanLoaiHocTrenTruong = () => {
       ]
       Can try this: console.log('rowDataHocTrenTruong', JSON.stringify(rowDataHocTrenTruong, null, 2));
     */
-
-export const useProcessImageTkb = () => {
-  const tkbTableRef = React.useRef<HTMLTableElement>(null);
-
-  // sap chép hình ảnh tkb vào clipboard
-  const [isCopyingToClipboard, setIsCopyingToClipboard] = React.useState(false);
-  const onHandleCopyToClipboard = React.useCallback(async () => {
-    if (!tkbTableRef.current) return;
-    setIsCopyingToClipboard(true);
-    const canvas = await html2canvas(tkbTableRef.current);
-    canvas.toBlob((blob) => {
-      // @ts-ignore
-      navigator.clipboard.write([new window.ClipboardItem({ [blob.type]: blob })]);
-      setIsCopyingToClipboard(false);
-      enqueueSnackbar('Sao chép ảnh thành công, Ctrl+V để xem kết quả.', { variant: 'success' });
-    });
-  }, [tkbTableRef]);
-
-  // tải hình ảnh tkb về máy
-  const [isSavingToComputer, setIsSavingToComputer] = React.useState(false);
-  const onHandleSavingToComputer = React.useCallback(async () => {
-    if (!tkbTableRef.current) return;
-    setIsSavingToComputer(true);
-    const canvas = await html2canvas(tkbTableRef.current);
-    downloadFromCanvas(canvas, 'thoikhoabieu.png');
-    setIsSavingToComputer(false);
-  }, [tkbTableRef]);
-
-  return {
-    tkbTableRef,
-    isCopyingToClipboard,
-    onHandleCopyToClipboard,
-    isSavingToComputer,
-    onHandleSavingToComputer,
-  };
-};

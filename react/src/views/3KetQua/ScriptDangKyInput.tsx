@@ -1,18 +1,17 @@
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import makeStyles from '@mui/styles/makeStyles';
 import { enqueueSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import { selectPhanLoaiHocTrenTruong } from '../../redux/xepTkb/selectors';
+import { extractListMaLop } from '../../utils';
 import { getScriptDkhp } from './utils';
 
-type Props = {
-  listMaLop: string[];
-};
-
-function ScriptDangKyInput({ listMaLop }: Props) {
-  const classes = useStyles();
-
-  const script = getScriptDkhp(listMaLop);
+function ScriptDangKyInput() {
+  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
+  const listMaLop = useMemo(() => extractListMaLop(cacLop.flat()), [cacLop]);
+  const script = useMemo(() => getScriptDkhp(listMaLop), [listMaLop]);
 
   return (
     <Grid item xs={6} style={{ paddingRight: 0 }}>
@@ -29,7 +28,6 @@ function ScriptDangKyInput({ listMaLop }: Props) {
                 },
               );
             }}
-            className={classes.textFieldActive}
             label={'Script đăng ký nhanh'}
             fullWidth
             size="small"
@@ -57,20 +55,3 @@ function ScriptDangKyInput({ listMaLop }: Props) {
 }
 
 export default ScriptDangKyInput;
-
-// styles below:
-
-const useStyles = makeStyles((theme) => ({
-  textFieldActive: {
-    '& label': {
-      color: `${theme.palette.error.main} !important`,
-    },
-    '& fieldset': {
-      border: `1px solid red !important`,
-    },
-    '& input': {
-      color: `${theme.palette.error.main} !important`,
-      fontWeight: '500',
-    },
-  },
-}));

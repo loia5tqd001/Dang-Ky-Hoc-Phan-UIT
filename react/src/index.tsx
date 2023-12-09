@@ -1,18 +1,17 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme } from '@mui/material/styles';
+import { lightBlue } from '@mui/material/colors';
+import { StyledEngineProvider, Theme, ThemeProvider, adaptV4Theme, createTheme } from '@mui/material/styles';
+import { LicenseManager } from 'ag-grid-enterprise';
 import { SnackbarProvider } from 'notistack';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { lightBlue } from '@mui/material/colors';
-import { LicenseManager } from 'ag-grid-enterprise';
 import { persistor, store } from './redux';
 
-import App from './views/App';
 import 'ag-grid-enterprise/styles/ag-grid.css';
 import 'ag-grid-enterprise/styles/ag-theme-alpine.css';
 import { DrawerProvider } from './contexts';
+import App from './views/App';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

@@ -1,3 +1,41 @@
+.ag-theme-alpine {
+  --ag-header-background-color: #f4f9f2;
+  --ag-background-color: #fff9;
+  /* TODO: customize better color theming */
+  /* --ag-alpine-active-color: rgba(244,238,239, 1);
+  --ag-selected-row-background-color: rgba(244,238,239, 0.3);
+  --ag-row-hover-color: rgba(244,238,239, 0.1);
+  --ag-column-hover-color: rgba(244,238,239, 0.1);
+  --ag-input-focus-border-color: rgba(244,238,239, 0.4);
+  --ag-range-selection-background-color: rgba(244,238,239, 0.2);
+  --ag-range-selection-background-color-2: rgba(244,238,239, 0.36);
+  --ag-range-selection-background-color-3: rgba(244,238,239, 0.49);
+  --ag-range-selection-background-color-4: rgba(244,238,239, 0.59); */
+}
+.ag-theme-alpine .ag-body {
+  --ag-row-hover-color: #F4EEE5; 
+}
+
+/* show pin icon when column is pinned https://stackoverflow.com/a/43471358/9787887 */
+.ag-pinned-left-header .ag-header-cell-text {
+  display: flex;
+}
+.ag-pinned-left-header .ag-header-cell-text::before,
+.ag-pinned-right-header .ag-header-cell-text::before {
+  display: inline-block;
+  margin-right: 4px;
+  font-family: var(--ag-icon-font-family);
+  font-size: var(--ag-icon-size);
+  line-height: var(--ag-icon-size);
+  font-style: normal;
+  font-weight: normal;
+  font-feature-settings: normal;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  content: var(--ag-icon-font-code-pin, "\f124");
+}
+
 .ag-theme-alpine .ag-cell {
   /*line-height: 25px; !* Kết hợp với rowHeight để điều chỉnh rowHeight mà text vẫn căn giữa vertically *!*/
 
@@ -5,6 +43,14 @@
   padding-right: 10px;
   line-height: 28px;
   letter-spacing: 0.5px;
+}
+
+.ag-theme-alpine .ag-header-cell-resize::after {
+  content: none;
+}
+
+.ag-theme-alpine .ag-cell-normal {
+  background-color: inherit;
 }
 
 .ag-theme-alpine .ag-header-cell,
@@ -15,27 +61,23 @@
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-top: 1px solid #ddd;
-  background: #f0f0f0;
+  /* background: #f4f9f2; */
 }
+
+
+/* .odd-row {
+  background: #d7e8f7 !important;
+}
+.even-row {
+  background: #f6e6c8 !important;
+} */
+
 
 .ag-theme-alpine .ag-set-filter-list {
   height: 250px;
 }
 
-.ag-theme-alpine .ag-ltr .ag-cell {
-  border-right-color: #fefefe;
-  border-left-color: #fefefe;
-  border-bottom-color: #fefefe;
-}
-.ag-theme-alpine .ag-row-selected {
-  /* background: #f4eee3 !important; */
-  /* background: #fff !important; */
-}
-
 .ag-theme-alpine .ag-row-hover {
-  /*--ag-row-hover-color: #f6f6f6 !important; !* Kết hợp với animateRows={true} để chỉnh color của row khi hover lên 1 cell thuộc row *!*/
-  background: #fff !important;
-  /* background: #d7e8f7 !important; */
   cursor: pointer;
 }
 
@@ -51,11 +93,4 @@
 .ag-cell-focus,
 .ag-cell-no-focus {
   border-color: transparent !important;
-}
-
-.odd-row {
-  background: #d7e8f7 !important;
-}
-.even-row {
-  background: #f4eee3 !important;
 }

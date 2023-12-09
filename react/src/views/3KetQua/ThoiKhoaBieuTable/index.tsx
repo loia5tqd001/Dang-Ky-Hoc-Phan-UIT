@@ -1,67 +1,42 @@
-import React from 'react';
-// components
-// mui
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import './styles.css';
+import { Theme } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector } from 'react-redux';
 import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
-import { Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import { calcTongSoTC } from 'utils';
+import { calcTongSoTC, getTongSoTcJudgement } from 'utils';
 import ClassCell from './ClassCell';
-import TableHead from './TableHead';
 import RowHocTrenTruong from './RowHocTrenTruong';
-import { usePhanLoaiHocTrenTruong, useProcessImageTkb } from './hooks';
+import TableHead from './TableHead';
+import { usePhanLoaiHocTrenTruong } from './hooks';
+import './styles.css';
+
+export function Buoc3TinChi() {
+  const tongSoTC = calcTongSoTC(useSelector(selectPhanLoaiHocTrenTruong).flat());
+  const tinChiJudgement = getTongSoTcJudgement(tongSoTC);
+  const classes = useStyles({ tongSoTCWaring: !tinChiJudgement.isOk });
+
+  return (
+    <Tooltip title={tinChiJudgement.text} style={{ marginLeft: 'auto' }}>
+      <TextField
+        className={classes.soTCInput}
+        size="small"
+        variant="outlined"
+        label={'Số tín chỉ'}
+        value={tongSoTC}
+        inputProps={{ readOnly: true }}
+      />
+    </Tooltip>
+  );
+}
 
 function Index() {
   const { rowDataHocTrenTruong, khongHocTrenTruong } = usePhanLoaiHocTrenTruong();
-  const { tkbTableRef, isCopyingToClipboard, onHandleCopyToClipboard, isSavingToComputer, onHandleSavingToComputer } =
-    useProcessImageTkb();
-  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
-  const tongSoTC = calcTongSoTC(cacLop.flat());
-  const classes = useStyles({ tongSoTCWaring: tongSoTC < 14 || tongSoTC > 24 });
 
   return (
     <div id="thoi-khoa-bieu">
-      <div style={{ display: 'flex', maxWidth: 1500 }}>
-        <Button
-          size="small"
-          variant="outlined"
-          style={{ marginRight: 4 }}
-          children={isCopyingToClipboard ? <CircularProgress size={20} /> : 'Sao chép hình ảnh TKB vào clipboard'}
-          onClick={onHandleCopyToClipboard}
-        />
-        <Button
-          size="small"
-          variant="outlined"
-          color="primary"
-          children={isSavingToComputer ? <CircularProgress size={20} /> : 'Tải hình ảnh TKB về máy'}
-          onClick={onHandleSavingToComputer}
-        />
-        <Tooltip
-          title={
-            tongSoTC < 14
-              ? 'Chưa đạt số TC quy định (14)'
-              : tongSoTC > 24
-              ? 'Vượt quá số TC quy định (24)'
-              : 'Thỏa mãn số TC quy định (14-24)'
-          }
-          style={{ marginLeft: 'auto' }}
-        >
-          <TextField
-            className={classes.soTCInput}
-            size="small"
-            variant="outlined"
-            label={'Số tín chỉ'}
-            value={tongSoTC}
-            inputProps={{ readOnly: true }}
-          />
-        </Tooltip>
-      </div>
-      <table ref={tkbTableRef}>
+      <Buoc3TinChi />
+      <table>
         <TableHead />
         <tbody>
           {rowDataHocTrenTruong.map((row, index) => (
@@ -82,20 +57,23 @@ function Index() {
 
 export default Index;
 
+const COLORS = {
+  SUCCESS: 'green',
+  ERROR: 'red',
+};
+
+const getColor = (isError: boolean) => (isError ? COLORS.ERROR : COLORS.SUCCESS);
+
 const useStyles = makeStyles<Theme, { tongSoTCWaring: boolean }>((theme) => ({
   soTCInput: {
-    // '& label': {
-    //   color: (p) =>
-    //     `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
-    // },
-    // '& fieldset': {
-    //   border: (p) =>
-    //     `1px solid ${
-    //       p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main
-    //     } !important`,
-    // },
+    '& label': {
+      color: (p) => `${getColor(p.tongSoTCWaring)} !important`,
+    },
+    '& fieldset': {
+      border: (p) => `1px solid ${getColor(p.tongSoTCWaring)} !important`,
+    },
     '& input': {
-      color: (p) => `${p.tongSoTCWaring ? theme.palette.error.main : theme.palette.success.main} !important`,
+      color: (p) => `${getColor(p.tongSoTCWaring)} !important`,
       fontWeight: '500',
     },
   },

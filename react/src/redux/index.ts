@@ -6,7 +6,7 @@ import xepTkbSlice from './xepTkb/slice';
 
 // Sometimes new updates will break the app, due to stale data stored in localstorage
 // This is for updating new key for data stored in localstorage
-const keyVersions = ['dkhp-uit-react-v-2', 'dkhp-uit-react-v-1'] as const;
+const keyVersions = [3, 2, 1].map((it) => `dkhp-uit-react-v-${it}`);
 
 // only keyVersions[0] is the key being used, all are staled and need to be removed
 // @NOTE: More official approach though: https://blog.bam.tech/developer-news/redux-persist-how-it-works-and-how-to-change-the-structure-of-your-persisted-store

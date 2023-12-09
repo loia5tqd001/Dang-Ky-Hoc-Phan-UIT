@@ -3,6 +3,8 @@ import { pick } from 'lodash';
 import partition from 'lodash/partition';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
+import { calcTongSoTC, getBuoiFromTiet } from '../../utils';
+import { ClassModel } from '../../models';
 import slice from './slice';
 import { State } from './types';
 
@@ -10,20 +12,30 @@ const selectSlice = (state) => state[slice.name] as State;
 
 export const selectDataExcel = createSelector([selectSlice], (slice) => slice.dataExcel);
 export const selectListMaMHTextarea = createSelector([selectSlice], (slice) => slice.listMaMHTextarea);
-export const selectHeDaoTaoFiltered = createSelector([selectSlice], (slice) => slice.heDaoTaoFiltered);
 export const selectSelectedClasses = createSelector([selectSlice], (slice) => slice.selectedClasses);
 export const selectAgGridColumnState = createSelector([selectSlice], (slice) => slice.agGridColumnState);
 export const selectAgGridFilterModel = createSelector([selectSlice], (slice) => slice.agGridFilterModel);
+// TODO: remove
 export const selectCustomViewMode = createSelector([selectSlice], (slice) => slice.customViewMode);
 export const selectIsChiVeTkb = createSelector([selectSlice], (slice) => slice.isChiVeTkb);
 export const selectTextareaChiVeTkb = createSelector([selectSlice], (slice) => slice.textareaChiVeTkb);
 
 export const selectFinalDataTkb = createSelector([selectDataExcel], (dataExcel) => {
-  return dataExcel?.data || []; // there used to be a complicatd logic here, but now it's just this
+  return (
+    dataExcel?.data.map((classModel) => {
+      return {
+        ...classModel,
+        Buoi: getBuoiFromTiet(classModel.Tiet),
+      };
+    }) || []
+  ); // there used to be a complicatd logic here, but now it's just this
 });
 
 export const selectlistHeDT = createSelector([selectFinalDataTkb], (dataTkb) => uniq(dataTkb.map((it) => it.HeDT)));
 
+export const selectTongSoTcSelected = createSelector([selectSelectedClasses], calcTongSoTC);
+
+// TODO: remove
 export const selectFilteredMonHoc = createSelector(
   [selectFinalDataTkb, selectListMaMHTextarea],
   (finalDataTkb, listMaMHTextarea) => {
@@ -36,7 +48,7 @@ export const selectFilteredMonHoc = createSelector(
 // chi dung cho buoc 3 (ve tkb)
 export const selectPhanLoaiHocTrenTruong = createSelector(
   [selectIsChiVeTkb, selectSelectedClasses, selectTextareaChiVeTkb, selectFinalDataTkb],
-  (isChiVeTkb, selectedClasses, textareaChiVeTkb, finalDataTkb) => {
+  (isChiVeTkb, selectedClasses, textareaChiVeTkb, finalDataTkb): [ClassModel[], ClassModel[]] => {
     if (isChiVeTkb) {
       const listMaLop = textareaChiVeTkb.split(/\s+/);
       const selectedClasses = finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));

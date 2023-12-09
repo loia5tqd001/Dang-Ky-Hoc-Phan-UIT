@@ -1,4 +1,5 @@
-export interface ClassModel {
+// got from Excel
+export type ClassModelOriginal = {
   STT: number;
   MaMH: string;
   MaLop: string;
@@ -20,5 +21,11 @@ export interface ClassModel {
   KhoaQL: string;
   NBD: string;
   NKT: string;
+  GhiChu: string;
   NgonNgu: string;
-}
+};
+
+export type ClassModel = ClassModelOriginal & {
+  /* built from Tiet */
+  Buoi: '*' | 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
+};

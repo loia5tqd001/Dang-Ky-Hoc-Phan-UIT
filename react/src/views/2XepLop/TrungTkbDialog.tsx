@@ -1,18 +1,42 @@
-import React from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import Box from '@mui/material/Box';
 import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import constate from 'constate';
+import React from 'react';
+import { ClassModel } from '../../models';
 
-function TrungTkbDialog({ isDialogOpen, setIsDialogOpen, lopTrungTkb }) {
+export type TTrungTkb = {
+  master: ClassModel | null;
+  slave: ClassModel | null;
+};
+
+export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [lopTrungTkb, setLopTrungTkb] = React.useState<TTrungTkb>({ master: null, slave: null });
+
+  const openTrungTkbDialog = React.useCallback((trungTkbData: TTrungTkb) => {
+    setLopTrungTkb(trungTkbData);
+    setIsDialogOpen(true);
+  }, []);
+
+  const closeDialog = React.useCallback(() => {
+    setIsDialogOpen(false);
+  }, []);
+
+  return { isDialogOpen, lopTrungTkb, openTrungTkbDialog, closeDialog };
+});
+
+function TrungTkbDialog() {
+  const { isDialogOpen, closeDialog, lopTrungTkb } = useTrungTkbDialogContext();
   return (
     <Dialog
       open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
+      onClose={closeDialog}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -38,7 +62,7 @@ function TrungTkbDialog({ isDialogOpen, setIsDialogOpen, lopTrungTkb }) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setIsDialogOpen(false)} color="primary" children="Đã hiểu" />
+        <Button onClick={closeDialog} color="primary" children="Đã hiểu" />
       </DialogActions>
     </Dialog>
   );

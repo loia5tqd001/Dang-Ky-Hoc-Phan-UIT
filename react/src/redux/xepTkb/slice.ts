@@ -1,6 +1,5 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import uniq from 'lodash/uniq';
-import { isMonChung } from 'utils';
 import { Reducer, State } from './types';
 
 const slice = createSlice<State, Reducer, 'xepTkb'>({
@@ -9,7 +8,6 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
     dataExcel: null,
 
     listMaMHTextarea: '',
-    heDaoTaoFiltered: 'CQUI',
     selectedClasses: [], // [{}, {}]
     agGridColumnState: null,
     agGridFilterModel: null,
@@ -31,15 +29,9 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
       state.listMaMHTextarea =
         uniq(
           current(state)
-            .dataExcel?.data.filter(
-              // && (isMonChung(it) || it.HeDT === current(state).heDaoTaoFiltered) là để fix bug nhiều môn trùng tên môn nhưng khác mã lớp
-              (it) => payload.includes(it.TenMH) && (isMonChung(it) || it.HeDT === current(state).heDaoTaoFiltered),
-            )
+            .dataExcel?.data.filter((it) => payload.includes(it.TenMH))
             .map((it) => it.MaMH),
         ).join(' ') + ' ';
-    },
-    setHeDaoTaoFiltered: (state, { payload }) => {
-      state.heDaoTaoFiltered = payload;
     },
     setSelectedClasses: (state, { payload }) => {
       state.selectedClasses = payload;
@@ -65,7 +57,6 @@ const slice = createSlice<State, Reducer, 'xepTkb'>({
 export const {
   setDataExcel,
   setListMaMHTextarea,
-  setHeDaoTaoFiltered,
   setSelectedClasses,
   setAgGridColumnState,
   setAgGridFilterModel,

@@ -11,13 +11,23 @@ export function calcTongSoTC(classes: ClassModel[]) {
   return unique.reduce((acc, cur) => acc + cur.SoTc, 0);
 }
 
+export function getTongSoTcJudgement(tongSoTC: number) {
+  const text =
+    tongSoTC < 14
+      ? 'Chưa đạt số TC quy định: 14'
+      : tongSoTC > 24
+      ? 'Vượt quá số TC quy định: 24'
+      : 'Thỏa mãn số TC quy định 14-24';
+  const isOk = tongSoTC >= 14 && tongSoTC <= 24;
+  return {
+    isOk,
+    text,
+  };
+}
+
 export function extractListMaLop(classes: ClassModel[]) {
   const unique = uniqMaLop(classes);
   return unique.map((it) => it.MaLop);
-}
-
-export function isMonChung(lop: ClassModel) {
-  return /^(SS0|PE00)/g.test(lop.MaMH) && lop.MaMH !== 'SS004'; // Kỹ năng nghề nghiệp (SS004) không phải là môn học chung
 }
 
 export function isChungMon(classA: ClassModel, classB: ClassModel, distinguishThucHanh = true) {
@@ -35,3 +45,16 @@ export function phanLoaiAV(classes: ClassModel[]) {
   const [lopAv, lopThuong] = partition(classes, (it) => it.MaLop.startsWith('EN'));
   return { lopAv, lopThuong };
 }
+
+export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): ClassModel['Buoi'] => {
+  if (tiet.includes('11')) return 'Tối 🌚';
+  if (/1|2|3|4|5/g.test(tiet)) return 'Sáng ☀️';
+  if (/6|7|8|9|0/g.test(tiet)) return 'Chiều 🌞'; // TODO: ve TKB buoc 3 co buoi toi
+  return '*';
+};
+
+export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
+  if (tiet.includes(',')) return tiet.split(',');
+  if (tiet === '*') return ['*'];
+  return tiet.split('');
+};

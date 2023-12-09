@@ -177,7 +177,6 @@ const useStyles = makeStyles((theme) => ({
     transform: 'scale(0)',
   },
   etc: {
-    transition: 'all 0.3s ease',
     transform: 'scale(1)',
   },
   etcCollapsed: {

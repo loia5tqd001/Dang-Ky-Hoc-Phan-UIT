@@ -1,25 +1,16 @@
 import Tooltip from '@mui/material/Tooltip';
-import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectSelectedClasses } from 'redux/xepTkb/selectors';
-import { calcTongSoTC } from 'utils';
+import { selectTongSoTcSelected } from 'redux/xepTkb/selectors';
+import { getTongSoTcJudgement } from '../../../utils';
 
 function SoTinChi() {
-  const cacLop = useSelector(selectSelectedClasses);
-  const tongSoTC = calcTongSoTC(cacLop);
+  const tongSoTcSelected = useSelector(selectTongSoTcSelected);
+  const judgement = getTongSoTcJudgement(tongSoTcSelected);
 
   return (
-    <Tooltip
-      title={
-        tongSoTC < 14
-          ? 'Chưa đạt số TC quy định: 14'
-          : tongSoTC > 24
-          ? 'Vượt quá số TC quy định: 24'
-          : 'Số TC quy định là 14-24'
-      }
-    >
-      <p style={{ color: `${tongSoTC < 14 || tongSoTC > 24 ? 'red' : 'green'}`, margin: 0, padding: 6 }}>
-        Số tín chỉ: <b>{tongSoTC}</b>
+    <Tooltip title={judgement.text}>
+      <p style={{ color: judgement.isOk ? 'green' : 'red', margin: 0, padding: 6 }}>
+        Số tín chỉ đã chọn: <b>{tongSoTcSelected}</b>
       </p>
     </Tooltip>
   );
