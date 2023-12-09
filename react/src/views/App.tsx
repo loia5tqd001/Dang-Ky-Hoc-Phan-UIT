@@ -1,7 +1,7 @@
 import LinearProgress from '@mui/material/LinearProgress';
 import makeStyles from '@mui/styles/makeStyles';
 import routes from 'routes';
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
 import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
@@ -18,14 +18,28 @@ const KetQua = lazy(() => import('./3KetQua'));
 
 type PersistedRouteProps = {
   path: string;
-  component: React.ComponentType;
-  redirect?: string;
-};
+} & (
+  | {
+      component: React.ComponentType;
+    }
+  | {
+      redirect: string;
+    }
+);
 
+/**
+ * to show/hide only, instead of mount/unmount the component when route changes
+ * for a smoother UX
+ */
 function PersistedRoute(props: PersistedRouteProps) {
   const location = useLocation();
-  const Component = props.component;
   const match = location.pathname === props.path || props.path === '*';
+
+  if ('redirect' in props) {
+    return match ? <Redirect to={props.redirect} /> : null;
+  }
+
+  const Component = props.component;
   const isRealPath = props.path !== '*';
   return (
     <div hidden={!match} style={isRealPath ? { width: '100%' } : undefined}>
@@ -55,7 +69,7 @@ function App() {
               <PersistedRoute path={routes._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
               <PersistedRoute path={routes._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
               {/* <PersistedRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} /> */}
-              <PersistedRoute path={'/'} component={() => <Redirect to={routes._1ChonFileExcel.path} />} />
+              <PersistedRoute path={'/'} redirect={routes._1ChonFileExcel.path} />
             </Suspense>
           </div>
         </BrowserRouter>
