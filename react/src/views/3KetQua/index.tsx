@@ -4,16 +4,15 @@ import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsChiVeTkb, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
-import { setIsChiVeTkb, setTextareChiVeTkb } from 'redux/xepTkb/slice';
+import { selectIsChiVeTkb, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
 import ScriptDangKyInput from './ScriptDangKyInput';
 import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
 function Index() {
-  const dispatch = useDispatch();
-  const khongXepLop = useSelector(selectIsChiVeTkb);
-  const textareaChiVeTkb = useSelector(selectTextareaChiVeTkb);
+  const setIsChiVeTkb = useTkbStore((s) => s.setIsChiVeTkb);
+  const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
+  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  const textareaChiVeTkb = useTkbStore(selectTextareaChiVeTkb);
 
   return (
     <div style={{ height: '100%', minWidth: '90%', display: 'grid', placeContent: 'center' }}>
@@ -23,7 +22,7 @@ function Index() {
             control={
               <Checkbox
                 checked={khongXepLop}
-                onChange={(e) => dispatch(setIsChiVeTkb(e.target.checked))}
+                onChange={(e) => setIsChiVeTkb(e.target.checked)}
                 name="checkedA"
                 color="primary"
                 size="small"
@@ -54,7 +53,7 @@ function Index() {
               rows={2}
               variant="outlined"
               onChange={(e) => {
-                dispatch(setTextareChiVeTkb(e.target.value));
+                setTextareChiVeTkb(e.target.value);
               }}
               disabled={!khongXepLop}
               value={khongXepLop ? textareaChiVeTkb : ''}

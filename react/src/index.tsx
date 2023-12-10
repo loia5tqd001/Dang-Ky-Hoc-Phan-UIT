@@ -4,9 +4,6 @@ import { StyledEngineProvider, Theme, ThemeProvider, adaptV4Theme, createTheme }
 import { LicenseManager } from 'ag-grid-enterprise';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from './redux';
 
 import 'ag-grid-enterprise/styles/ag-grid.css';
 import 'ag-grid-enterprise/styles/ag-theme-alpine.css';
@@ -43,17 +40,13 @@ const theme = createTheme(
 
 // TODO: read this: https://material-ui.com/customization/globals/#global-css
 ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate persistor={persistor}>
-      <SnackbarProvider>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App />
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </SnackbarProvider>
-    </PersistGate>
-  </Provider>,
+  <SnackbarProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </StyledEngineProvider>
+  </SnackbarProvider>,
   document.getElementById('root'),
 );

@@ -3,12 +3,10 @@ import sortBy from 'lodash/sortBy';
 import { ClassModel } from 'models';
 import { enqueueSnackbar } from 'notistack';
 import { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAgGridColumnState, setAgGridFilterModel, setSelectedClasses } from 'redux/xepTkb/slice';
 import { useDebouncedCallback } from 'use-debounce';
-import { selectAgGridFilterModel, selectFinalDataTkb, selectSelectedClasses } from '../../../redux/xepTkb/selectors';
 import { getBuoiFromTiet, getDanhSachTiet, isChungMon, log } from '../../../utils';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
+import { selectAgGridFilterModel, selectFinalDataTkb, selectSelectedClasses, useTkbStore } from '../../../zus';
 import SoTinChi from './SoTinChi';
 
 const isSameRow = (r1: ClassModel, r2: ClassModel) => {
@@ -298,16 +296,15 @@ const getMainMenuItems: GridOptions['getMainMenuItems'] = () => {
 };
 
 export const useGridOptions = () => {
-  const dispatch = useDispatch();
-
   const { openTrungTkbDialog } = useTrungTkbDialogContext();
-  const selectedClasses = useSelector(selectSelectedClasses);
+  const selectedClasses = useTkbStore(selectSelectedClasses);
+  const setSelectedClasses = useTkbStore((s) => s.setSelectedClasses);
   const onRowSelected: GridOptions['onRowSelected'] = useCallback(
     ({ api, data, node }: RowSelectedEvent<ClassModel, any>) => {
       if (!data) return;
       if (node.isSelected() && selectedClasses.find((it) => isSameRow(it, data))) return;
       if (!node.isSelected()) {
-        dispatch(setSelectedClasses(api.getSelectedRows()));
+        setSelectedClasses(api.getSelectedRows());
         return;
       }
       // môn Anh Văn có thẻ 2 record chung môn, nhưng mà mã lớp giống nhau
@@ -330,24 +327,26 @@ export const useGridOptions = () => {
           return;
         }
       }
-      dispatch(setSelectedClasses(api.getSelectedRows()));
+      setSelectedClasses(api.getSelectedRows());
     },
-    [dispatch, openTrungTkbDialog, selectedClasses],
+    [openTrungTkbDialog, selectedClasses, setSelectedClasses],
   );
 
   const DEBOUNCE_TIME = 500;
+  const setAgGridFilterModel = useTkbStore((s) => s.setAgGridFilterModel);
+  const setAgGridColumnState = useTkbStore((s) => s.setAgGridColumnState);
   const onFilterChanged: GridOptions['onFilterChanged'] = useDebouncedCallback(({ api }: AgGridEvent) => {
     log('>>onFilterChanged');
-    dispatch(setAgGridFilterModel(api.getFilterModel()));
+    setAgGridFilterModel(api.getFilterModel());
   }, DEBOUNCE_TIME);
 
   // onColumnResized will be called too much without debounce
   const onColumnChanged = useDebouncedCallback(({ columnApi }: AgGridEvent) => {
     log('>>onColumnChanged');
-    dispatch(setAgGridColumnState(columnApi.getColumnState()));
+    setAgGridColumnState(columnApi.getColumnState());
   }, DEBOUNCE_TIME);
 
-  const agGridFilterModel = useSelector(selectAgGridFilterModel);
+  const agGridFilterModel = useTkbStore(selectAgGridFilterModel);
   const onGridReady: GridOptions['onGridReady'] = useCallback(
     ({ api, columnApi }) => {
       const agGridColumnState = columnApi.getColumnState();
@@ -366,7 +365,7 @@ export const useGridOptions = () => {
     [agGridFilterModel, selectedClasses],
   );
 
-  const dataTkb = useSelector(selectFinalDataTkb);
+  const dataTkb = useTkbStore(selectFinalDataTkb);
   const rowData: GridOptions['rowData'] = useMemo(() => {
     return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
   }, [dataTkb]);

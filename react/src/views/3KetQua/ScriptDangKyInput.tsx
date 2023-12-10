@@ -2,14 +2,13 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import { enqueueSnackbar } from 'notistack';
-import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import { selectPhanLoaiHocTrenTruong } from '../../redux/xepTkb/selectors';
 import { extractListMaLop } from '../../utils';
+import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
 import { getScriptDkhp } from './utils';
 
 function ScriptDangKyInput() {
-  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
+  const cacLop = useTkbStore(selectPhanLoaiHocTrenTruong);
   const listMaLop = useMemo(() => extractListMaLop(cacLop.flat()), [cacLop]);
   const script = useMemo(() => getScriptDkhp(listMaLop), [listMaLop]);
 

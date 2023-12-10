@@ -1,11 +1,10 @@
 import Tooltip from '@mui/material/Tooltip';
-import { useSelector } from 'react-redux';
-import { selectTongSoTcSelected } from 'redux/xepTkb/selectors';
 import { getTongSoTcJudgement } from '../../../utils';
 import { COLORS } from '../../../constants';
+import { selectTongSoTcSelected, useTkbStore } from '../../../zus';
 
 function SoTinChi() {
-  const tongSoTcSelected = useSelector(selectTongSoTcSelected);
+  const tongSoTcSelected = useTkbStore(selectTongSoTcSelected);
   const judgement = getTongSoTcJudgement(tongSoTcSelected);
 
   return (

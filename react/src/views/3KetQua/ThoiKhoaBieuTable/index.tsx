@@ -2,10 +2,10 @@ import { Theme } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import makeStyles from '@mui/styles/makeStyles';
-import { useSelector } from 'react-redux';
-import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
 import { calcTongSoTC, getTongSoTcJudgement } from 'utils';
+import { useMemo } from 'react';
 import { COLORS } from '../../../constants';
+import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
 import ClassCell from './ClassCell';
 import RowHocTrenTruong from './RowHocTrenTruong';
 import TableHead from './TableHead';
@@ -13,7 +13,10 @@ import { usePhanLoaiHocTrenTruong } from './hooks';
 import './styles.css';
 
 export function Buoc3TinChi() {
-  const tongSoTC = calcTongSoTC(useSelector(selectPhanLoaiHocTrenTruong).flat());
+  const phanLoaiHocTrenTruong = useTkbStore(selectPhanLoaiHocTrenTruong);
+  const tongSoTC = useMemo(() => {
+    return calcTongSoTC(phanLoaiHocTrenTruong.flat());
+  }, [phanLoaiHocTrenTruong]);
   const tinChiJudgement = getTongSoTcJudgement(tongSoTC);
   const classes = useStyles({ tongSoTCWaring: !tinChiJudgement.isOk });
 

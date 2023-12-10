@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
 import { getDanhSachTiet } from '../../../utils';
+import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
+import { ClassModel } from '../../../models';
 import { getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
@@ -21,54 +21,62 @@ const rowDataExample = [
 
 export const CELL = {
   /** không có lớp học vào thời điểm này */
-  ABSENT: null,
+  NO_CLASS: null,
   /** có lớp học vào thời điểm này, nhưng sẽ được render đè bởi cell khác (lớp có tiết 12345 thì chỉ tiết 1 là phải render) */
   OCCUPIED: 'xx',
 } as const;
-export const OCCUPIED_CELL = 'xx';
 
-const initRowData = () => [
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 1
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 2
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 3
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 4
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 5
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 6
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 7
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 8
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 9
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 10
+type CellData = typeof CELL.NO_CLASS | typeof CELL.OCCUPIED | ClassModel;
+type RowData = {
+  Thu2: CellData;
+  Thu3: CellData;
+  Thu4: CellData;
+  Thu5: CellData;
+  Thu6: CellData;
+  Thu7: CellData;
+};
+type TableData = RowData[];
 
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 11
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 12
-  { Thu2: CELL.ABSENT, Thu3: CELL.ABSENT, Thu4: CELL.ABSENT, Thu5: CELL.ABSENT, Thu6: CELL.ABSENT, Thu7: CELL.ABSENT }, // tiet 13
-];
+const initTableData = () => {
+  const tableData: TableData = [];
+  for (let i = 0; i < 13; i++) {
+    tableData.push({
+      Thu2: CELL.NO_CLASS,
+      Thu3: CELL.NO_CLASS,
+      Thu4: CELL.NO_CLASS,
+      Thu5: CELL.NO_CLASS,
+      Thu6: CELL.NO_CLASS,
+      Thu7: CELL.NO_CLASS,
+    });
+  }
+  return tableData;
+};
 
 // Phân loại data thành các lớp học trên trường & các lớp HT2
 // Đồng thời tái cấu trúc CTDL nhằm tiện vẽ TKB hơn
 export const usePhanLoaiHocTrenTruong = () => {
-  const [khongHocTrenTruong, hocTrenTruong] = useSelector(selectPhanLoaiHocTrenTruong);
+  const [khongHocTrenTruong, hocTrenTruong] = useTkbStore(selectPhanLoaiHocTrenTruong);
 
   const rowDataHocTrenTruong = React.useMemo(() => {
-    const rowData = initRowData();
+    const tableData = initTableData();
 
     for (const lop of hocTrenTruong) {
       const listTiet = getDanhSachTiet(lop.Tiet);
 
       const tietBatDau = listTiet[0];
-      rowData[getTietIndex(tietBatDau)]['Thu' + lop.Thu] = lop;
+      tableData[getTietIndex(tietBatDau)]['Thu' + lop.Thu] = lop;
 
       for (let i = 1; i < listTiet.length; i++) {
-        rowData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = CELL.OCCUPIED;
+        tableData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = CELL.OCCUPIED;
       }
     }
 
-    const khongCoLopBuoiToi = rowData.slice(-3).every((tiet) => {
-      return Object.values(tiet).every((cell) => cell === CELL.ABSENT);
+    const khongCoLopBuoiToi = tableData.slice(-3).every((tiet) => {
+      return Object.values(tiet).every((cell) => cell === CELL.NO_CLASS);
     });
-    if (khongCoLopBuoiToi) rowData.splice(-3);
+    if (khongCoLopBuoiToi) tableData.splice(-3);
 
-    return rowData;
+    return tableData;
   }, [hocTrenTruong]);
 
   return {
@@ -76,42 +84,3 @@ export const usePhanLoaiHocTrenTruong = () => {
     rowDataHocTrenTruong,
   };
 };
-
-/* old code: harder to read
-   const rowDataHocTrenTruong = React.useMemo(
-     () =>
-       hocTrenTruong.reduce(
-         (acc, cur) => {
-           cur.Tiet.split('').forEach((tiet, i) => {
-             const tietIndex = tiet === '0' ? 9 : tiet - 1;
-             const isTietBatDau = i === 0;
-             if (acc[tietIndex]) {
-               if (acc[tietIndex]['Thu' + cur.Thu] === undefined) {
-                 acc[tietIndex]['Thu' + cur.Thu] = isTietBatDau ? cur : 'blank';
-               }
-             } else {
-               acc[tietIndex] = { ['Thu' + cur.Thu]: isTietBatDau ? cur : 'blank' };
-             }
-           });
-           return acc;
-         },
-         [...Array(10)],
-       ),
-     [hocTrenTruong],
-   );
- 
-    rowDataHocTrenTruong: An array of 10 elements represents for 10 tiet, for example:
-      [
-       {                 "Thu4": { "STT": 351, "MaMH": "MA003", ... (một object lớp học) } },
-       {                 "Thu4": "blank" },
-       {                 "Thu4": "blank" },
-       {                 "Thu4": "blank" },
-       null,
-       { "Thu2": { "STT": ...}, "Thu5": { "STT": 631, "MaMH": "MA003", ... (một object lớp học) } },
-       { "Thu2": "blank",       "Thu5": "blank" },
-       { "Thu2": "blank",       "Thu5": "blank" },
-       { "Thu2": "blank",       "Thu5": "blank" },
-        null
-      ]
-      Can try this: console.log('rowDataHocTrenTruong', JSON.stringify(rowDataHocTrenTruong, null, 2));
-    */

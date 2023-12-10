@@ -2,11 +2,9 @@ import LinearProgress from '@mui/material/LinearProgress';
 import makeStyles from '@mui/styles/makeStyles';
 import routes from 'routes';
 import React, { lazy, Suspense } from 'react';
-import { useSelector } from 'react-redux';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
-import { selectFinalDataTkb } from 'redux/xepTkb/selectors';
 import clsx from 'clsx';
-import { useDrawerStore } from '../zus';
+import { selectFinalDataTkb, useDrawerStore, useTkbStore } from '../zus';
 import ErrorBoundary from './components/ErrorBoundary';
 import LeftDrawer from './components/LeftDrawer';
 import NeedStep1Warning from './components/NeedStep1';
@@ -50,7 +48,7 @@ function PersistedRoute(props: PersistedRouteProps) {
 
 function App() {
   const classes = useStyles();
-  const dataTkb = useSelector(selectFinalDataTkb);
+  const dataTkb = useTkbStore(selectFinalDataTkb);
   const isDrawerOpen = useDrawerStore((s) => s.isDrawerOpen);
 
   return (

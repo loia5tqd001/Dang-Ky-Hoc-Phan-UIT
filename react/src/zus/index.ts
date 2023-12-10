@@ -1,5 +1,10 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { memoize } from 'proxy-memoize';
+import { ColumnApi, GridApi } from 'ag-grid-community';
+import { partition } from 'lodash';
+import { Mutate, StoreApi, create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { ClassModel, ClassModelOriginal } from '../models';
+import { calcTongSoTC, getBuoiFromTiet } from '../utils';
 
 type StoreState = {
   isDrawerOpen: boolean;
@@ -18,3 +23,116 @@ export const useDrawerStore = create<StoreState>()(
     },
   ),
 );
+
+type TkbStore = {
+  dataExcel: {
+    fileName: string;
+    data: ClassModelOriginal[];
+    lastUpdate: string;
+  } | null;
+
+  selectedClasses: ClassModel[];
+  agGridColumnState: ReturnType<ColumnApi['getColumnState']> | null;
+  agGridFilterModel: ReturnType<GridApi['getFilterModel']> | null;
+
+  // in case Buoc 3 chi ve TKB chu khong dung Buoc 2 Xep Lop
+  isChiVeTkb: boolean;
+  textareaChiVeTkb: string;
+
+  setDataExcel: (data: TkbStore['dataExcel']) => void;
+  setSelectedClasses: (data: TkbStore['selectedClasses']) => void;
+  setAgGridColumnState: (data: TkbStore['agGridColumnState']) => void;
+  setAgGridFilterModel: (data: TkbStore['agGridFilterModel']) => void;
+  setIsChiVeTkb: (data: TkbStore['isChiVeTkb']) => void;
+  setTextareChiVeTkb: (data: TkbStore['textareaChiVeTkb']) => void;
+};
+
+export const useTkbStore = create<TkbStore>()(
+  persist(
+    (set) => ({
+      dataExcel: null,
+
+      selectedClasses: [], // [{}, {}]
+      agGridColumnState: null,
+      agGridFilterModel: null,
+
+      isChiVeTkb: false,
+      textareaChiVeTkb: '',
+
+      // TODO: move actions outside of store
+      setDataExcel: (data) => {
+        set({ dataExcel: data, selectedClasses: [] });
+      },
+      setSelectedClasses: (data) => {
+        set({ selectedClasses: data });
+      },
+      setAgGridColumnState: (data) => {
+        set({ agGridColumnState: data });
+      },
+      setAgGridFilterModel: (data) => {
+        set({ agGridFilterModel: data });
+      },
+      setIsChiVeTkb: (data) => {
+        set({ isChiVeTkb: data });
+      },
+      setTextareChiVeTkb: (data) => {
+        set({ textareaChiVeTkb: data.toUpperCase() });
+      },
+    }),
+    {
+      name: 'tkb-state-storage',
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);
+
+type StoreWithPersist = Mutate<StoreApi<TkbStore>, [['zustand/persist', unknown]]>;
+export const withStorageDOMEvents = (store: StoreWithPersist) => {
+  const storageEventCallback = (e: StorageEvent) => {
+    if (e.key === store.persist.getOptions().name && e.newValue) {
+      store.persist.rehydrate();
+    }
+  };
+  window.addEventListener('storage', storageEventCallback);
+  return () => {
+    window.removeEventListener('storage', storageEventCallback);
+  };
+};
+// sync state between tabs: https://github.com/pmndrs/zustand/issues/714
+// TODO: more granular sync (only sync selectedClasses, not all state)
+withStorageDOMEvents(useTkbStore);
+
+export const selectDataExcel = (state: TkbStore) => state.dataExcel;
+export const selectSelectedClasses = (state: TkbStore) => state.selectedClasses;
+export const selectAgGridColumnState = (state: TkbStore) => state.agGridColumnState;
+export const selectAgGridFilterModel = (state: TkbStore) => state.agGridFilterModel;
+export const selectIsChiVeTkb = (state: TkbStore) => state.isChiVeTkb;
+export const selectTextareaChiVeTkb = (state: TkbStore) => state.textareaChiVeTkb;
+export const selectFinalDataTkb = memoize((state: TkbStore): ClassModel[] => {
+  const dataExcel = selectDataExcel(state);
+  return (dataExcel?.data ?? []).map((classModel) => {
+    const Buoi = getBuoiFromTiet(classModel.Tiet);
+    const ThuBuoi: ClassModel['ThuBuoi'] = Buoi === '*' ? '*' : `Thứ ${classModel.Thu} ${Buoi}`;
+
+    return {
+      ...classModel,
+      Buoi,
+      ThuBuoi,
+    };
+  });
+});
+export const selectTongSoTcSelected = (state: TkbStore) => calcTongSoTC(selectSelectedClasses(state));
+export const selectPhanLoaiHocTrenTruong = memoize((state: TkbStore): [ClassModel[], ClassModel[]] => {
+  const isChiVeTkb = selectIsChiVeTkb(state);
+  const selectedClasses = selectSelectedClasses(state);
+  const textareaChiVeTkb = selectTextareaChiVeTkb(state);
+  const finalDataTkb = selectFinalDataTkb(state);
+
+  if (isChiVeTkb) {
+    const listMaLop = textareaChiVeTkb.split(/\s+/);
+    const selectedClasses = finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));
+    return partition(selectedClasses, { Thu: '*' });
+  } else {
+    return partition(selectedClasses, { Thu: '*' });
+  }
+});

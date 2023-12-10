@@ -5,7 +5,7 @@ import ClassCell from './ClassCell';
 import { CELL } from './hooks';
 
 const GetCell = ({ data }) => {
-  if (data === CELL.ABSENT) return <td />;
+  if (data === CELL.NO_CLASS) return <td />;
   if (data === CELL.OCCUPIED) return null;
   return (
     <td rowSpan={getDanhSachTiet(data.Tiet).length} className="cell-class">

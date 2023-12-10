@@ -1,21 +1,18 @@
 import React, { ChangeEventHandler } from 'react';
 import XLSX from 'xlsx';
-// redux
-import { useDispatch, useSelector } from 'react-redux';
-import { selectDataExcel } from 'redux/xepTkb/selectors';
-import { setDataExcel } from 'redux/xepTkb/slice';
-import makeStyles from '@mui/styles/makeStyles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import makeStyles from '@mui/styles/makeStyles';
 import { enqueueSnackbar } from 'notistack';
+import { selectDataExcel, useTkbStore } from '../../zus';
 import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
 
 function SelectExcelButton() {
-  const dispatch = useDispatch();
-  const dataExcel = useSelector(selectDataExcel);
+  const dataExcel = useTkbStore(selectDataExcel);
+  const setDataExcel = useTkbStore((s) => s.setDataExcel);
   const classes = useStyles();
 
   const handleUploadFileExcel = React.useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -35,13 +32,11 @@ function SelectExcelButton() {
           (row) => typeof row[0] === 'number', // những row có cột 0 là STT (STT là number) thì mới là data ta cần
         );
         if (dataInArray.length) {
-          dispatch(
-            setDataExcel({
-              data: dataInArray.map((array) => arrayToTkbObject(array)),
-              fileName: file.name,
-              lastUpdate: toDateTimeString(new Date()),
-            }),
-          );
+          setDataExcel({
+            data: dataInArray.map((array) => arrayToTkbObject(array)),
+            fileName: file.name,
+            lastUpdate: toDateTimeString(new Date()),
+          });
           enqueueSnackbar(
             <>
               Upload file thành công <Bold>{file.name}</Bold>
@@ -59,7 +54,7 @@ function SelectExcelButton() {
       if (rABS) reader.readAsBinaryString(file);
       else reader.readAsArrayBuffer(file);
     },
-    [dispatch],
+    [setDataExcel],
   );
 
   return (
