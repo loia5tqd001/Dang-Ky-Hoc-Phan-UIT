@@ -397,7 +397,6 @@ export const useGridOptions = () => {
         },
       },
       'separator',
-      'autoSizeThis',
       'autoSizeAll',
       'separator',
       'resetColumns',
