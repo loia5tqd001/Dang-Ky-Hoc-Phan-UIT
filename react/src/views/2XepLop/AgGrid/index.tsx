@@ -1,24 +1,24 @@
 import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'models';
-import React from 'react';
 import './styles.css';
 import { useGridOptions } from './utils';
 
 function AgGrid() {
   const {
+    agGridRef,
     columnDefs,
     defaultColDef,
     autoGroupColumnDef,
     getMainMenuItems,
     statusBar,
     sideBar,
-    onRowSelected,
+    onSelectionChanged,
     onFilterChanged,
     onColumnChanged,
     onGridReady,
     rowData,
+    getRowId,
   } = useGridOptions();
-  const agGridRef = React.useRef<AgGridReact<ClassModel>>(null);
 
   return (
     <div
@@ -39,7 +39,8 @@ function AgGrid() {
         enableCellTextSelection={true}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
-        // groupSelectsChildren={true} // TODO: handle multi-select and show Dialog
+        groupSelectsChildren={true}
+        groupSelectsFiltered={true}
         rowHeight={30} // TODO: adding this makes the grid a bit slower, try optimizing by setting CSS directly if possible later
         getMainMenuItems={getMainMenuItems}
         statusBar={statusBar}
@@ -54,9 +55,10 @@ function AgGrid() {
         onColumnMoved={onColumnChanged}
         onColumnRowGroupChanged={onColumnChanged}
         onFilterChanged={onFilterChanged}
-        onRowSelected={onRowSelected}
+        onSelectionChanged={onSelectionChanged}
         // TODO: see if there's a better way to do this
         onGridReady={onGridReady}
+        getRowId={getRowId}
       />
     </div>
   );

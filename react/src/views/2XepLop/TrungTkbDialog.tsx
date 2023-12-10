@@ -11,16 +11,16 @@ import React from 'react';
 import { ClassModel } from '../../models';
 
 export type TTrungTkb = {
-  master: ClassModel | null;
-  slave: ClassModel | null;
+  existing: ClassModel;
+  new: ClassModel;
 };
 
 export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [lopTrungTkb, setLopTrungTkb] = React.useState<TTrungTkb>({ master: null, slave: null });
+  const [trungTkbs, setTrungTkbs] = React.useState<TTrungTkb[]>([]);
 
-  const openTrungTkbDialog = React.useCallback((trungTkbData: TTrungTkb) => {
-    setLopTrungTkb(trungTkbData);
+  const openTrungTkbDialog = React.useCallback((trungTkbData: TTrungTkb[]) => {
+    setTrungTkbs(trungTkbData);
     setIsDialogOpen(true);
   }, []);
 
@@ -28,11 +28,11 @@ export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => 
     setIsDialogOpen(false);
   }, []);
 
-  return { isDialogOpen, lopTrungTkb, openTrungTkbDialog, closeDialog };
+  return { isDialogOpen, trungTkbs, openTrungTkbDialog, closeDialog };
 });
 
 function TrungTkbDialog() {
-  const { isDialogOpen, closeDialog, lopTrungTkb } = useTrungTkbDialogContext();
+  const { isDialogOpen, closeDialog, trungTkbs } = useTrungTkbDialogContext();
   return (
     <Dialog
       open={isDialogOpen}
@@ -48,17 +48,22 @@ function TrungTkbDialog() {
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
           Không thể chọn lớp <br />
-          <b>{lopTrungTkb.master?.MaLop}</b> -{' '}
-          <b>
-            Thứ {lopTrungTkb.master?.Thu} Tiết {lopTrungTkb.master?.Tiet}
-          </b>
-          <br />
-          vì bị trùng lịch với lớp đã chọn <br />
-          <b>{lopTrungTkb.slave?.MaLop}</b> -{' '}
-          <b>
-            Thứ {lopTrungTkb.slave?.Thu} Tiết {lopTrungTkb.slave?.Tiet}
-          </b>
-          <br />
+          {trungTkbs.map((trungTkb) => (
+            <>
+              <br />
+              <b>{trungTkb.new.TenMH}</b> - <b>{trungTkb.new.MaLop}</b> -{' '}
+              <b>
+                Thứ {trungTkb.new.Thu} Tiết {trungTkb.new.Tiet}
+              </b>
+              <br />
+              bị trùng lịch với lớp đã chọn <br />
+              <b>{trungTkb.existing.TenMH}</b> - <b>{trungTkb.existing.MaLop}</b> -{' '}
+              <b>
+                Thứ {trungTkb.existing.Thu} Tiết {trungTkb.existing.Tiet}
+              </b>
+              <br />
+            </>
+          ))}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

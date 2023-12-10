@@ -1,17 +1,19 @@
-import { AgGridEvent, GridOptions, RowSelectedEvent } from 'ag-grid-community';
+import { AgGridEvent, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
+import { AgGridReact } from 'ag-grid-react';
 import sortBy from 'lodash/sortBy';
 import { ClassModel } from 'models';
-import { enqueueSnackbar } from 'notistack';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { getBuoiFromTiet, getDanhSachTiet, isChungMon, log } from '../../../utils';
+import { constructFinalSelectedClasses, getAgGridRowId, getBuoiFromTiet, isSameAgGridRowId, log } from '../../../utils';
+import {
+  selectAgGridColumnState,
+  selectAgGridFilterModel,
+  selectFinalDataTkb,
+  selectSelectedClasses,
+  useTkbStore,
+} from '../../../zus';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
-import { selectAgGridFilterModel, selectFinalDataTkb, selectSelectedClasses, useTkbStore } from '../../../zus';
 import SoTinChi from './SoTinChi';
-
-const isSameRow = (r1: ClassModel, r2: ClassModel) => {
-  return r1.MaLop + r1.Thu + r1.Tiet === r2.MaLop + r2.Thu + r2.Tiet;
-};
 
 const BUOI_ORDER_PRIORITY: Record<ClassModel['Buoi'], number> = {
   'Sáng ☀️': 1,
@@ -295,42 +297,90 @@ const getMainMenuItems: GridOptions['getMainMenuItems'] = () => {
   ];
 };
 
+const getRowId: GridOptions<ClassModel>['getRowId'] = ({ data }) => {
+  return getAgGridRowId(data);
+};
+
 export const useGridOptions = () => {
+  const agGridRef = useRef<AgGridReact<ClassModel>>(null);
+
   const { openTrungTkbDialog } = useTrungTkbDialogContext();
   const selectedClasses = useTkbStore(selectSelectedClasses);
   const setSelectedClasses = useTkbStore((s) => s.setSelectedClasses);
-  const onRowSelected: GridOptions['onRowSelected'] = useCallback(
-    ({ api, data, node }: RowSelectedEvent<ClassModel, any>) => {
-      if (!data) return;
-      if (node.isSelected() && selectedClasses.find((it) => isSameRow(it, data))) return;
-      if (!node.isSelected()) {
-        setSelectedClasses(api.getSelectedRows());
-        return;
-      }
-      // môn Anh Văn có thẻ 2 record chung môn, nhưng mà mã lớp giống nhau
-      if (selectedClasses.some((it) => isChungMon(it, data) && it.MaLop !== data.MaLop)) {
-        enqueueSnackbar('Môn học này đã chọn rồi', { variant: 'error' });
-        node.setSelected(false);
-        return;
-      }
+  // const onRowSelected: GridOptions['onRowSelected'] = useCallback(
+  //   ({ api, data, node }: RowSelectedEvent<ClassModel, any>) => {
+  //     console.log('>>fuck2');
+  //     if (!data) return;
+  //     if (node.isSelected() && selectedClasses.find((it) => isSameClassIdentity(it, data))) return;
+  //     if (!node.isSelected()) {
+  //       setSelectedClasses(api.getSelectedRows());
+  //       return;
+  //     }
 
-      const cungNgay = selectedClasses.filter((it) => data.Thu !== '*' && it.Thu === data.Thu);
-      const dsTiet = new Set(getDanhSachTiet(data.Tiet));
-      for (const lop of cungNgay) {
-        const trungTkb = getDanhSachTiet(lop.Tiet).some((tiet) => dsTiet.has(tiet));
-        if (trungTkb) {
-          openTrungTkbDialog({
-            master: data,
-            slave: lop,
-          });
-          node.setSelected(false);
-          return;
-        }
+  //     // TODO: bỏ tính năng này cho đỡ phức tạp, k lẽ sinh viên đại học ngu tới mức k biết mình đã chọn phải 1 môn đã chọn rồi
+  //     if (selectedClasses.some((it) => isSubjectChosen(it, data))) {
+  //       enqueueSnackbar('Môn học này đã chọn rồi', { variant: 'error' });
+  //       node.setSelected(false);
+  //       return;
+  //     }
+
+  //     const cungNgay = selectedClasses.filter((it) => data.Thu !== '*' && it.Thu === data.Thu);
+  //     const dsTiet = new Set(getDanhSachTiet(data.Tiet));
+  //     for (const lop of cungNgay) {
+  //       const trungTkb = getDanhSachTiet(lop.Tiet).some((tiet) => dsTiet.has(tiet));
+  //       if (trungTkb) {
+  //         openTrungTkbDialog({
+  //           existing: data,
+  //           new: lop,
+  //         });
+  //         node.setSelected(false);
+  //         return;
+  //       }
+  //     }
+  //     setSelectedClasses(api.getSelectedRows());
+  //   },
+  //   [openTrungTkbDialog, selectedClasses, setSelectedClasses],
+  // );
+
+  const updateNodesSelectionToAgGrid = useCallback((selectedClasses: ClassModel[]) => {
+    if (!agGridRef.current || !selectedClasses.length) return;
+
+    const { api } = agGridRef.current;
+    const toSelectNodes: IRowNode<ClassModel>[] = [];
+    api.forEachNode((node) => {
+      if (selectedClasses.find((it) => node.data && isSameAgGridRowId(it, node.data))) {
+        toSelectNodes.push(node);
       }
-      setSelectedClasses(api.getSelectedRows());
-    },
-    [openTrungTkbDialog, selectedClasses, setSelectedClasses],
-  );
+    });
+    api.deselectAll('api'); // TODO: transaction
+    api.setNodesSelected({ nodes: toSelectNodes, newValue: true, source: 'api' });
+  }, []);
+
+  const onSelectionChanged: GridOptions<ClassModel>['onSelectionChanged'] = (e) => {
+    console.log('>>onSelectionChanged');
+    if (e.source === 'api') return;
+    console.log('>>onSelectionChanged_passed');
+
+    const oldSelectedClasses = selectedClasses;
+    const newSelectedClasses = e.api.getSelectedRows();
+
+    // we don't have the case when an action is a mix of add and remove yet
+    const isRemoving = newSelectedClasses.length < oldSelectedClasses.length;
+    if (isRemoving) {
+      setSelectedClasses(newSelectedClasses);
+      return;
+    }
+
+    const { finalSelectedClasses, overlappedClasses } = constructFinalSelectedClasses(
+      oldSelectedClasses,
+      newSelectedClasses,
+    );
+    if (overlappedClasses.length) {
+      openTrungTkbDialog(overlappedClasses);
+    }
+    setSelectedClasses(finalSelectedClasses);
+    updateNodesSelectionToAgGrid(finalSelectedClasses);
+  };
 
   const DEBOUNCE_TIME = 500;
   const setAgGridFilterModel = useTkbStore((s) => s.setAgGridFilterModel);
@@ -347,22 +397,20 @@ export const useGridOptions = () => {
   }, DEBOUNCE_TIME);
 
   const agGridFilterModel = useTkbStore(selectAgGridFilterModel);
-  const onGridReady: GridOptions['onGridReady'] = useCallback(
-    ({ api, columnApi }) => {
-      const agGridColumnState = columnApi.getColumnState();
-      if (agGridColumnState) {
+  const agGridColumnState = useTkbStore(selectAgGridColumnState);
+  const onGridReady = useCallback(
+    ({ api, columnApi }: GridReadyEvent<ClassModel, any>) => {
+      if (agGridColumnState?.length) {
         columnApi.applyColumnState({ state: agGridColumnState });
+      }
+      if (agGridFilterModel && Object.keys(agGridFilterModel).length) {
         api.setFilterModel(agGridFilterModel);
       }
       if (selectedClasses.length) {
-        api.forEachNode((node) => {
-          if (selectedClasses.find((it) => node.data && isSameRow(it, node.data))) {
-            node.setSelected(true);
-          }
-        });
+        updateNodesSelectionToAgGrid(selectedClasses);
       }
     },
-    [agGridFilterModel, selectedClasses],
+    [agGridColumnState, agGridFilterModel, selectedClasses, updateNodesSelectionToAgGrid],
   );
 
   const dataTkb = useTkbStore(selectFinalDataTkb);
@@ -371,16 +419,18 @@ export const useGridOptions = () => {
   }, [dataTkb]);
 
   return {
+    agGridRef,
     columnDefs,
     defaultColDef,
     autoGroupColumnDef,
     getMainMenuItems,
     statusBar,
     sideBar,
-    onRowSelected,
+    onSelectionChanged,
     onFilterChanged,
     onColumnChanged,
     onGridReady,
     rowData,
+    getRowId,
   };
 };

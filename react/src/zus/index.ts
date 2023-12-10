@@ -1,10 +1,10 @@
-import { memoize } from 'proxy-memoize';
 import { ColumnApi, GridApi } from 'ag-grid-community';
 import { partition } from 'lodash';
+import { memoize } from 'proxy-memoize';
 import { Mutate, StoreApi, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { ClassModel, ClassModelOriginal } from '../models';
-import { calcTongSoTC, getBuoiFromTiet } from '../utils';
+import { calcTongSoTC, getBuoiFromTiet, isSameAgGridRowId } from '../utils';
 
 type StoreState = {
   isDrawerOpen: boolean;
@@ -41,6 +41,7 @@ type TkbStore = {
 
   setDataExcel: (data: TkbStore['dataExcel']) => void;
   setSelectedClasses: (data: TkbStore['selectedClasses']) => void;
+  removeClass: (data: ClassModel) => void;
   setAgGridColumnState: (data: TkbStore['agGridColumnState']) => void;
   setAgGridFilterModel: (data: TkbStore['agGridFilterModel']) => void;
   setIsChiVeTkb: (data: TkbStore['isChiVeTkb']) => void;
@@ -65,6 +66,13 @@ export const useTkbStore = create<TkbStore>()(
       },
       setSelectedClasses: (data) => {
         set({ selectedClasses: data });
+      },
+      removeClass: (classToRemove) => {
+        set((state) => ({
+          selectedClasses: state.selectedClasses.filter(
+            (selectedClass) => !isSameAgGridRowId(selectedClass, classToRemove),
+          ),
+        }));
       },
       setAgGridColumnState: (data) => {
         set({ agGridColumnState: data });
