@@ -1,9 +1,9 @@
 import LinearProgress from '@mui/material/LinearProgress';
 import makeStyles from '@mui/styles/makeStyles';
-import routes from 'routes';
+import clsx from 'clsx';
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
-import clsx from 'clsx';
+import { ROUTES } from '../constants';
 import { selectFinalDataTkb, useDrawerStore, useTkbStore } from '../zus';
 import ErrorBoundary from './components/ErrorBoundary';
 import LeftDrawer from './components/LeftDrawer';
@@ -35,8 +35,8 @@ function PersistedRoute(props: PersistedRouteProps) {
 
 function FallbackRoute() {
   const location = useLocation();
-  const hasAnyMatch = Object.values(routes).some((route) => route.path === location.pathname);
-  return hasAnyMatch ? null : <Redirect to={routes._1ChonFileExcel.path} />;
+  const hasAnyMatch = Object.values(ROUTES).some((route) => route.path === location.pathname);
+  return hasAnyMatch ? null : <Redirect to={ROUTES._1ChonFileExcel.path} />;
 }
 
 function App() {
@@ -56,9 +56,9 @@ function App() {
             })}
           >
             <Suspense fallback={<LinearProgress />}>
-              <PersistedRoute path={routes._1ChonFileExcel.path} component={ChonFileExcel} />
-              <PersistedRoute path={routes._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
-              <PersistedRoute path={routes._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
+              <PersistedRoute path={ROUTES._1ChonFileExcel.path} component={ChonFileExcel} />
+              <PersistedRoute path={ROUTES._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
+              <PersistedRoute path={ROUTES._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
               <FallbackRoute />
             </Suspense>
           </div>

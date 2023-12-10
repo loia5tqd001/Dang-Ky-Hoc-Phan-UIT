@@ -1,21 +1,20 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import routes from 'routes';
-import logoUit from 'assets/img/logo-uit.png';
-import Typewriter from 'typewriter-effect';
-import makeStyles from '@mui/styles/makeStyles';
+import FeedbackIcon from '@mui/icons-material/FeedbackOutlined';
+import MenuIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import { IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
 import { default as MuiDrawer } from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
-import FeedbackIcon from '@mui/icons-material/FeedbackOutlined';
-import GitHubButton from 'react-github-btn';
-import { IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import clsx from 'clsx';
 import { styled } from '@mui/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import logoUit from 'assets/img/logo-uit.png';
+import clsx from 'clsx';
+import GitHubButton from 'react-github-btn';
+import { NavLink } from 'react-router-dom';
+import Typewriter from 'typewriter-effect';
+import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
 
 const openedMixin = (theme) =>
@@ -93,7 +92,7 @@ function LeftDrawer() {
 
         {/* List item */}
         <List>
-          {Object.values(routes).map((route, index) => (
+          {Object.values(ROUTES).map((route, index) => (
             <ListItem
               key={route.path}
               className={classes.listItem}

@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import constate from 'constate';
 import React from 'react';
-import { ClassModel } from '../../models';
+import { ClassModel } from '../../types';
 
 export type TTrungTkb = {
   existing: ClassModel;

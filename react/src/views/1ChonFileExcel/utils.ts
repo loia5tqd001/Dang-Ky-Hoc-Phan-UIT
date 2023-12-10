@@ -1,4 +1,4 @@
-import { ClassModelOriginal } from 'models';
+import { ClassModelOriginal } from 'types';
 
 export function arrayToTkbObject(array: any[]): ClassModelOriginal {
   // convert excel based date (1989-Dec-30) to Js based date (1970-Jan-01)

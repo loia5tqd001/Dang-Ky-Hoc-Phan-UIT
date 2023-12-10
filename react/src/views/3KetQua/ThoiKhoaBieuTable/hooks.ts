@@ -1,7 +1,7 @@
 import React from 'react';
 import { getDanhSachTiet } from '../../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
-import { ClassModel } from '../../../models';
+import { ClassModel } from '../../../types';
 import { getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:

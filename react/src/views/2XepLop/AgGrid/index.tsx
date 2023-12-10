@@ -1,5 +1,5 @@
 import { AgGridReact } from 'ag-grid-react';
-import { ClassModel } from 'models';
+import { ClassModel } from 'types';
 import './styles.css';
 import { useGridOptions } from './utils';
 

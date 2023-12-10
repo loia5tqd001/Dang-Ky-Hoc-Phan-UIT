@@ -3,8 +3,8 @@ import { partition } from 'lodash';
 import { memoize } from 'proxy-memoize';
 import { Mutate, StoreApi, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { ClassModel, ClassModelOriginal } from '../models';
-import { calcTongSoTC, getBuoiFromTiet, isSameAgGridRowId } from '../utils';
+import { ClassModel, ClassModelOriginal } from '../types';
+import { calcTongSoTC, isSameAgGridRowId } from '../utils';
 
 type StoreState = {
   isDrawerOpen: boolean;
@@ -118,16 +118,7 @@ export const selectIsChiVeTkb = (state: TkbStore) => state.isChiVeTkb;
 export const selectTextareaChiVeTkb = (state: TkbStore) => state.textareaChiVeTkb;
 export const selectFinalDataTkb = memoize((state: TkbStore): ClassModel[] => {
   const dataExcel = selectDataExcel(state);
-  return (dataExcel?.data ?? []).map((classModel) => {
-    const Buoi = getBuoiFromTiet(classModel.Tiet);
-    const ThuBuoi: ClassModel['ThuBuoi'] = Buoi === '*' ? '*' : `Thứ ${classModel.Thu} ${Buoi}`;
-
-    return {
-      ...classModel,
-      Buoi,
-      ThuBuoi,
-    };
-  });
+  return dataExcel?.data ?? [];
 });
 export const selectTongSoTcSelected = (state: TkbStore) => calcTongSoTC(selectSelectedClasses(state));
 export const selectPhanLoaiHocTrenTruong = memoize((state: TkbStore): [ClassModel[], ClassModel[]] => {

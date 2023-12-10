@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { ClassModel } from '../../../models';
+import { ClassModel } from '../../../types';
 import { useTkbStore } from '../../../zus';
 
 function ClassCell(classModel: ClassModel) {

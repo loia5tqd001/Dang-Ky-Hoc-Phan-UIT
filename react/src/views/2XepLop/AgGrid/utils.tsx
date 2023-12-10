@@ -5,11 +5,12 @@ import {
   IRowNode,
   RowClickedEvent,
   SelectionChangedEvent,
+  ValueGetterParams,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import sortBy from 'lodash/sortBy';
-import { ClassModel } from 'models';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
 import { constructFinalSelectedClasses, getAgGridRowId, getBuoiFromTiet, isSameAgGridRowId, log } from '../../../utils';
 import {
@@ -22,15 +23,19 @@ import {
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
 import SoTinChi from './SoTinChi';
 
-const BUOI_ORDER_PRIORITY: Record<ClassModel['Buoi'], number> = {
-  'Sáng ☀️': 1,
-  'Chiều 🌞': 2,
-  'Tối 🌚': 3,
-  '*': 4,
-};
+type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
+type FormattedBuoi = FormattedBuoiValid | '*';
+const BUOI_FORMAT_MAP: Record<Buoi, FormattedBuoi> = {
+  [Buoi.Sang]: 'Sáng ☀️',
+  [Buoi.Chieu]: 'Chiều 🌞',
+  [Buoi.Toi]: 'Tối 🌚',
+  [Buoi.N_A]: '*',
+} as const;
 
-// TODO: refactor this
-const THUBUOI_ORDER_PRIORITY: Record<ClassModel['ThuBuoi'], number> = {
+type FormattedThuBuoiValid = `Thứ ${number} ${FormattedBuoiValid}`;
+type FormattedThuBuoi = FormattedThuBuoiValid | '*';
+const THUBUOI_ORDER_PRIORITY: Record<FormattedThuBuoi, number> = {
+  '*': 0,
   'Thứ 2 Sáng ☀️': 1,
   'Thứ 2 Chiều 🌞': 2,
   'Thứ 2 Tối 🌚': 3,
@@ -49,8 +54,7 @@ const THUBUOI_ORDER_PRIORITY: Record<ClassModel['ThuBuoi'], number> = {
   'Thứ 7 Sáng ☀️': 16,
   'Thứ 7 Chiều 🌞': 17,
   'Thứ 7 Tối 🌚': 18,
-  '*': 19,
-};
+} as const;
 
 const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
   LT: 1,
@@ -59,7 +63,7 @@ const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
   ĐA: 4,
   TTTN: 5,
   KLTN: 6,
-};
+} as const;
 
 const columnDefs: GridOptions['columnDefs'] = [
   {
@@ -108,6 +112,21 @@ const columnDefs: GridOptions['columnDefs'] = [
     filter: false,
   },
   {
+    headerName: 'THỨ+BUỔI',
+    colId: 'ThuBuoi',
+    initialWidth: 150,
+    enableRowGroup: true,
+    hide: true,
+    valueGetter: ({ data }: ValueGetterParams<ClassModel, number>): FormattedThuBuoi => {
+      if (!data?.Thu || data.Thu === '*') return '*';
+      const buoi = getBuoiFromTiet(data.Tiet);
+      return `Thứ ${parseInt(data.Thu)} ${BUOI_FORMAT_MAP[buoi]}` as FormattedThuBuoiValid;
+    },
+    comparator: (a, b) => {
+      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
+    },
+  },
+  {
     headerName: 'THỨ',
     field: 'Thu',
     initialWidth: 85,
@@ -118,33 +137,13 @@ const columnDefs: GridOptions['columnDefs'] = [
     },
   },
   {
-    headerName: 'BUỔI',
-    field: 'Buoi',
-    initialWidth: 95,
-    enableRowGroup: true,
-    hide: true,
-    comparator: (a: ClassModel['Buoi'], b: ClassModel['Buoi']) => {
-      return BUOI_ORDER_PRIORITY[a] - BUOI_ORDER_PRIORITY[b];
-    },
-  },
-  {
-    headerName: 'THỨ+BUỔI',
-    field: 'ThuBuoi',
-    initialWidth: 150,
-    enableRowGroup: true,
-    hide: true,
-    comparator: (a: ClassModel['ThuBuoi'], b: ClassModel['ThuBuoi']) => {
-      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
-    },
-  },
-  {
     headerName: 'TIẾT',
     field: 'Tiet',
     initialWidth: 80,
     cellStyle: { fontWeight: 600 },
     comparator: (tietA: ClassModel['Tiet'], tietB: ClassModel['Tiet']) => {
-      const buoiA = BUOI_ORDER_PRIORITY[getBuoiFromTiet(tietA)];
-      const buoiB = BUOI_ORDER_PRIORITY[getBuoiFromTiet(tietB)];
+      const buoiA = getBuoiFromTiet(tietA);
+      const buoiB = getBuoiFromTiet(tietB);
       if (buoiA === buoiB) {
         return tietA.localeCompare(tietB);
       }
@@ -247,7 +246,8 @@ const defaultColDef: GridOptions['defaultColDef'] = {
 const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
   sort: 'asc',
   comparator: (a, b) => {
-    if (a?.includes('Thứ') && b?.includes('Thứ')) {
+    const isGroupingByThuBuoi = a?.includes('Thứ') && b?.includes('Thứ');
+    if (isGroupingByThuBuoi) {
       return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
     }
     const bothAreNumeral = /\d+/.test(a) && /\d+/.test(b);

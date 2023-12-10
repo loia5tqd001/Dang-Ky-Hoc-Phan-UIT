@@ -1,5 +1,5 @@
 import uniqBy from 'lodash/uniqBy';
-import { ClassModel } from 'models';
+import { Buoi, ClassModel } from 'types';
 import { TTrungTkb } from './views/2XepLop/TrungTkbDialog';
 
 export function uniqMaLop(classes: ClassModel[]) {
@@ -30,11 +30,11 @@ export function extractListMaLop(classes: ClassModel[]) {
   return unique.map((it) => it.MaLop);
 }
 
-export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): ClassModel['Buoi'] => {
-  if (tiet.includes('11')) return 'Tối 🌚';
-  if (/1|2|3|4|5/g.test(tiet)) return 'Sáng ☀️';
-  if (/6|7|8|9|0/g.test(tiet)) return 'Chiều 🌞'; // TODO: ve TKB buoc 3 co buoi toi
-  return '*';
+export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): Buoi => {
+  if (tiet.includes('11')) return Buoi.Toi;
+  if (/1|2|3|4|5/g.test(tiet)) return Buoi.Sang;
+  if (/6|7|8|9|0/g.test(tiet)) return Buoi.Chieu;
+  return Buoi.N_A;
 };
 
 export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
