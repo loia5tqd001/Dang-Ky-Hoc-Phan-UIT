@@ -1,8 +1,8 @@
-import { AgGridEvent, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
+import { AgGridEvent, GridOptions, GridReadyEvent, IRowNode, SelectionChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import sortBy from 'lodash/sortBy';
 import { ClassModel } from 'models';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { constructFinalSelectedClasses, getAgGridRowId, getBuoiFromTiet, isSameAgGridRowId, log } from '../../../utils';
 import {
@@ -301,86 +301,57 @@ const getRowId: GridOptions<ClassModel>['getRowId'] = ({ data }) => {
   return getAgGridRowId(data);
 };
 
+const PROGRAMMATICALLY_CHANGE_SELECTION = 'api';
 export const useGridOptions = () => {
   const agGridRef = useRef<AgGridReact<ClassModel>>(null);
 
   const { openTrungTkbDialog } = useTrungTkbDialogContext();
   const selectedClasses = useTkbStore(selectSelectedClasses);
   const setSelectedClasses = useTkbStore((s) => s.setSelectedClasses);
-  // const onRowSelected: GridOptions['onRowSelected'] = useCallback(
-  //   ({ api, data, node }: RowSelectedEvent<ClassModel, any>) => {
-  //     console.log('>>fuck2');
-  //     if (!data) return;
-  //     if (node.isSelected() && selectedClasses.find((it) => isSameClassIdentity(it, data))) return;
-  //     if (!node.isSelected()) {
-  //       setSelectedClasses(api.getSelectedRows());
-  //       return;
-  //     }
-
-  //     // TODO: bỏ tính năng này cho đỡ phức tạp, k lẽ sinh viên đại học ngu tới mức k biết mình đã chọn phải 1 môn đã chọn rồi
-  //     if (selectedClasses.some((it) => isSubjectChosen(it, data))) {
-  //       enqueueSnackbar('Môn học này đã chọn rồi', { variant: 'error' });
-  //       node.setSelected(false);
-  //       return;
-  //     }
-
-  //     const cungNgay = selectedClasses.filter((it) => data.Thu !== '*' && it.Thu === data.Thu);
-  //     const dsTiet = new Set(getDanhSachTiet(data.Tiet));
-  //     for (const lop of cungNgay) {
-  //       const trungTkb = getDanhSachTiet(lop.Tiet).some((tiet) => dsTiet.has(tiet));
-  //       if (trungTkb) {
-  //         openTrungTkbDialog({
-  //           existing: data,
-  //           new: lop,
-  //         });
-  //         node.setSelected(false);
-  //         return;
-  //       }
-  //     }
-  //     setSelectedClasses(api.getSelectedRows());
-  //   },
-  //   [openTrungTkbDialog, selectedClasses, setSelectedClasses],
-  // );
 
   const updateNodesSelectionToAgGrid = useCallback((selectedClasses: ClassModel[]) => {
-    if (!agGridRef.current || !selectedClasses.length) return;
-
+    if (!agGridRef.current?.api) return;
     const { api } = agGridRef.current;
+
+    api.deselectAll(PROGRAMMATICALLY_CHANGE_SELECTION); // clear old selection
+
     const toSelectNodes: IRowNode<ClassModel>[] = [];
     api.forEachNode((node) => {
       if (selectedClasses.find((it) => node.data && isSameAgGridRowId(it, node.data))) {
         toSelectNodes.push(node);
       }
     });
-    api.deselectAll('api'); // TODO: transaction
-    api.setNodesSelected({ nodes: toSelectNodes, newValue: true, source: 'api' });
+    if (toSelectNodes.length) {
+      api.setNodesSelected({ nodes: toSelectNodes, newValue: true, source: PROGRAMMATICALLY_CHANGE_SELECTION });
+    }
   }, []);
 
-  const onSelectionChanged: GridOptions<ClassModel>['onSelectionChanged'] = (e) => {
-    console.log('>>onSelectionChanged');
-    if (e.source === 'api') return;
-    console.log('>>onSelectionChanged_passed');
+  const onSelectionChanged = useCallback(
+    ({ source, api }: SelectionChangedEvent<ClassModel>) => {
+      if (source === PROGRAMMATICALLY_CHANGE_SELECTION) return;
 
-    const oldSelectedClasses = selectedClasses;
-    const newSelectedClasses = e.api.getSelectedRows();
+      const oldSelectedClasses = selectedClasses;
+      const newSelectedClasses = api.getSelectedRows();
 
-    // we don't have the case when an action is a mix of add and remove yet
-    const isRemoving = newSelectedClasses.length < oldSelectedClasses.length;
-    if (isRemoving) {
-      setSelectedClasses(newSelectedClasses);
-      return;
-    }
+      // we don't have the case when an action is a mix of add and remove yet
+      const isRemoving = newSelectedClasses.length < oldSelectedClasses.length;
+      if (isRemoving) {
+        setSelectedClasses(newSelectedClasses);
+        return;
+      }
 
-    const { finalSelectedClasses, overlappedClasses } = constructFinalSelectedClasses(
-      oldSelectedClasses,
-      newSelectedClasses,
-    );
-    if (overlappedClasses.length) {
-      openTrungTkbDialog(overlappedClasses);
-    }
-    setSelectedClasses(finalSelectedClasses);
-    updateNodesSelectionToAgGrid(finalSelectedClasses);
-  };
+      const { finalSelectedClasses, overlappedClasses } = constructFinalSelectedClasses(
+        oldSelectedClasses,
+        newSelectedClasses,
+      );
+      if (overlappedClasses.length) {
+        openTrungTkbDialog(overlappedClasses);
+      }
+      setSelectedClasses(finalSelectedClasses);
+      updateNodesSelectionToAgGrid(finalSelectedClasses);
+    },
+    [openTrungTkbDialog, selectedClasses, setSelectedClasses, updateNodesSelectionToAgGrid],
+  );
 
   const DEBOUNCE_TIME = 500;
   const setAgGridFilterModel = useTkbStore((s) => s.setAgGridFilterModel);
@@ -417,6 +388,17 @@ export const useGridOptions = () => {
   const rowData: GridOptions['rowData'] = useMemo(() => {
     return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
   }, [dataTkb]);
+
+  // TODO: try handle via event, better way than useEffect
+  useEffect(() => {
+    // update o buoc 3, thay doi agGrid
+    const gridLength = agGridRef.current?.api?.getSelectedRows().length;
+    const stateLength = selectedClasses.length;
+    if (gridLength !== stateLength) {
+      log('>>useEffect: selectedClasses changed');
+      updateNodesSelectionToAgGrid(selectedClasses);
+    }
+  }, [selectedClasses, setSelectedClasses, updateNodesSelectionToAgGrid]);
 
   return {
     agGridRef,

@@ -30,13 +30,6 @@ export function extractListMaLop(classes: ClassModel[]) {
   return unique.map((it) => it.MaLop);
 }
 
-export function isChungMon(classA: ClassModel, classB: ClassModel, distinguishThucHanh = true) {
-  if (distinguishThucHanh === false) {
-    return classA.MaMH === classB.MaMH;
-  }
-  return classA.MaMH === classB.MaMH && classA.ThucHanh === classB.ThucHanh;
-}
-
 export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): ClassModel['Buoi'] => {
   if (tiet.includes('11')) return 'Tối 🌚';
   if (/1|2|3|4|5/g.test(tiet)) return 'Sáng ☀️';
@@ -55,12 +48,12 @@ export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
  * 2-1, 2-2, 2-3: Thứ 2, tiết 1,2,3
  * 7-11, 7-12, 7-13: Thứ 7, tiết 11,12,13
  */
-export const getTimeSlots = ({ Thu, Tiet }: ClassModel): '*' | string[] => {
+const getTimeSlots = ({ Thu, Tiet }: ClassModel): '*' | string[] => {
   if (Tiet === '*') return '*';
   return getDanhSachTiet(Tiet).map((tiet) => `${Thu}-${tiet}`);
 };
 
-export const isOverlapSchedule = (classA: ClassModel, classB: ClassModel) => {
+const isOverlapSchedule = (classA: ClassModel, classB: ClassModel) => {
   const slotsA = getTimeSlots(classA);
   const slotsB = getTimeSlots(classB);
   if (slotsA === '*' || slotsB === '*') return false;
@@ -70,6 +63,10 @@ export const isOverlapSchedule = (classA: ClassModel, classB: ClassModel) => {
 // Thường thì MaLop alone is enough because most of the classes only appear once a week or once every 2 weeks, nhưng mà có thể có môn Anh Văn học 1 tuần tới 2 buổi, nên cần có thêm Thu và Tiet
 export const getAgGridRowId = (classModel: ClassModel): string => {
   return classModel.MaLop + classModel.Thu + classModel.Tiet;
+};
+
+export const isSameAgGridRowId = (class1: ClassModel, class2: ClassModel) => {
+  return getAgGridRowId(class1) === getAgGridRowId(class2);
 };
 
 export const constructFinalSelectedClasses = (
@@ -100,26 +97,6 @@ export const constructFinalSelectedClasses = (
   });
 
   return { finalSelectedClasses, overlappedClasses };
-};
-
-// TODO: remove
-export const isSubjectChosen = (selectedClass: ClassModel, selectingClass: ClassModel) => {
-  return (
-    selectedClass.MaMH === selectingClass.MaMH &&
-    selectedClass.ThucHanh === selectingClass.ThucHanh &&
-    selectedClass.MaLop !== selectingClass.MaLop
-  );
-};
-
-// TODO: remove
-
-// e.g: môn Anh Văn, 1 tuần có thể có 2 buổi nên có 2 dòng record
-export function isPairClass(classA: ClassModel, classB: ClassModel) {
-  return classA.MaLop === classB.MaLop && classA.STT !== classB.STT;
-}
-
-export const isSameAgGridRowId = (class1: ClassModel, class2: ClassModel) => {
-  return getAgGridRowId(class1) === getAgGridRowId(class2);
 };
 
 export const log = (...args: any[]) => {
