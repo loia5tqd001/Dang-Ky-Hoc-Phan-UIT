@@ -1,5 +1,5 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { IconButton, InputAdornment, Tooltip } from '@mui/material';
+import { IconButton, InputAdornment, InputBaseProps, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
@@ -8,8 +8,15 @@ import { extractListMaLop } from '../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
 import { getScriptDkhp } from './utils';
 
-const DEFAULT_TOOLTIP = 'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.';
+const DEFAULT_TOOLTIP = 'Click để sao chép';
 const COPIED_TOOLTIP = 'Đã sao chép';
+
+const CustomInputComponent: InputBaseProps['inputComponent'] = ({ inputRef, ...rest }) => (
+  <Tooltip title="Xem video hướng dẫn ở B1 để biết cách dùng.">
+    <textarea ref={inputRef} style={{ resize: 'vertical' }} {...rest} />
+  </Tooltip>
+);
+
 function ScriptDangKyInput() {
   const cacLop = useTkbStore(selectPhanLoaiHocTrenTruong);
   const listMaLop = useMemo(() => extractListMaLop(cacLop.flat()), [cacLop]);
@@ -27,30 +34,29 @@ function ScriptDangKyInput() {
         variant="outlined"
         value={hasLop ? script : 'Chưa có lớp nào'}
         disabled={!hasLop}
-        inputProps={{ readOnly: true, style: { resize: 'vertical' } }}
+        inputProps={{ readOnly: true }}
         InputProps={{
+          inputComponent: CustomInputComponent,
           endAdornment: hasLop ? (
-            <InputAdornment position="end">
-              <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
-                <IconButton
-                  onClick={() => {
-                    navigator.clipboard.writeText(script).then(
-                      () => {
-                        setIsCopying(true);
-                        setTimeout(() => setIsCopying(false), 3000);
-                      },
-                      () => {
-                        enqueueSnackbar('Không thể sao chép', { variant: 'error' });
-                      },
-                    );
-                  }}
-                  edge="end"
-                  size="small"
-                >
-                  <ContentCopyIcon color={isCopying ? 'primary' : undefined} />
-                </IconButton>
-              </Tooltip>
-            </InputAdornment>
+            <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
+              <IconButton
+                onClick={() => {
+                  navigator.clipboard.writeText(script).then(
+                    () => {
+                      setIsCopying(true);
+                      setTimeout(() => setIsCopying(false), 3000);
+                    },
+                    () => {
+                      enqueueSnackbar('Không thể sao chép', { variant: 'error' });
+                    },
+                  );
+                }}
+                edge="end"
+                size="small"
+              >
+                <ContentCopyIcon color={isCopying ? 'primary' : undefined} />
+              </IconButton>
+            </Tooltip>
           ) : undefined,
         }}
       />
