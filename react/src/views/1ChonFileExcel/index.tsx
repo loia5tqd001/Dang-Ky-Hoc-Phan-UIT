@@ -5,7 +5,7 @@ import VideoInstruction from './VideoInstruction';
 
 function Index() {
   return (
-    <div style={{ maxWidth: 1500, margin: 'auto' }}>
+    <div style={{ maxWidth: 1500 }}>
       <SelectExcelButton />
       <VideoInstruction />
     </div>
