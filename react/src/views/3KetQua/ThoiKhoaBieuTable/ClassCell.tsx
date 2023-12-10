@@ -8,6 +8,9 @@ function ClassCell(classModel: ClassModel) {
   const { MaLop, NgonNgu, TenMH, TenGV, PhongHoc, NBD, NKT } = classModel;
   const removeClass = useTkbStore((s) => s.removeClass);
 
+  // TODO: display warning cho cac truong hop:
+  // - chon 2 slot chung lop
+  // - chon 2 slot chung mon khac lop, i.e: Nhap Mon Lap Trinh LT cua 1 nguoi, TH cua 1 nguoi khac
   return (
     <div>
       <Tooltip title="Xoá lớp này">

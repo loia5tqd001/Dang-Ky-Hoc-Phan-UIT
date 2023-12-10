@@ -16,6 +16,7 @@ function AgGrid() {
     onFilterChanged,
     onColumnChanged,
     onGridReady,
+    onRowClicked,
     rowData,
     getRowId,
   } = useGridOptions();
@@ -56,9 +57,9 @@ function AgGrid() {
         onColumnRowGroupChanged={onColumnChanged}
         onFilterChanged={onFilterChanged}
         onSelectionChanged={onSelectionChanged}
-        // TODO: see if there's a better way to do this
         onGridReady={onGridReady}
         getRowId={getRowId}
+        onRowClicked={onRowClicked}
       />
     </div>
   );

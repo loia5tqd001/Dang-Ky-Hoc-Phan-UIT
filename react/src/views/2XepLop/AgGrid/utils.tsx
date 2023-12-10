@@ -1,4 +1,11 @@
-import { AgGridEvent, GridOptions, GridReadyEvent, IRowNode, SelectionChangedEvent } from 'ag-grid-community';
+import {
+  AgGridEvent,
+  GridOptions,
+  GridReadyEvent,
+  IRowNode,
+  RowClickedEvent,
+  SelectionChangedEvent,
+} from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import sortBy from 'lodash/sortBy';
 import { ClassModel } from 'models';
@@ -384,6 +391,13 @@ export const useGridOptions = () => {
     [agGridColumnState, agGridFilterModel, selectedClasses, updateNodesSelectionToAgGrid],
   );
 
+  const onRowClicked = useCallback(({ node }: RowClickedEvent) => {
+    log('>>onRowClicked');
+    if (node.group) {
+      node.setExpanded(!node.expanded);
+    }
+  }, []);
+
   const dataTkb = useTkbStore(selectFinalDataTkb);
   const rowData: GridOptions['rowData'] = useMemo(() => {
     return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
@@ -412,6 +426,7 @@ export const useGridOptions = () => {
     onFilterChanged,
     onColumnChanged,
     onGridReady,
+    onRowClicked,
     rowData,
     getRowId,
   };
