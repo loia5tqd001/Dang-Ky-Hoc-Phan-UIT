@@ -80,7 +80,9 @@
 
 
 .ag-theme-alpine .ag-set-filter-list {
-  height: 250px;
+  height: auto;
+  max-height: calc(100vh - 200px) !important;
+  overflow: auto; /* thank you ChatGPT */
 }
 
 .ag-theme-alpine .ag-row-hover {

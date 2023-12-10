@@ -17,10 +17,14 @@ export const selectTextareaChiVeTkb = createSelector([selectSlice], (slice) => s
 
 export const selectFinalDataTkb = createSelector([selectDataExcel], (dataExcel) => {
   return (
-    dataExcel?.data.map((classModel) => {
+    dataExcel?.data.map((classModel): ClassModel => {
+      const Buoi = getBuoiFromTiet(classModel.Tiet);
+      const ThuBuoi: ClassModel['ThuBuoi'] = Buoi === '*' ? '*' : `Thứ ${classModel.Thu} ${Buoi}`;
+
       return {
         ...classModel,
-        Buoi: getBuoiFromTiet(classModel.Tiet),
+        Buoi,
+        ThuBuoi,
       };
     }) || []
   ); // there used to be a complicatd logic here, but now it's just this

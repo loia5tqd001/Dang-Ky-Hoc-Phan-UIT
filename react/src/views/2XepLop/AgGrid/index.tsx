@@ -8,6 +8,7 @@ function AgGrid() {
   const {
     columnDefs,
     defaultColDef,
+    autoGroupColumnDef,
     getMainMenuItems,
     statusBar,
     sideBar,
@@ -32,8 +33,10 @@ function AgGrid() {
         rowData={rowData}
         defaultColDef={defaultColDef}
         columnDefs={columnDefs}
+        autoGroupColumnDef={autoGroupColumnDef}
         headerHeight={30}
         // animateRows={false}
+        enableCellTextSelection={true}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
         // groupSelectsChildren={true} // TODO: handle multi-select and show Dialog
@@ -41,17 +44,9 @@ function AgGrid() {
         getMainMenuItems={getMainMenuItems}
         statusBar={statusBar}
         sideBar={sideBar}
-        // set this to never to display grouping info at sideBar only, for a more minimal UI
+        // set this to "never" to display grouping info at sideBar only, for a more minimal UI
         rowGroupPanelShow="never"
         suppressDragLeaveHidesColumns={true}
-        // Sort after grouping: https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example
-        autoGroupColumnDef={{
-          sort: 'asc',
-          comparator: (a, b) => {
-            if (/\d+/.test(a) && /\d+/.test(b)) return a - b;
-            return 0;
-          },
-        }}
         rowClass="ag-cell-normal"
         onColumnVisible={onColumnChanged}
         onColumnPinned={onColumnChanged}

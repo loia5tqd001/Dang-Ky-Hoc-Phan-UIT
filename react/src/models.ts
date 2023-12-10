@@ -25,7 +25,10 @@ export type ClassModelOriginal = {
   NgonNgu: string;
 };
 
+type Buoi = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
 export type ClassModel = ClassModelOriginal & {
   /* built from Tiet */
-  Buoi: '*' | 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
+  // TODO: consider using formatter instead of adding data
+  Buoi: '*' | Buoi;
+  ThuBuoi: '*' | `Thứ ${ClassModel['Thu']} ${Buoi}`;
 };

@@ -22,6 +22,29 @@ const BUOI_ORDER_PRIORITY: Record<ClassModel['Buoi'], number> = {
   '*': 4,
 };
 
+// TODO: refactor this
+const THUBUOI_ORDER_PRIORITY: Record<ClassModel['ThuBuoi'], number> = {
+  'Thứ 2 Sáng ☀️': 1,
+  'Thứ 2 Chiều 🌞': 2,
+  'Thứ 2 Tối 🌚': 3,
+  'Thứ 3 Sáng ☀️': 4,
+  'Thứ 3 Chiều 🌞': 5,
+  'Thứ 3 Tối 🌚': 6,
+  'Thứ 4 Sáng ☀️': 7,
+  'Thứ 4 Chiều 🌞': 8,
+  'Thứ 4 Tối 🌚': 9,
+  'Thứ 5 Sáng ☀️': 10,
+  'Thứ 5 Chiều 🌞': 11,
+  'Thứ 5 Tối 🌚': 12,
+  'Thứ 6 Sáng ☀️': 13,
+  'Thứ 6 Chiều 🌞': 14,
+  'Thứ 6 Tối 🌚': 15,
+  'Thứ 7 Sáng ☀️': 16,
+  'Thứ 7 Chiều 🌞': 17,
+  'Thứ 7 Tối 🌚': 18,
+  '*': 19,
+};
+
 const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
   LT: 1,
   HT1: 2,
@@ -92,8 +115,19 @@ const columnDefs: GridOptions['columnDefs'] = [
     field: 'Buoi',
     initialWidth: 95,
     enableRowGroup: true,
+    hide: true,
     comparator: (a: ClassModel['Buoi'], b: ClassModel['Buoi']) => {
       return BUOI_ORDER_PRIORITY[a] - BUOI_ORDER_PRIORITY[b];
+    },
+  },
+  {
+    headerName: 'THỨ+BUỔI',
+    field: 'ThuBuoi',
+    initialWidth: 150,
+    enableRowGroup: true,
+    hide: true,
+    comparator: (a: ClassModel['ThuBuoi'], b: ClassModel['ThuBuoi']) => {
+      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
     },
   },
   {
@@ -200,6 +234,19 @@ const defaultColDef: GridOptions['defaultColDef'] = {
   menuTabs: ['generalMenuTab'],
   filterParams: { buttons: ['apply', 'reset'], closeOnApply: true },
   floatingFilter: true,
+};
+
+// Sort after grouping: https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example
+const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
+  sort: 'asc',
+  comparator: (a, b) => {
+    if (a?.includes('Thứ') && b?.includes('Thứ')) {
+      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
+    }
+    const bothAreNumeral = /\d+/.test(a) && /\d+/.test(b);
+    if (bothAreNumeral) return a - b;
+    return 0;
+  },
 };
 
 const sideBar: GridOptions['sideBar'] = {
@@ -327,6 +374,7 @@ export const useGridOptions = () => {
   return {
     columnDefs,
     defaultColDef,
+    autoGroupColumnDef,
     getMainMenuItems,
     statusBar,
     sideBar,
