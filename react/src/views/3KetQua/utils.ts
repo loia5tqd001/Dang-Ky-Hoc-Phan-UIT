@@ -16,13 +16,13 @@ function DangKy(monDangKyString) {
   try {
     var listMonDangKy = monDangKyString.trim().split('\\n').map((it) => it.trim())
     
-    var allRows = [...document.querySelectorAll('#table_lophoc_wrapper tr')]
+    var allRows = [...document.querySelectorAll('form table tr')]
 
-    var rowsToDangKy = allRows.filter((it) => listMonDangKy.includes(it.querySelector('td:nth-child(3)')?.textContent?.trim()))
+    var rowsToDangKy = allRows.filter((it) => listMonDangKy.includes(it.querySelector('td:nth-child(2)')?.textContent?.trim()))
     
     rowsToDangKy.forEach((it, index) => {
-      it.querySelector('td:first-child input[type="checkbox"]').checked = true;
-      var tenLop = it.querySelector('td:nth-child(3)')?.textContent?.trim();
+      it.querySelector('td:first-child input[type="checkbox"]').click();
+      var tenLop = it.querySelector('td:nth-child(2)')?.textContent?.trim();
       successLog(index + 1 + '.Đã chọn lớp ' + tenLop);
     })
   } catch {
