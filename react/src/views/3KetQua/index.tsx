@@ -4,7 +4,8 @@ import FormGroup from '@mui/material/FormGroup';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import { selectIsChiVeTkb, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
+import SoTinChi from '../../components/SoTinChi';
+import { selectIsChiVeTkb, selectTextareaChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
 import ScriptDangKyInput from './ScriptDangKyInput';
 import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
@@ -13,10 +14,11 @@ function Index() {
   const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
   const khongXepLop = useTkbStore(selectIsChiVeTkb);
   const textareaChiVeTkb = useTkbStore(selectTextareaChiVeTkb);
+  const tongSoTC = useTkbStore(selectTongSoTcBuoc3);
 
   return (
-    <div style={{ height: '100%', minWidth: '90%', display: 'grid', placeContent: 'center' }}>
-      <FormGroup row style={{ marginBottom: 5 }}>
+    <div>
+      <FormGroup row style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Tooltip title="Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2">
           <FormControlLabel
             control={
@@ -28,19 +30,11 @@ function Index() {
                 size="small"
               />
             }
-            style={
-              !khongXepLop
-                ? {
-                    opacity: 0.5,
-                    transform: 'scale(0.8)',
-                    transformOrigin: 'left center',
-                    fontStyle: 'italic',
-                  }
-                : undefined
-            }
-            label={'Không dùng tool Xếp Lớp' + (khongXepLop ? '' : '?')}
+            style={!khongXepLop ? { opacity: 0.5 } : undefined}
+            label={'Không dùng tool Xếp Lớp'}
           />
         </Tooltip>
+        <SoTinChi tongSoTcSelected={tongSoTC} />
       </FormGroup>
       <Grid container spacing={2} style={{ marginBottom: 5, maxWidth: 1510 }}>
         <Grid item xs={6}>
@@ -50,6 +44,7 @@ function Index() {
               fullWidth
               size="small"
               multiline
+              inputProps={{ style: { resize: 'vertical' } }}
               rows={2}
               variant="outlined"
               onChange={(e) => {

@@ -1,8 +1,10 @@
 import {
   AgGridEvent,
+  GetContextMenuItemsParams,
   GridOptions,
   GridReadyEvent,
   IRowNode,
+  MenuItemDef,
   RowClickedEvent,
   SelectionChangedEvent,
   ValueGetterParams,
@@ -21,7 +23,7 @@ import {
   useTkbStore,
 } from '../../../zus';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
-import SoTinChi from './SoTinChi';
+import SoTinChi from '../../../components/SoTinChi';
 
 type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
 type FormattedBuoi = FormattedBuoiValid | '*';
@@ -117,6 +119,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     initialWidth: 150,
     enableRowGroup: true,
     hide: true,
+    // originally had valueGetter as a raw number, then used valueFormatter to format it, but it turned out to be troublesome so I changed to this
     valueGetter: ({ data }: ValueGetterParams<ClassModel, number>): FormattedThuBuoi => {
       if (!data?.Thu || data.Thu === '*') return '*';
       const buoi = getBuoiFromTiet(data.Tiet);
@@ -288,20 +291,7 @@ const statusBar: GridOptions['statusBar'] = {
 };
 
 const getMainMenuItems: GridOptions['getMainMenuItems'] = () => {
-  // TODO: custom MenuItems for each column
-  return [
-    'pinSubMenu',
-    'separator',
-    'autoSizeThis',
-    'autoSizeAll',
-    'resetColumns',
-    'resetAllFilters', // TODO: implement this
-    'separator',
-    // 'rowGroup',
-    // 'rowUnGroup',
-    'expandAll',
-    'contractAll',
-  ];
+  return ['pinSubMenu', 'separator', 'autoSizeThis', 'autoSizeAll'];
 };
 
 const getRowId: GridOptions<ClassModel>['getRowId'] = ({ data }) => {
@@ -398,6 +388,31 @@ export const useGridOptions = () => {
     }
   }, []);
 
+  const getContextMenuItems = useCallback((params: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
+    return [
+      {
+        name: 'Copy Cell',
+        action: () => {
+          navigator.clipboard.writeText(params.value);
+        },
+      },
+      'separator',
+      'autoSizeThis',
+      'autoSizeAll',
+      'separator',
+      'resetColumns',
+      {
+        name: 'Reset Filters',
+        action: () => {
+          agGridRef.current?.api?.setFilterModel(null);
+        },
+      },
+      'separator',
+      'expandAll',
+      'contractAll',
+    ];
+  }, []);
+
   const dataTkb = useTkbStore(selectFinalDataTkb);
   const rowData: GridOptions['rowData'] = useMemo(() => {
     return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
@@ -420,6 +435,7 @@ export const useGridOptions = () => {
     defaultColDef,
     autoGroupColumnDef,
     getMainMenuItems,
+    getContextMenuItems,
     statusBar,
     sideBar,
     onSelectionChanged,

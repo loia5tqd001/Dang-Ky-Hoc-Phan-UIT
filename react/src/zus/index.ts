@@ -120,18 +120,20 @@ export const selectFinalDataTkb = memoize((state: TkbStore): ClassModel[] => {
   const dataExcel = selectDataExcel(state);
   return dataExcel?.data ?? [];
 });
-export const selectTongSoTcSelected = (state: TkbStore) => calcTongSoTC(selectSelectedClasses(state));
-export const selectPhanLoaiHocTrenTruong = memoize((state: TkbStore): [ClassModel[], ClassModel[]] => {
+const selectSelectedClassesBuoc3 = memoize((state: TkbStore): ClassModel[] => {
   const isChiVeTkb = selectIsChiVeTkb(state);
-  const selectedClasses = selectSelectedClasses(state);
   const textareaChiVeTkb = selectTextareaChiVeTkb(state);
   const finalDataTkb = selectFinalDataTkb(state);
 
   if (isChiVeTkb) {
     const listMaLop = textareaChiVeTkb.split(/\s+/);
-    const selectedClasses = finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));
-    return partition(selectedClasses, { Thu: '*' });
+    return finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));
   } else {
-    return partition(selectedClasses, { Thu: '*' });
+    return selectSelectedClasses(state);
   }
+});
+export const selectTongSoTcSelected = (state: TkbStore) => calcTongSoTC(selectSelectedClasses(state));
+export const selectTongSoTcBuoc3 = (state: TkbStore) => calcTongSoTC(selectSelectedClassesBuoc3(state));
+export const selectPhanLoaiHocTrenTruong = memoize((state: TkbStore): [ClassModel[], ClassModel[]] => {
+  return partition(selectSelectedClassesBuoc3(state), { Thu: '*' });
 });

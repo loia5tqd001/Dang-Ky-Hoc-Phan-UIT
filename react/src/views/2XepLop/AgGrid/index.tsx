@@ -2,6 +2,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'types';
 import './styles.css';
 import { useGridOptions } from './utils';
+import { useCallback } from 'react';
 
 function AgGrid() {
   const {
@@ -10,6 +11,7 @@ function AgGrid() {
     defaultColDef,
     autoGroupColumnDef,
     getMainMenuItems,
+    getContextMenuItems,
     statusBar,
     sideBar,
     onSelectionChanged,
@@ -36,14 +38,15 @@ function AgGrid() {
         columnDefs={columnDefs}
         autoGroupColumnDef={autoGroupColumnDef}
         headerHeight={30}
-        // animateRows={false}
+        rowHeight={30}
         enableCellTextSelection={true}
+        suppressAnimationFrame={true}
         rowSelection="multiple"
         rowMultiSelectWithClick={true}
         groupSelectsChildren={true}
         groupSelectsFiltered={true}
-        rowHeight={30} // TODO: adding this makes the grid a bit slower, try optimizing by setting CSS directly if possible later
         getMainMenuItems={getMainMenuItems}
+        getContextMenuItems={getContextMenuItems}
         statusBar={statusBar}
         sideBar={sideBar} // TODO: open/close sideBar by keyboard shortcut
         // set this to "never" to display grouping info at sideBar only, for a more minimal UI

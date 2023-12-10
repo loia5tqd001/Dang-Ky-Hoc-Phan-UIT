@@ -1,54 +1,59 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { IconButton, InputAdornment, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
 import { enqueueSnackbar } from 'notistack';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { extractListMaLop } from '../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
 import { getScriptDkhp } from './utils';
 
+const DEFAULT_TOOLTIP = 'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.';
+const COPIED_TOOLTIP = 'Đã sao chép';
 function ScriptDangKyInput() {
   const cacLop = useTkbStore(selectPhanLoaiHocTrenTruong);
   const listMaLop = useMemo(() => extractListMaLop(cacLop.flat()), [cacLop]);
   const script = useMemo(() => getScriptDkhp(listMaLop), [listMaLop]);
-
+  const hasLop = listMaLop.length > 0;
+  const [isCopying, setIsCopying] = useState(false);
   return (
     <Grid item xs={6} style={{ paddingRight: 0 }}>
-      {listMaLop.length > 0 ? (
-        <Tooltip title={'Click để sao chép, và xem video hướng dẫn ở B1 để biết cách dùng.'}>
-          <TextField
-            onClick={() => {
-              navigator.clipboard.writeText(script).then(
-                () => {
-                  enqueueSnackbar('Đã sao chép', { variant: 'success' });
-                },
-                () => {
-                  enqueueSnackbar('Không thể sao chép', { variant: 'error' });
-                },
-              );
-            }}
-            label={'Script đăng ký nhanh'}
-            fullWidth
-            size="small"
-            multiline
-            rows={2}
-            variant="outlined"
-            value={script}
-            inputProps={{ readOnly: true }}
-          />
-        </Tooltip>
-      ) : (
-        <TextField
-          label={'Script đăng ký nhanh'}
-          fullWidth
-          size="small"
-          multiline
-          rows={2}
-          variant="outlined"
-          value={`Chưa có lớp nào`}
-          disabled
-        />
-      )}
+      <TextField
+        label={'Script đăng ký nhanh'}
+        fullWidth
+        size="small"
+        multiline
+        rows={2}
+        variant="outlined"
+        value={hasLop ? script : 'Chưa có lớp nào'}
+        disabled={!hasLop}
+        inputProps={{ readOnly: true, style: { resize: 'vertical' } }}
+        InputProps={{
+          endAdornment: hasLop ? (
+            <InputAdornment position="end">
+              <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
+                <IconButton
+                  onClick={() => {
+                    navigator.clipboard.writeText(script).then(
+                      () => {
+                        setIsCopying(true);
+                        setTimeout(() => setIsCopying(false), 3000);
+                      },
+                      () => {
+                        enqueueSnackbar('Không thể sao chép', { variant: 'error' });
+                      },
+                    );
+                  }}
+                  edge="end"
+                  size="small"
+                >
+                  <ContentCopyIcon color={isCopying ? 'primary' : undefined} />
+                </IconButton>
+              </Tooltip>
+            </InputAdornment>
+          ) : undefined,
+        }}
+      />
     </Grid>
   );
 }
