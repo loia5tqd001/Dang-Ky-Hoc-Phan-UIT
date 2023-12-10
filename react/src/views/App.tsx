@@ -48,7 +48,7 @@ function App() {
                 <>
                   <MyRoute path={routes._2XepLop.path} component={XepLop} />
                   <MyRoute path={routes._3KetQua.path} component={KetQua} />
-                  <MyRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} />
+                  {/* <MyRoute path={routes._4GiaoDienDKHP.path} component={GiaoDienDKHP} /> */}
                 </>
               ) : (
                 <NeedStep1 />
