@@ -16,6 +16,7 @@ function ClassCell(classModel: ClassModel) {
           color="inherit"
           size="small"
           onClick={() => removeClass(classModel)}
+          className="remove-class-btn"
           // TODO: CMD+Click to remove all
         >
           <CloseIcon />

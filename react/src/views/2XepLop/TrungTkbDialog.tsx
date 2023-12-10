@@ -47,7 +47,7 @@ function TrungTkbDialog() {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Không thể chọn lớp <br />
+          Không thể chọn lớp
           {trungTkbs.map((trungTkb) => (
             <>
               <br />
@@ -56,7 +56,7 @@ function TrungTkbDialog() {
                 Thứ {trungTkb.new.Thu} Tiết {trungTkb.new.Tiet}
               </b>
               <br />
-              bị trùng lịch với lớp đã chọn <br />
+              bị trùng lịch với <br />
               <b>{trungTkb.existing.TenMH}</b> - <b>{trungTkb.existing.MaLop}</b> -{' '}
               <b>
                 Thứ {trungTkb.existing.Thu} Tiết {trungTkb.existing.Tiet}
