@@ -1,22 +1,18 @@
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb } from 'redux/xepTkb/selectors';
-import { setIsChiVeTkb, setTextareChiVeTkb } from 'redux/xepTkb/slice';
-import { extractListMaLop } from 'utils';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import { selectIsChiVeTkb, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
 import ScriptDangKyInput from './ScriptDangKyInput';
 import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
 function Index() {
-  const dispatch = useDispatch();
-  const khongXepLop = useSelector(selectIsChiVeTkb);
-  const textareaChiVeTkb = useSelector(selectTextareaChiVeTkb);
-  const cacLop = useSelector(selectPhanLoaiHocTrenTruong);
+  const setIsChiVeTkb = useTkbStore((s) => s.setIsChiVeTkb);
+  const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
+  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  const textareaChiVeTkb = useTkbStore(selectTextareaChiVeTkb);
 
   return (
     <div style={{ height: '100%', minWidth: '90%', display: 'grid', placeContent: 'center' }}>
@@ -26,7 +22,7 @@ function Index() {
             control={
               <Checkbox
                 checked={khongXepLop}
-                onChange={(e) => dispatch(setIsChiVeTkb(e.target.checked))}
+                onChange={(e) => setIsChiVeTkb(e.target.checked)}
                 name="checkedA"
                 color="primary"
                 size="small"
@@ -57,16 +53,15 @@ function Index() {
               rows={2}
               variant="outlined"
               onChange={(e) => {
-                dispatch(setTextareChiVeTkb(e.target.value));
+                setTextareChiVeTkb(e.target.value);
               }}
               disabled={!khongXepLop}
               value={khongXepLop ? textareaChiVeTkb : ''}
             />
           </Tooltip>
         </Grid>
-        <ScriptDangKyInput listMaLop={extractListMaLop(cacLop.flat())} />
+        <ScriptDangKyInput />
       </Grid>
-
       <ThoiKhoaBieuTable />
     </div>
   );

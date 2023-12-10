@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSnackbar } from 'notistack';
-import html2canvas from 'html2canvas';
-import { useSelector } from 'react-redux';
-import { selectPhanLoaiHocTrenTruong } from 'redux/xepTkb/selectors';
-import { downloadFromCanvas, getTietIndex } from './utils';
+import { getDanhSachTiet } from '../../../utils';
+import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
+import { ClassModel } from '../../../models';
+import { getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
 const rowDataExample = [
@@ -20,119 +19,68 @@ const rowDataExample = [
 ];
 */
 
-const initRowData = () => [
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 1
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 2
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 3
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 4
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 5
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 6
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 7
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 8
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 9
-  { Thu2: null, Thu3: null, Thu4: null, Thu5: null, Thu6: null, Thu7: null }, // tiet 10
-];
+export const CELL = {
+  /** không có lớp học vào thời điểm này */
+  NO_CLASS: null,
+  /** có lớp học vào thời điểm này, nhưng sẽ được render đè bởi cell khác (lớp có tiết 12345 thì chỉ tiết 1 là phải render) */
+  OCCUPIED: 'xx',
+} as const;
+
+type CellData = typeof CELL.NO_CLASS | typeof CELL.OCCUPIED | ClassModel;
+type RowData = {
+  Thu2: CellData;
+  Thu3: CellData;
+  Thu4: CellData;
+  Thu5: CellData;
+  Thu6: CellData;
+  Thu7: CellData;
+};
+type TableData = RowData[];
+
+const initTableData = () => {
+  const tableData: TableData = [];
+  for (let i = 0; i < 13; i++) {
+    tableData.push({
+      Thu2: CELL.NO_CLASS,
+      Thu3: CELL.NO_CLASS,
+      Thu4: CELL.NO_CLASS,
+      Thu5: CELL.NO_CLASS,
+      Thu6: CELL.NO_CLASS,
+      Thu7: CELL.NO_CLASS,
+    });
+  }
+  return tableData;
+};
 
 // Phân loại data thành các lớp học trên trường & các lớp HT2
 // Đồng thời tái cấu trúc CTDL nhằm tiện vẽ TKB hơn
 export const usePhanLoaiHocTrenTruong = () => {
-  const [khongHocTrenTruong, hocTrenTruong] = useSelector(selectPhanLoaiHocTrenTruong);
+  const [khongHocTrenTruong, hocTrenTruong] = useTkbStore(selectPhanLoaiHocTrenTruong);
 
   const rowDataHocTrenTruong = React.useMemo(() => {
-    const rowData = initRowData();
+    const tableData = initTableData();
 
     for (const lop of hocTrenTruong) {
-      const listTiet = lop.Tiet.split('');
+      const listTiet = getDanhSachTiet(lop.Tiet);
 
       const tietBatDau = listTiet[0];
-      rowData[getTietIndex(tietBatDau)]['Thu' + lop.Thu] = lop;
+      tableData[getTietIndex(tietBatDau)]['Thu' + lop.Thu] = lop;
 
       for (let i = 1; i < listTiet.length; i++) {
-        rowData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = 'xx';
+        tableData[getTietIndex(listTiet[i])]['Thu' + lop.Thu] = CELL.OCCUPIED;
       }
     }
 
-    return rowData;
+    const khongCoLopBuoiToi = tableData.slice(-3).every((tiet) => {
+      return Object.values(tiet).every((cell) => cell === CELL.NO_CLASS);
+    });
+    if (khongCoLopBuoiToi) tableData.splice(-3);
+
+    return tableData;
   }, [hocTrenTruong]);
 
   return {
     khongHocTrenTruong,
     rowDataHocTrenTruong,
-  };
-};
-
-/* old code: harder to read
-   const rowDataHocTrenTruong = React.useMemo(
-     () =>
-       hocTrenTruong.reduce(
-         (acc, cur) => {
-           cur.Tiet.split('').forEach((tiet, i) => {
-             const tietIndex = tiet === '0' ? 9 : tiet - 1;
-             const isTietBatDau = i === 0;
-             if (acc[tietIndex]) {
-               if (acc[tietIndex]['Thu' + cur.Thu] === undefined) {
-                 acc[tietIndex]['Thu' + cur.Thu] = isTietBatDau ? cur : 'blank';
-               }
-             } else {
-               acc[tietIndex] = { ['Thu' + cur.Thu]: isTietBatDau ? cur : 'blank' };
-             }
-           });
-           return acc;
-         },
-         [...Array(10)],
-       ),
-     [hocTrenTruong],
-   );
- 
-    rowDataHocTrenTruong: An array of 10 elements represents for 10 tiet, for example:
-      [
-       {                 "Thu4": { "STT": 351, "MaMH": "MA003", ... (một object lớp học) } },
-       {                 "Thu4": "blank" },
-       {                 "Thu4": "blank" },
-       {                 "Thu4": "blank" },
-       null,
-       { "Thu2": { "STT": ...}, "Thu5": { "STT": 631, "MaMH": "MA003", ... (một object lớp học) } },
-       { "Thu2": "blank",       "Thu5": "blank" },
-       { "Thu2": "blank",       "Thu5": "blank" },
-       { "Thu2": "blank",       "Thu5": "blank" },
-        null
-      ]
-      Can try this: console.log('rowDataHocTrenTruong', JSON.stringify(rowDataHocTrenTruong, null, 2));
-    */
-
-export const useProcessImageTkb = () => {
-  const tkbTableRef = React.useRef<HTMLTableElement>(null);
-  const { enqueueSnackbar } = useSnackbar();
-
-  // sap chép hình ảnh tkb vào clipboard
-  const [isCopyingToClipboard, setIsCopyingToClipboard] = React.useState(false);
-  const onHandleCopyToClipboard = React.useCallback(async () => {
-    if (!tkbTableRef.current) return;
-    setIsCopyingToClipboard(true);
-    const canvas = await html2canvas(tkbTableRef.current);
-    canvas.toBlob((blob) => {
-      // @ts-ignore
-      navigator.clipboard.write([new window.ClipboardItem({ [blob.type]: blob })]);
-      setIsCopyingToClipboard(false);
-      enqueueSnackbar('Sao chép ảnh thành công, Ctrl+V để xem kết quả.', { variant: 'success' });
-    });
-  }, [enqueueSnackbar, tkbTableRef]);
-
-  // tải hình ảnh tkb về máy
-  const [isSavingToComputer, setIsSavingToComputer] = React.useState(false);
-  const onHandleSavingToComputer = React.useCallback(async () => {
-    if (!tkbTableRef.current) return;
-    setIsSavingToComputer(true);
-    const canvas = await html2canvas(tkbTableRef.current);
-    downloadFromCanvas(canvas, 'thoikhoabieu.png');
-    setIsSavingToComputer(false);
-  }, [tkbTableRef]);
-
-  return {
-    tkbTableRef,
-    isCopyingToClipboard,
-    onHandleCopyToClipboard,
-    isSavingToComputer,
-    onHandleSavingToComputer,
   };
 };

@@ -1,18 +1,42 @@
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import constate from 'constate';
 import React from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Box from '@material-ui/core/Box';
-import WarningTwoToneIcon from '@material-ui/icons/WarningTwoTone';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+import { ClassModel } from '../../models';
 
-function TrungTkbDialog({ isDialogOpen, setIsDialogOpen, lopTrungTkb }) {
+export type TTrungTkb = {
+  existing: ClassModel;
+  new: ClassModel;
+};
+
+export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [trungTkbs, setTrungTkbs] = React.useState<TTrungTkb[]>([]);
+
+  const openTrungTkbDialog = React.useCallback((trungTkbData: TTrungTkb[]) => {
+    setTrungTkbs(trungTkbData);
+    setIsDialogOpen(true);
+  }, []);
+
+  const closeDialog = React.useCallback(() => {
+    setIsDialogOpen(false);
+  }, []);
+
+  return { isDialogOpen, trungTkbs, openTrungTkbDialog, closeDialog };
+});
+
+function TrungTkbDialog() {
+  const { isDialogOpen, closeDialog, trungTkbs } = useTrungTkbDialogContext();
   return (
     <Dialog
       open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
+      onClose={closeDialog}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -23,22 +47,28 @@ function TrungTkbDialog({ isDialogOpen, setIsDialogOpen, lopTrungTkb }) {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Không thể chọn lớp <br />
-          <b>{lopTrungTkb.master?.MaLop}</b> -{' '}
-          <b>
-            Thứ {lopTrungTkb.master?.Thu} Tiết {lopTrungTkb.master?.Tiet}
-          </b>
-          <br />
-          vì bị trùng lịch với lớp đã chọn <br />
-          <b>{lopTrungTkb.slave?.MaLop}</b> -{' '}
-          <b>
-            Thứ {lopTrungTkb.slave?.Thu} Tiết {lopTrungTkb.slave?.Tiet}
-          </b>
-          <br />
+          Không thể chọn lớp
+          {trungTkbs.map((trungTkb) => (
+            // TODO: highlight in the grid to better indicate the conflict
+            <>
+              <br />
+              <b>{trungTkb.new.TenMH}</b> - <b>{trungTkb.new.MaLop}</b> -{' '}
+              <b>
+                Thứ {trungTkb.new.Thu} Tiết {trungTkb.new.Tiet}
+              </b>
+              <br />
+              bị trùng lịch với <br />
+              <b>{trungTkb.existing.TenMH}</b> - <b>{trungTkb.existing.MaLop}</b> -{' '}
+              <b>
+                Thứ {trungTkb.existing.Thu} Tiết {trungTkb.existing.Tiet}
+              </b>
+              <br />
+            </>
+          ))}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setIsDialogOpen(false)} color="primary" children="Đã hiểu" />
+        <Button onClick={closeDialog} color="primary" children="Đã hiểu" />
       </DialogActions>
     </Dialog>
   );

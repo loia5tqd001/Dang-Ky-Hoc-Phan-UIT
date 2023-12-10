@@ -9,6 +9,9 @@ export const timeLookup = [
   /* tiet 8 */ '(14:30 - 15:15)',
   /* tiet 9 */ '(15:30 - 16:15)',
   /* tiet 10 */ '(16:15 - 17:00)',
+  /* tiet 11 */ '🌚',
+  /* tiet 12 */ '🌚',
+  /* tiet 13 */ '🌚',
 ];
 
 export const getTietIndex = (tietString) => {

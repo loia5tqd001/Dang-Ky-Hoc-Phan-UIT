@@ -1,6 +1,6 @@
-import { ClassModel } from 'models';
+import { ClassModelOriginal } from 'models';
 
-export function arrayToTkbObject(array: any[]) {
+export function arrayToTkbObject(array: any[]): ClassModelOriginal {
   // convert excel based date (1989-Dec-30) to Js based date (1970-Jan-01)
   function convertExcelDateToStringDate(excelDate) {
     // in Excel, based date is 1989-Dec-30: https://stackoverflow.com/questions/36378476/why-does-the-date-returns-31-12-1899-when-1-is-passed-to-it
@@ -40,7 +40,7 @@ export function arrayToTkbObject(array: any[]) {
     NKT: typeof array[20] === 'string' ? array[20] : convertExcelDateToStringDate(array[20]),
     GhiChu: array[21],
     NgonNgu: array[22],
-  } as ClassModel;
+  };
 }
 
 // from Date object to 'hh:mm dd/MM/yyyy' format
@@ -64,20 +64,20 @@ export const sheetJSFT = [
   '.xlsb',
   '.xlsm',
   '.xls',
-  '.xml',
+  // '.xml',
   '.csv',
-  '.txt',
-  '.ods',
-  '.fods',
-  '.uos',
-  '.sylk',
-  '.dif',
-  '.dbf',
-  '.prn',
-  '.qpw',
-  '.123',
-  '.wb*',
-  '.wq*',
-  '.html',
-  '.htm',
+  // '.txt',
+  // '.ods',
+  // '.fods',
+  // '.uos',
+  // '.sylk',
+  // '.dif',
+  // '.dbf',
+  // '.prn',
+  // '.qpw',
+  // '.123',
+  // '.wb*',
+  // '.wq*',
+  // '.html',
+  // '.htm',
 ].join(',');

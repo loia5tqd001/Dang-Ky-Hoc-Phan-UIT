@@ -1,4 +1,5 @@
-export interface ClassModel {
+// got from Excel
+export type ClassModelOriginal = {
   STT: number;
   MaMH: string;
   MaLop: string;
@@ -20,5 +21,14 @@ export interface ClassModel {
   KhoaQL: string;
   NBD: string;
   NKT: string;
+  GhiChu: string;
   NgonNgu: string;
-}
+};
+
+type Buoi = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
+export type ClassModel = ClassModelOriginal & {
+  /* built from Tiet */
+  // TODO: consider using formatter instead of adding data
+  Buoi: '*' | Buoi;
+  ThuBuoi: '*' | `Thứ ${ClassModel['Thu']} ${Buoi}`;
+};

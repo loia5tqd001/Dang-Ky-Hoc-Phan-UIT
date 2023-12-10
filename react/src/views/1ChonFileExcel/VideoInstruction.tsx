@@ -1,8 +1,8 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
+import FormLabel from '@mui/material/FormLabel';
+import FormControl from '@mui/material/FormControl';
 
 function VideoInstruction() {
   return (
@@ -13,13 +13,13 @@ function VideoInstruction() {
           height: '42vw',
           position: 'relative',
           zIndex: 1,
-          margin: '30px 0  50px',
+          margin: '0 0  50px',
         }}
       >
         <FormLabel component="legend" style={{ paddingBottom: 5 }}>
           Video hướng dẫn:
         </FormLabel>
-        <Skeleton variant="rect" width="100%" style={{ position: 'absolute', zIndex: -1 }}>
+        <Skeleton variant="rectangular" width="100%" style={{ position: 'absolute', zIndex: -1 }}>
           <div style={{ paddingTop: '56%' }} />
         </Skeleton>
         <iframe

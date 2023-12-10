@@ -1,12 +1,14 @@
 import React from 'react';
+import { getDanhSachTiet } from '../../../utils';
 import { timeLookup } from './utils';
 import ClassCell from './ClassCell';
+import { CELL } from './hooks';
 
 const GetCell = ({ data }) => {
-  if (data === null) return <td />;
-  if (data === 'xx') return null;
+  if (data === CELL.NO_CLASS) return <td />;
+  if (data === CELL.OCCUPIED) return null;
   return (
-    <td rowSpan={data.Tiet.length} className="cell-class">
+    <td rowSpan={getDanhSachTiet(data.Tiet).length} className="cell-class">
       <ClassCell {...data} />
     </td>
   );

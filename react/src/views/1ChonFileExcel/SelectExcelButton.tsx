@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import XLSX from 'xlsx';
-// redux
-import { useDispatch, useSelector } from 'react-redux';
-import { setDataExcel } from 'redux/xepTkb/slice';
-import { selectDataExcel } from 'redux/xepTkb/selectors';
-// mui
-import Box from '@material-ui/core/Box';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core';
-import { arrayToTkbObject, sheetJSFT, toDateTimeString } from '../utils';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import makeStyles from '@mui/styles/makeStyles';
+import { enqueueSnackbar } from 'notistack';
+import { selectDataExcel, useTkbStore } from '../../zus';
+import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
+
+const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
 
 function SelectExcelButton() {
-  const dispatch = useDispatch();
-  const dataExcel = useSelector(selectDataExcel);
+  const dataExcel = useTkbStore(selectDataExcel);
+  const setDataExcel = useTkbStore((s) => s.setDataExcel);
   const classes = useStyles();
 
-  const handleUploadFileExcel = React.useCallback(
+  const handleUploadFileExcel = React.useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
-      const file = event.target.files[0];
+      const file = event.target.files?.[0];
+      if (!file) return;
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
       reader.onload = (e) => {
@@ -31,18 +31,30 @@ function SelectExcelButton() {
         const dataInArray = [...dataLyThuyet, ...dataThucHanh].filter(
           (row) => typeof row[0] === 'number', // những row có cột 0 là STT (STT là number) thì mới là data ta cần
         );
-        dispatch(
+        if (dataInArray.length) {
           setDataExcel({
             data: dataInArray.map((array) => arrayToTkbObject(array)),
             fileName: file.name,
             lastUpdate: toDateTimeString(new Date()),
-          }),
-        );
+          });
+          enqueueSnackbar(
+            <>
+              Upload file thành công <Bold>{file.name}</Bold>
+            </>,
+            {
+              variant: 'success',
+            },
+          );
+        } else {
+          enqueueSnackbar('Không đúng định dạng file của trường', {
+            variant: 'error',
+          });
+        }
       };
       if (rABS) reader.readAsBinaryString(file);
       else reader.readAsArrayBuffer(file);
     },
-    [dispatch],
+    [setDataExcel],
   );
 
   return (
@@ -55,10 +67,22 @@ function SelectExcelButton() {
           className={dataExcel?.lastUpdate ? classes.button : undefined}
           component="label"
         >
-          {dataExcel?.lastUpdate ? 'Đã upload file. Update: ' + dataExcel.lastUpdate : 'Tải file excel lên'}
+          {dataExcel?.lastUpdate ? (
+            <>
+              <span>Đã upload file vào: </span> <Bold>{dataExcel.lastUpdate}</Bold>
+            </>
+          ) : (
+            'Tải file excel lên'
+          )}
           <input type="file" style={{ display: 'none' }} accept={sheetJSFT} onChange={handleUploadFileExcel} />
         </Button>
       </Tooltip>
+      <span style={{ marginLeft: '10px' }}>
+        Ví dụ file excel:{' '}
+        <a href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024">
+          https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024
+        </a>
+      </span>
     </Box>
   );
 }
