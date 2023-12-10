@@ -45,7 +45,7 @@ function AgGrid() {
         rowHeight={30} // TODO: adding this makes the grid a bit slower, try optimizing by setting CSS directly if possible later
         getMainMenuItems={getMainMenuItems}
         statusBar={statusBar}
-        sideBar={sideBar}
+        sideBar={sideBar} // TODO: open/close sideBar by keyboard shortcut
         // set this to "never" to display grouping info at sideBar only, for a more minimal UI
         rowGroupPanelShow="never"
         suppressDragLeaveHidesColumns={true}
