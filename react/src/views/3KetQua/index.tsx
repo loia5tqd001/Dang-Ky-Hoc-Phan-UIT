@@ -15,7 +15,13 @@ function Index() {
   return (
     <div style={{ marginTop: -15, maxWidth: 1500 }}>
       <Grid sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Tooltip title="Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2">
+        <Tooltip
+          title={
+            window.location.search.includes('self_selected')
+              ? 'Đang dùng tính năng chia sẻ TKB (Read only)'
+              : 'Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2'
+          }
+        >
           <FormControlLabel
             control={
               <Checkbox
