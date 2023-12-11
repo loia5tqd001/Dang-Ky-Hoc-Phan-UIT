@@ -7,7 +7,8 @@ export function uniqMaLop(classes: ClassModel[]) {
 }
 
 export function calcTongSoTC(classes: ClassModel[]) {
-  const unique = uniqMaLop(classes);
+  const { kept } = findOverlapedClasses(classes);
+  const unique = uniqMaLop(kept);
   return unique.reduce((acc, cur) => acc + cur.SoTc, 0);
 }
 
