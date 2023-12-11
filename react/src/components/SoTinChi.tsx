@@ -11,6 +11,7 @@ function SoTinChi(props: { tongSoTcSelected?: number }) {
   return (
     <Tooltip title={judgement.text}>
       <p style={{ color: judgement.isOk ? COLORS.SUCCESS : COLORS.ERROR, margin: 0, padding: 6 }}>
+        {/* TODO: disregard các lớp bị trùng TKB */}
         Số tín chỉ: <b>{tongSoTcSelected}</b>
       </p>
     </Tooltip>
