@@ -1,19 +1,13 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { IconButton, InputAdornment, InputBaseProps, Tooltip } from '@mui/material';
+import ShareIcon from '@mui/icons-material/Share';
+import { IconButton, InputBaseProps, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
 import { useMemo, useState } from 'react';
 import { extractListMaLop } from '../../utils';
-import {
-  selectIsChiVeTkb,
-  selectPhanLoaiHocTrenTruong,
-  selectSelectedClasses,
-  selectTextareaChiVeTkb,
-  useTkbStore,
-} from '../../zus';
+import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
 import { getScriptDkhp } from './utils';
-import ShareIcon from '@mui/icons-material/Share';
 
 const DEFAULT_TOOLTIP = 'Click để sao chép';
 const COPIED_TOOLTIP = 'Đã sao chép';

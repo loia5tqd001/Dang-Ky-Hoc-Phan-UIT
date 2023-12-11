@@ -17,7 +17,7 @@ import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
 import SoTinChi from '../../../components/SoTinChi';
 import {
-  constructFinalSelectedClasses,
+  findOverlapedClasses,
   getAgGridRowId,
   getBuoiFromTiet,
   hasOverlapSchedule,
@@ -347,12 +347,11 @@ export const useGridOptions = () => {
         return;
       }
 
-      const { finalSelectedClasses, overlappedClasses } = constructFinalSelectedClasses(
-        oldSelectedClasses,
-        newSelectedClasses,
+      const { kept: finalSelectedClasses, redundant } = findOverlapedClasses(
+        oldSelectedClasses.concat(newSelectedClasses),
       );
-      if (overlappedClasses.length) {
-        openTrungTkbDialog(overlappedClasses);
+      if (redundant.length) {
+        openTrungTkbDialog(redundant);
       }
       setSelectedClasses(finalSelectedClasses);
       updateNodesSelectionToAgGrid(finalSelectedClasses);

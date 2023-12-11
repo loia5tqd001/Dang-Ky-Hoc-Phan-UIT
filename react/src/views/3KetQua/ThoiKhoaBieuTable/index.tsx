@@ -1,7 +1,7 @@
 import { getDanhSachTiet } from '../../../utils';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
-import { CELL, usePhanLoaiHocTrenTruong } from './hooks';
+import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext } from './hooks';
 import './styles.css';
 import { timeLookup } from './utils';
 
@@ -25,15 +25,24 @@ function RowHocTrenTruong({ row, index }) {
   );
 }
 
-function Index() {
-  const { rowDataHocTrenTruong, khongHocTrenTruong } = usePhanLoaiHocTrenTruong();
+function Render() {
+  const { rowDataHocTrenTruong, khongHocTrenTruong, redundant } = usePhanLoaiHocTrenTruongContext();
 
   return (
-    <div id="thoi-khoa-bieu">
-      <table>
-        <TableHead />
-        <tbody>
-          <ClassCellContext>
+    <ClassCellContext>
+      <div id="thoi-khoa-bieu">
+        <div style={{ display: 'flex' }}>
+          {redundant
+            .flatMap((it) => it.new)
+            .map((lop, index) => (
+              <tr key={index}>
+                <ClassCell data={lop} isOutsideTable />
+              </tr>
+            ))}
+        </div>
+        <table>
+          <TableHead />
+          <tbody>
             {rowDataHocTrenTruong.map((row, index) => (
               <RowHocTrenTruong key={index} row={row} index={index} />
             ))}
@@ -42,10 +51,20 @@ function Index() {
                 <ClassCell colSpan={7} data={lop} />
               </tr>
             ))}
-          </ClassCellContext>
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
+    </ClassCellContext>
+  );
+}
+
+function Index() {
+  return (
+    <ClassCellContext>
+      <PhanLoaiHocTrenTruongContext>
+        <Render />
+      </PhanLoaiHocTrenTruongContext>
+    </ClassCellContext>
   );
 }
 

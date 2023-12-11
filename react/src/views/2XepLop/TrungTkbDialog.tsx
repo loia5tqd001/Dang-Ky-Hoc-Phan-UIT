@@ -12,7 +12,7 @@ import { ClassModel } from '../../types';
 
 export type TTrungTkb = {
   existing: ClassModel;
-  new: ClassModel;
+  new: ClassModel[];
 };
 
 export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => {
@@ -52,11 +52,15 @@ function TrungTkbDialog() {
             // TODO: highlight in the grid to better indicate the conflict
             <>
               <br />
-              <b>{trungTkb.new.TenMH}</b> - <b>{trungTkb.new.MaLop}</b> -{' '}
-              <b>
-                Thứ {trungTkb.new.Thu} Tiết {trungTkb.new.Tiet}
-              </b>
-              <br />
+              {trungTkb.new.map((lop) => (
+                <>
+                  <b>{lop.TenMH}</b> - <b>{lop.MaLop}</b> -{' '}
+                  <b>
+                    Thứ {lop.Thu} Tiết {lop.Tiet}
+                  </b>
+                  <br />
+                </>
+              ))}
               bị trùng lịch với <br />
               <b>{trungTkb.existing.TenMH}</b> - <b>{trungTkb.existing.MaLop}</b> -{' '}
               <b>

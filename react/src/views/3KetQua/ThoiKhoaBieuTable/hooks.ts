@@ -1,5 +1,6 @@
 import React from 'react';
-import { getDanhSachTiet } from '../../../utils';
+import constate from 'constate';
+import { findOverlapedClasses, getDanhSachTiet } from '../../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
 import { ClassModel } from '../../../types';
 import { getTietIndex } from './utils';
@@ -54,13 +55,15 @@ const initTableData = () => {
 
 // Phân loại data thành các lớp học trên trường & các lớp HT2
 // Đồng thời tái cấu trúc CTDL nhằm tiện vẽ TKB hơn
-export const usePhanLoaiHocTrenTruong = () => {
+const usePhanLoaiHocTrenTruong = () => {
   const [khongHocTrenTruong, hocTrenTruong] = useTkbStore(selectPhanLoaiHocTrenTruong);
+
+  const { kept, redundant } = findOverlapedClasses(hocTrenTruong);
 
   const rowDataHocTrenTruong = React.useMemo(() => {
     const tableData = initTableData();
 
-    for (const lop of hocTrenTruong) {
+    for (const lop of kept) {
       const listTiet = getDanhSachTiet(lop.Tiet);
 
       const tietBatDau = listTiet[0];
@@ -77,10 +80,13 @@ export const usePhanLoaiHocTrenTruong = () => {
     if (khongCoLopBuoiToi) tableData.splice(-3);
 
     return tableData;
-  }, [hocTrenTruong]);
+  }, [kept]);
 
   return {
+    redundant,
     khongHocTrenTruong,
     rowDataHocTrenTruong,
   };
 };
+
+export const [PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext] = constate(usePhanLoaiHocTrenTruong);

@@ -130,7 +130,7 @@ const selectSelectedClassesBuoc3 = memoize((state: TkbStore): ClassModel[] => {
   const finalDataTkb = selectFinalDataTkb(state);
 
   if (isChiVeTkb) {
-    const listMaLop = textareaChiVeTkb.split(/\s+|\+|\,/);
+    const listMaLop = textareaChiVeTkb.split(/\s+|\+|,/);
     return finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));
   } else {
     return selectSelectedClasses(state);

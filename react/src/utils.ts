@@ -70,6 +70,7 @@ export const hasOverlapSchedule = (classAs: ClassModel[], classB: ClassModel) =>
 };
 
 // Thường thì MaLop alone is enough because most of the classes only appear once a week or once every 2 weeks, nhưng mà có thể có môn Anh Văn học 1 tuần tới 2 buổi, nên cần có thêm Thu và Tiet
+// TODO: maybe use STT?
 export const getAgGridRowId = (classModel: ClassModel): string => {
   return classModel.MaLop + classModel.Thu + classModel.Tiet;
 };
@@ -78,39 +79,44 @@ export const isSameAgGridRowId = (class1: ClassModel, class2: ClassModel) => {
   return getAgGridRowId(class1) === getAgGridRowId(class2);
 };
 
-export const constructFinalSelectedClasses = (
-  oldSelectedClasses: ClassModel[],
-  newSelectedClasses: ClassModel[],
-): { finalSelectedClasses: ClassModel[]; overlappedClasses: TTrungTkb[] } => {
-  const finalSelectedClasses: ClassModel[] = [];
-  const overlappedClasses: TTrungTkb[] = [];
+export const findOverlapedClasses = (
+  /** the first elements in the array will have higher priority, it's OK to have duplicated classes */
+  classes: ClassModel[],
+): { kept: ClassModel[]; redundant: TTrungTkb[] } => {
+  const kept: ClassModel[] = [];
+  const redundant: TTrungTkb[] = [];
 
   const findExistingOverlap = (newClass: ClassModel) => {
     const newClassTimeSlots = getTimeSlots(newClass);
-    return finalSelectedClasses.find((existingClass) => {
+    return kept.find((existingClass) => {
       const existingClassTimeSlots = getTimeSlots(existingClass);
       return isTimeSlotsOverlap(existingClassTimeSlots, newClassTimeSlots);
     });
   };
 
   const processedAgGridRowIds = new Set<string>();
-  oldSelectedClasses.concat(newSelectedClasses).forEach((addingClass) => {
+  classes.forEach((addingClass) => {
     const agGridRowId = getAgGridRowId(addingClass);
-    if (processedAgGridRowIds.has(agGridRowId)) return; // class in newSelectedClasses already handled when traverse oldSelectedClasses
+    if (processedAgGridRowIds.has(agGridRowId)) return;
 
     processedAgGridRowIds.add(agGridRowId);
     const existingClassOverlapped = findExistingOverlap(addingClass);
-    if (existingClassOverlapped) {
-      overlappedClasses.push({
+    // TODO: refactor the mess below
+    const existingRedundant =
+      existingClassOverlapped && redundant.find((it) => isSameAgGridRowId(it.existing, existingClassOverlapped));
+    if (existingRedundant) {
+      existingRedundant.new.push(addingClass);
+    } else if (existingClassOverlapped) {
+      redundant.push({
         existing: existingClassOverlapped,
-        new: addingClass,
+        new: [addingClass],
       });
     } else {
-      finalSelectedClasses.push(addingClass);
+      kept.push(addingClass);
     }
   });
 
-  return { finalSelectedClasses, overlappedClasses };
+  return { kept, redundant };
 };
 
 export const log = (...args: any[]) => {
