@@ -1,6 +1,6 @@
 import {
   AgGridEvent,
-  CellStyleFunc,
+  CellStyle,
   GetContextMenuItemsParams,
   GridOptions,
   GridReadyEvent,
@@ -75,7 +75,7 @@ const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
   KLTN: 6,
 } as const;
 
-const cellStyleBoldWhenSelectable: CellStyleFunc = ({ node }) => (node.selectable ? { fontWeight: 600 } : null);
+const BOLD_CELL_STYLE: CellStyle = { fontWeight: 600 };
 
 const columnDefs: GridOptions['columnDefs'] = [
   {
@@ -94,7 +94,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'TÊN MÔN HỌC',
     field: 'TenMH',
     initialWidth: 280,
-    cellStyle: cellStyleBoldWhenSelectable,
+    cellStyle: BOLD_CELL_STYLE,
     enableRowGroup: true,
   },
   {
@@ -143,7 +143,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'THỨ',
     field: 'Thu',
     initialWidth: 85,
-    cellStyle: cellStyleBoldWhenSelectable,
+    cellStyle: BOLD_CELL_STYLE,
     enableRowGroup: true,
     comparator: (a: ClassModel['Thu'], b: ClassModel['Thu']) => {
       return a.localeCompare(b);
@@ -153,7 +153,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'TIẾT',
     field: 'Tiet',
     initialWidth: 80,
-    cellStyle: cellStyleBoldWhenSelectable,
+    cellStyle: BOLD_CELL_STYLE,
     comparator: (tietA: ClassModel['Tiet'], tietB: ClassModel['Tiet']) => {
       const buoiA = getBuoiFromTiet(tietA);
       const buoiB = getBuoiFromTiet(tietB);
@@ -447,18 +447,13 @@ export const useGridOptions = () => {
 
   // https://stackoverflow.com/a/64023627/9787887
   useEffect(() => {
-    const affectedRowNodes: IRowNode<ClassModel>[] = [];
     agGridRef.current?.api?.forEachLeafNode((node) => {
       const oldSelectable = node.selectable;
       const newSelectable = isRowSelectable(node);
-      affectedRowNodes.push(node); // all row nodes, not just affected ones, because if only affect ones will have bugs when having multiple browsers opened and edit B2 and B3 at the same time, TODO: optimize perf later
       if (oldSelectable === newSelectable) return;
 
       // @ts-ignore
       node.setRowSelectable(isRowSelectable(node));
-    });
-    agGridRef.current?.api?.redrawRows({
-      rowNodes: affectedRowNodes,
     });
   }, [selectedClasses, isRowSelectable]);
 
