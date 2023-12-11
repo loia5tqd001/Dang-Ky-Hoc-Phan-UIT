@@ -12,7 +12,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import logoUit from 'assets/img/logo-uit.png';
 import clsx from 'clsx';
 import GitHubButton from 'react-github-btn';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
@@ -60,6 +60,7 @@ function LeftDrawer() {
   const toggleDrawer = useDrawerStore((s) => s.toggleDrawer);
   const isOpen = useDrawerStore((s) => s.isDrawerOpen);
   const isCollapsed = !isOpen;
+  const location = useLocation();
 
   return (
     <nav className={classes.drawer}>
@@ -98,7 +99,7 @@ function LeftDrawer() {
               className={classes.listItem}
               button
               component={NavLink}
-              to={route.path}
+              to={route.path + location.search}
               activeClassName={classes.menuItemActive}
             >
               <ListItemText primary={isOpen ? route.name : `${index + 1}.`} />

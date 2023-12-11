@@ -114,19 +114,23 @@ export const selectDataExcel = (state: TkbStore) => state.dataExcel;
 export const selectSelectedClasses = (state: TkbStore) => state.selectedClasses;
 export const selectAgGridColumnState = (state: TkbStore) => state.agGridColumnState;
 export const selectAgGridFilterModel = (state: TkbStore) => state.agGridFilterModel;
-export const selectIsChiVeTkb = (state: TkbStore) => state.isChiVeTkb;
-export const selectTextareaChiVeTkb = (state: TkbStore) => state.textareaChiVeTkb;
-export const selectFinalDataTkb = memoize((state: TkbStore): ClassModel[] => {
+export const selectIsChiVeTkb = (state: TkbStore) =>
+  state.isChiVeTkb || window.location.search.includes('self_selected'); // TODO: constant for self_selected
+export const selectTextareaChiVeTkb = (state: TkbStore) => {
+  const searchParams = new URLSearchParams(window.location.search);
+  return searchParams.get('self_selected') || state.textareaChiVeTkb; // TODO: won't get notified when URLSearchParams change, currently we have to add search params when route change in LeftDrawer as a hack
+};
+export const selectFinalDataTkb = (state: TkbStore): ClassModel[] => {
   const dataExcel = selectDataExcel(state);
   return dataExcel?.data ?? [];
-});
+};
 const selectSelectedClassesBuoc3 = memoize((state: TkbStore): ClassModel[] => {
   const isChiVeTkb = selectIsChiVeTkb(state);
   const textareaChiVeTkb = selectTextareaChiVeTkb(state);
   const finalDataTkb = selectFinalDataTkb(state);
 
   if (isChiVeTkb) {
-    const listMaLop = textareaChiVeTkb.split(/\s+/);
+    const listMaLop = textareaChiVeTkb.split(/\s+|\+|\,/);
     return finalDataTkb.filter((it) => listMaLop.includes(it.MaLop));
   } else {
     return selectSelectedClasses(state);

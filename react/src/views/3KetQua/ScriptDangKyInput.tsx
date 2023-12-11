@@ -5,24 +5,64 @@ import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
 import { useMemo, useState } from 'react';
 import { extractListMaLop } from '../../utils';
-import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
+import {
+  selectIsChiVeTkb,
+  selectPhanLoaiHocTrenTruong,
+  selectSelectedClasses,
+  selectTextareaChiVeTkb,
+  useTkbStore,
+} from '../../zus';
 import { getScriptDkhp } from './utils';
+import ShareIcon from '@mui/icons-material/Share';
 
 const DEFAULT_TOOLTIP = 'Click để sao chép';
 const COPIED_TOOLTIP = 'Đã sao chép';
 
-const CustomInputComponent: InputBaseProps['inputComponent'] = ({ inputRef, ...rest }) => (
+const CustomInputComponent: InputBaseProps['inputComponent'] = ({ inputRef, title, ...rest }) => (
   <Tooltip title="Xem video hướng dẫn ở B1 để biết cách dùng.">
     <textarea ref={inputRef} style={{ resize: 'vertical' }} {...rest} />
   </Tooltip>
 );
 
-function ScriptDangKyInput() {
+const CustomInputComponent2: InputBaseProps['inputComponent'] = ({ inputRef, title, ...rest }) => {
+  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  return (
+    <Tooltip title={khongXepLop ? 'Mỗi mã lớp một hàng, hoặc cách nhau bằng khoảng trắng, hoặc dấu phẩy' : ''}>
+      <textarea ref={inputRef} style={{ resize: 'vertical' }} {...rest} />
+    </Tooltip>
+  );
+};
+
+const useCommon = () => {
   const cacLop = useTkbStore(selectPhanLoaiHocTrenTruong);
   const listMaLop = useMemo(() => extractListMaLop(cacLop.flat()), [cacLop]);
   const script = useMemo(() => getScriptDkhp(listMaLop), [listMaLop]);
   const hasLop = listMaLop.length > 0;
+
+  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  const textareaChiVeTkb = useTkbStore(selectTextareaChiVeTkb);
+
+  const dsLopInputValue = (() => {
+    if (khongXepLop) return textareaChiVeTkb;
+    if (!hasLop) return 'Chưa có lớp nào';
+    return listMaLop.join(',');
+  })();
+
+  const scriptInputValue = (() => {
+    if (!hasLop) return 'Chưa có lớp nào';
+    return script;
+  })();
+
+  return {
+    hasLop,
+    dsLopInputValue,
+    scriptInputValue,
+  };
+};
+
+export function ScriptDangKyInput() {
   const [isCopying, setIsCopying] = useState(false);
+  const { hasLop, scriptInputValue } = useCommon();
   return (
     <Grid item xs={6} style={{ paddingRight: 0 }}>
       <TextField
@@ -32,7 +72,7 @@ function ScriptDangKyInput() {
         multiline
         rows={2}
         variant="outlined"
-        value={hasLop ? script : 'Chưa có lớp nào'}
+        value={scriptInputValue}
         disabled={!hasLop}
         inputProps={{ readOnly: true }}
         InputProps={{
@@ -41,7 +81,7 @@ function ScriptDangKyInput() {
             <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
               <IconButton
                 onClick={() => {
-                  navigator.clipboard.writeText(script).then(
+                  navigator.clipboard.writeText(scriptInputValue).then(
                     () => {
                       setIsCopying(true);
                       setTimeout(() => setIsCopying(false), 3000);
@@ -58,6 +98,53 @@ function ScriptDangKyInput() {
               </IconButton>
             </Tooltip>
           ) : undefined,
+        }}
+      />
+    </Grid>
+  );
+}
+
+export function DanhSachLopInput() {
+  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
+
+  const { hasLop, dsLopInputValue } = useCommon();
+
+  return (
+    <Grid item xs={6}>
+      {/* TODO: refactor the mess */}
+
+      <TextField
+        label={khongXepLop ? 'Tự nhập danh sách lớp' : 'Đang dùng dữ liệu từ bước xếp lớp'}
+        fullWidth
+        size="small"
+        multiline
+        inputProps={{ readOnly: !khongXepLop, style: { resize: 'vertical' } }}
+        rows={2}
+        variant="outlined"
+        onChange={(e) => {
+          setTextareChiVeTkb(e.target.value);
+        }}
+        value={dsLopInputValue}
+        disabled={!hasLop}
+        InputProps={{
+          inputComponent: CustomInputComponent2,
+          endAdornment: hasLop ? (
+            <Tooltip title={'Chia sẻ TKB'}>
+              <IconButton
+                edge="end"
+                size="small"
+                onClick={() => {
+                  const newUrl =
+                    window.location.origin + window.location.pathname + '?self_selected=' + dsLopInputValue;
+                  navigator.clipboard.writeText(newUrl);
+                  window.open(newUrl, Math.random()?.toString());
+                }}
+              >
+                <ShareIcon />
+              </IconButton>
+            </Tooltip>
+          ) : null,
         }}
       />
     </Grid>
