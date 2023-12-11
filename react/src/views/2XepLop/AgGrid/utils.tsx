@@ -1,5 +1,6 @@
 import {
   AgGridEvent,
+  CellStyleFunc,
   GetContextMenuItemsParams,
   GridOptions,
   GridReadyEvent,
@@ -14,7 +15,15 @@ import sortBy from 'lodash/sortBy';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
-import { constructFinalSelectedClasses, getAgGridRowId, getBuoiFromTiet, isSameAgGridRowId, log } from '../../../utils';
+import SoTinChi from '../../../components/SoTinChi';
+import {
+  constructFinalSelectedClasses,
+  getAgGridRowId,
+  getBuoiFromTiet,
+  hasOverlapSchedule,
+  isSameAgGridRowId,
+  log,
+} from '../../../utils';
 import {
   selectAgGridColumnState,
   selectAgGridFilterModel,
@@ -23,7 +32,6 @@ import {
   useTkbStore,
 } from '../../../zus';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
-import SoTinChi from '../../../components/SoTinChi';
 
 type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
 type FormattedBuoi = FormattedBuoiValid | '*';
@@ -67,6 +75,8 @@ const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
   KLTN: 6,
 } as const;
 
+const cellStyleBoldWhenSelectable: CellStyleFunc = ({ node }) => (node.selectable ? { fontWeight: 600 } : null);
+
 const columnDefs: GridOptions['columnDefs'] = [
   {
     headerName: 'STT',
@@ -84,7 +94,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'TÊN MÔN HỌC',
     field: 'TenMH',
     initialWidth: 280,
-    cellStyle: { fontWeight: 600 },
+    cellStyle: cellStyleBoldWhenSelectable,
     enableRowGroup: true,
   },
   {
@@ -133,7 +143,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'THỨ',
     field: 'Thu',
     initialWidth: 85,
-    cellStyle: { fontWeight: 600 },
+    cellStyle: cellStyleBoldWhenSelectable,
     enableRowGroup: true,
     comparator: (a: ClassModel['Thu'], b: ClassModel['Thu']) => {
       return a.localeCompare(b);
@@ -143,7 +153,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     headerName: 'TIẾT',
     field: 'Tiet',
     initialWidth: 80,
-    cellStyle: { fontWeight: 600 },
+    cellStyle: cellStyleBoldWhenSelectable,
     comparator: (tietA: ClassModel['Tiet'], tietB: ClassModel['Tiet']) => {
       const buoiA = getBuoiFromTiet(tietA);
       const buoiB = getBuoiFromTiet(tietB);
@@ -428,8 +438,33 @@ export const useGridOptions = () => {
     }
   }, [selectedClasses, setSelectedClasses, updateNodesSelectionToAgGrid]);
 
+  const isRowSelectable = useCallback(
+    (node: IRowNode<ClassModel>): boolean => {
+      return !!node.data && !hasOverlapSchedule(selectedClasses, node.data);
+    },
+    [selectedClasses],
+  );
+
+  // https://stackoverflow.com/a/64023627/9787887
+  useEffect(() => {
+    const affectedRowNodes: IRowNode<ClassModel>[] = [];
+    agGridRef.current?.api?.forEachLeafNode((node) => {
+      const oldSelectable = node.selectable;
+      const newSelectable = isRowSelectable(node);
+      affectedRowNodes.push(node); // all row nodes, not just affected ones, because if only affect ones will have bugs when having multiple browsers opened and edit B2 and B3 at the same time, TODO: optimize perf later
+      if (oldSelectable === newSelectable) return;
+
+      // @ts-ignore
+      node.setRowSelectable(isRowSelectable(node));
+    });
+    agGridRef.current?.api?.redrawRows({
+      rowNodes: affectedRowNodes,
+    });
+  }, [selectedClasses, isRowSelectable]);
+
   return {
     agGridRef,
+    isRowSelectable,
     columnDefs,
     defaultColDef,
     autoGroupColumnDef,

@@ -2,11 +2,11 @@ import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'types';
 import './styles.css';
 import { useGridOptions } from './utils';
-import { useCallback } from 'react';
 
 function AgGrid() {
   const {
     agGridRef,
+    isRowSelectable,
     columnDefs,
     defaultColDef,
     autoGroupColumnDef,
@@ -34,6 +34,7 @@ function AgGrid() {
       <AgGridReact<ClassModel>
         ref={agGridRef}
         rowData={rowData}
+        isRowSelectable={isRowSelectable}
         defaultColDef={defaultColDef}
         columnDefs={columnDefs}
         autoGroupColumnDef={autoGroupColumnDef}

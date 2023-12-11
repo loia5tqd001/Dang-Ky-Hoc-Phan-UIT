@@ -48,16 +48,25 @@ export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
  * 2-1, 2-2, 2-3: Thứ 2, tiết 1,2,3
  * 7-11, 7-12, 7-13: Thứ 7, tiết 11,12,13
  */
-const getTimeSlots = ({ Thu, Tiet }: ClassModel): '*' | string[] => {
+type ValidTimeSlot = `${string}-${string}`;
+type TimeSlots = '*' | ValidTimeSlot[];
+const getTimeSlots = ({ Thu, Tiet }: ClassModel): TimeSlots => {
   if (Tiet === '*') return '*';
-  return getDanhSachTiet(Tiet).map((tiet) => `${Thu}-${tiet}`);
+  return getDanhSachTiet(Tiet).map((tiet): ValidTimeSlot => `${Thu}-${tiet}`);
 };
 
-const isOverlapSchedule = (classA: ClassModel, classB: ClassModel) => {
-  const slotsA = getTimeSlots(classA);
-  const slotsB = getTimeSlots(classB);
-  if (slotsA === '*' || slotsB === '*') return false;
-  return slotsA.some((slotA) => slotsB.includes(slotA));
+const isTimeSlotsOverlap = (timeSlotsA: TimeSlots, timeSlotsB: TimeSlots) => {
+  if (timeSlotsA === '*' || timeSlotsB === '*') return false;
+  return timeSlotsA.some((slotA) => timeSlotsB.includes(slotA));
+};
+
+export const hasOverlapSchedule = (classAs: ClassModel[], classB: ClassModel) => {
+  const classBTimeSlots = getTimeSlots(classB);
+  return classAs.some((classA) => {
+    if (isSameAgGridRowId(classA, classB)) return false;
+    const classATimeSlots = getTimeSlots(classA);
+    return isTimeSlotsOverlap(classATimeSlots, classBTimeSlots);
+  });
 };
 
 // Thường thì MaLop alone is enough because most of the classes only appear once a week or once every 2 weeks, nhưng mà có thể có môn Anh Văn học 1 tuần tới 2 buổi, nên cần có thêm Thu và Tiet
@@ -76,8 +85,13 @@ export const constructFinalSelectedClasses = (
   const finalSelectedClasses: ClassModel[] = [];
   const overlappedClasses: TTrungTkb[] = [];
 
-  const findExistingOverlap = (newClass: ClassModel) =>
-    finalSelectedClasses.find((existingClass) => isOverlapSchedule(existingClass, newClass));
+  const findExistingOverlap = (newClass: ClassModel) => {
+    const newClassTimeSlots = getTimeSlots(newClass);
+    return finalSelectedClasses.find((existingClass) => {
+      const existingClassTimeSlots = getTimeSlots(existingClass);
+      return isTimeSlotsOverlap(existingClassTimeSlots, newClassTimeSlots);
+    });
+  };
 
   const processedAgGridRowIds = new Set<string>();
   oldSelectedClasses.concat(newSelectedClasses).forEach((addingClass) => {
