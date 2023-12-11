@@ -41,7 +41,7 @@ type TkbStore = {
 
   setDataExcel: (data: TkbStore['dataExcel']) => void;
   setSelectedClasses: (data: TkbStore['selectedClasses']) => void;
-  removeClass: (data: ClassModel) => void;
+  removeClasses: (data: ClassModel[]) => void;
   setAgGridColumnState: (data: TkbStore['agGridColumnState']) => void;
   setAgGridFilterModel: (data: TkbStore['agGridFilterModel']) => void;
   setIsChiVeTkb: (data: TkbStore['isChiVeTkb']) => void;
@@ -67,10 +67,10 @@ export const useTkbStore = create<TkbStore>()(
       setSelectedClasses: (data) => {
         set({ selectedClasses: data });
       },
-      removeClass: (classToRemove) => {
+      removeClasses: (classesToRemove) => {
         set((state) => ({
-          selectedClasses: state.selectedClasses.filter(
-            (selectedClass) => !isSameAgGridRowId(selectedClass, classToRemove),
+          selectedClasses: state.selectedClasses.filter((selectedClass) =>
+            classesToRemove.every((classToRemove) => !isSameAgGridRowId(selectedClass, classToRemove)),
           ),
         }));
       },
