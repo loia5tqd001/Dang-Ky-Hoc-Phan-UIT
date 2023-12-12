@@ -397,29 +397,51 @@ export const useGridOptions = () => {
     }
   }, []);
 
-  const getContextMenuItems = useCallback((params: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
-    return [
-      {
-        name: 'Copy Cell',
-        action: () => {
-          navigator.clipboard.writeText(params.value);
+  const getContextMenuItems = useCallback(
+    ({ value, column, api }: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
+      const final: (string | MenuItemDef)[] = [];
+      if (value) {
+        final.push({
+          name: `Copy text "${value}"`,
+          action: () => {
+            navigator.clipboard.writeText(value);
+          },
+        });
+      }
+      if (value && column?.isFilterAllowed()) {
+        final.push({
+          name: `Filter ${column.getColDef().headerName}=${value}`,
+          action: () => {
+            api.setFilterModel({
+              [column.getColId()]: {
+                type: 'contains',
+                filter: value, // text filter
+                values: [value], // set filter
+              },
+            });
+          },
+        });
+      }
+      if (final.length) {
+        final.push('separator');
+      }
+      return final.concat([
+        'autoSizeAll',
+        'separator',
+        'resetColumns',
+        {
+          name: 'Reset Filters',
+          action: () => {
+            api.setFilterModel(null);
+          },
         },
-      },
-      'separator',
-      'autoSizeAll',
-      'separator',
-      'resetColumns',
-      {
-        name: 'Reset Filters',
-        action: () => {
-          agGridRef.current?.api?.setFilterModel(null);
-        },
-      },
-      'separator',
-      'expandAll',
-      'contractAll',
-    ];
-  }, []);
+        'separator',
+        'expandAll',
+        'contractAll',
+      ]);
+    },
+    [],
+  );
 
   const dataTkb = useTkbStore(selectFinalDataTkb);
   const rowData: GridOptions['rowData'] = useMemo(() => {
