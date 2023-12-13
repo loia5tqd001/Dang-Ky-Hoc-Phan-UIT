@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 
-function ScrollToTop(props) {
+function ScrollToTop() {
   const history = useHistory();
 
   if (history.action === 'PUSH') {

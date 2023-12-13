@@ -54,6 +54,17 @@
   background-color: inherit;
 
 }
+.ag-theme-alpine .ag-filter-list-panel .ag-has-filter .ag-group-title,
+.ag-theme-alpine .ag-header-cell-filtered .ag-header-cell-text {
+  text-decoration: underline;
+}
+.ag-theme-alpine .ag-filter-list-panel .ag-has-filter .ag-group-title::after,
+.ag-theme-alpine .ag-header-cell-filtered .ag-icon-filter {
+  font-size: x-large;
+}
+.ag-theme-alpine .ag-group-title-bar {
+  background-color: inherit;
+}
 .ag-theme-alpine .ag-sticky-top, 
 .ag-theme-alpine .ag-dnd-ghost {
   background-color: #F4EEE5;
