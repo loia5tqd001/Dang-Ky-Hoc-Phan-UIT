@@ -33,11 +33,11 @@ const useCommon = () => {
   const script = useMemo(() => getScriptDkhp(listMaLop), [listMaLop]);
   const hasLop = listMaLop.length > 0;
 
-  const khongXepLop = useTkbStore(selectIsChiVeTkb);
+  const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
   const textareaChiVeTkb = useTkbStore(selectTextareaChiVeTkb);
 
   const dsLopInputValue = (() => {
-    if (khongXepLop) return textareaChiVeTkb;
+    if (isChiVeTkb) return textareaChiVeTkb;
     if (!hasLop) return 'Chưa có lớp nào';
     return listMaLop.join(',');
   })();
@@ -49,6 +49,7 @@ const useCommon = () => {
 
   return {
     hasLop,
+    isChiVeTkb,
     dsLopInputValue,
     scriptInputValue,
   };
@@ -99,28 +100,27 @@ export function ScriptDangKyInput() {
 }
 
 export function DanhSachLopInput() {
-  const khongXepLop = useTkbStore(selectIsChiVeTkb);
   const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
-
-  const { hasLop, dsLopInputValue } = useCommon();
+  const { hasLop, dsLopInputValue, isChiVeTkb } = useCommon();
+  const useToolXepLop = !isChiVeTkb;
 
   return (
     <Grid item xs={6}>
       {/* TODO: refactor the mess */}
 
       <TextField
-        label={khongXepLop ? 'Tự nhập danh sách lớp' : 'Đang dùng dữ liệu từ bước xếp lớp'}
+        label="Danh sách mã lớp"
         fullWidth
         size="small"
         multiline
-        inputProps={{ readOnly: !khongXepLop, style: { resize: 'vertical' } }}
+        inputProps={{ readOnly: useToolXepLop, style: { resize: 'vertical' } }}
         rows={2}
         variant="outlined"
         onChange={(e) => {
           setTextareChiVeTkb(e.target.value);
         }}
         value={dsLopInputValue}
-        disabled={!hasLop}
+        disabled={useToolXepLop && !hasLop}
         InputProps={{
           inputComponent: CustomInputComponent2,
           endAdornment: hasLop ? (

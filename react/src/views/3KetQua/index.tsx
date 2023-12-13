@@ -19,7 +19,7 @@ function Index() {
           title={
             window.location.search.includes('self_selected')
               ? 'Đang dùng tính năng chia sẻ TKB (Read only)'
-              : 'Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2'
+              : 'Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2 và nhập danh sách lớp tự chuẩn bị'
           }
         >
           <FormControlLabel
