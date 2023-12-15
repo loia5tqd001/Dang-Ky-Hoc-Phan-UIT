@@ -19,10 +19,6 @@ export const [ClassCellContext, useClassCellContext] = constate(() => {
   return { cellDataHovering, setCellDataHovering };
 });
 
-// https://github.com/TanStack/router/blob/99e725bdc7090970234d752528e4b36d58a9be28/packages/react-router/src/router.ts#L1712-L1714
-function isCtrlEvent(e: React.MouseEvent) {
-  return !!(e.metaKey || e.altKey || e.ctrlKey || e.shiftKey);
-}
 function getCtrlKeyString() {
   const isMac = navigator.userAgent.toUpperCase().includes('MAC');
   return isMac ? 'Cmd' : 'Ctrl';
@@ -98,6 +94,11 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
                     {getCtrlKeyString()}+Click để xoá môn
                   </>
                 )}
+                {/* Easter Eggs: */}
+                {/* <>
+                  <br />
+                  {getCtrlKeyString()}+Shift+Click để xoá toàn bộ
+                </> */}
               </>
             }
           >
@@ -106,7 +107,12 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
               color="inherit"
               size="small"
               onClick={(e) => {
-                const classesToRemove = isCtrlEvent(e) ? cacLopChungMonDangChon : [data];
+                const classesToRemove = (() => {
+                  const isCtrlKeyPressed = e.ctrlKey || e.metaKey;
+                  if (isCtrlKeyPressed && e.shiftKey) return selectedClasses; // easter eggs
+                  if (isCtrlKeyPressed) return cacLopChungMonDangChon;
+                  return [data];
+                })();
                 removeClasses(classesToRemove);
               }}
               className="remove-class-btn"

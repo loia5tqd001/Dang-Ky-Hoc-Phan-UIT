@@ -33,7 +33,7 @@ function Index() {
               />
             }
             style={!khongXepLop ? { opacity: 0.5 } : undefined}
-            label={'Không dùng tool Xếp Lớp'}
+            label={'Không dùng dữ liệu từ bước Xếp Lớp'}
           />
         </Tooltip>
         <SoTinChi tongSoTcSelected={tongSoTC} />

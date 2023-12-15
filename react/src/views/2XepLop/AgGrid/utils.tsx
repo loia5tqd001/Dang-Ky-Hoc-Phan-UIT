@@ -96,6 +96,17 @@ const columnDefs: GridOptions['columnDefs'] = [
     initialWidth: 280,
     cellStyle: BOLD_CELL_STYLE,
     enableRowGroup: true,
+    hide: true,
+  },
+  {
+    headerName: 'MÔN HỌC',
+    field: 'TenMH',
+    initialWidth: 350,
+    cellStyle: BOLD_CELL_STYLE,
+    enableRowGroup: true,
+    valueGetter: ({ data }: ValueGetterParams<ClassModel, string>): string => {
+      return data?.MaMH || data?.TenMH ? `${data.TenMH} - ${data.MaMH}` : '';
+    },
   },
   {
     headerName: 'MÃ LỚP',
@@ -308,6 +319,30 @@ const getRowId: GridOptions<ClassModel>['getRowId'] = ({ data }) => {
   return getAgGridRowId(data);
 };
 
+function getContextMenuItemsBuilder() {
+  type MenuItem = string | MenuItemDef;
+
+  const menuItems: MenuItem[] = [];
+  let numItemsInThisBlock = 0;
+
+  const addToBlock = (...items: MenuItem[]) => {
+    menuItems.push(...items);
+    numItemsInThisBlock += items.length;
+  };
+
+  const endOfBlock = () => {
+    if (numItemsInThisBlock) menuItems.push('separator');
+    numItemsInThisBlock = 0;
+  };
+
+  const constructFinal = () => {
+    while (menuItems.at(-1) === 'separator') menuItems.pop();
+    return menuItems;
+  };
+
+  return { addToBlock, endOfBlock, constructFinal };
+}
+
 const PROGRAMMATICALLY_CHANGE_SELECTION = 'api';
 export const useGridOptions = () => {
   const agGridRef = useRef<AgGridReact<ClassModel>>(null);
@@ -398,47 +433,82 @@ export const useGridOptions = () => {
   }, []);
 
   const getContextMenuItems = useCallback(
-    ({ value, column, api }: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
-      const final: (string | MenuItemDef)[] = [];
+    ({ value, column, api, columnApi }: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
+      const { addToBlock, endOfBlock, constructFinal } = getContextMenuItemsBuilder();
+
       if (value) {
-        final.push({
+        addToBlock({
           name: `Copy text "${value}"`,
           action: () => {
             navigator.clipboard.writeText(value);
           },
         });
       }
+      endOfBlock();
+
       if (value && column?.isFilterAllowed()) {
-        final.push({
-          name: `Filter ${column.getColDef().headerName}=${value}`,
-          action: () => {
-            api.setFilterModel({
-              [column.getColId()]: {
-                type: 'contains',
-                filter: value, // text filter
-                values: [value], // set filter
-              },
-            });
-          },
-        });
+        const thisColumnCurrentFilterModel = api.getFilterModel()[column.getColId()];
+        const alreadyFilterByThisValue =
+          thisColumnCurrentFilterModel?.filter === value || thisColumnCurrentFilterModel?.values?.includes(value);
+        if (!alreadyFilterByThisValue) {
+          addToBlock({
+            name: `Add Filter "${column.getColDef().headerName}"="${value}"`,
+            action: () => {
+              api.setFilterModel({
+                ...api.getFilterModel(),
+                [column.getColId()]: {
+                  type: 'contains',
+                  filter: value, // text filter
+                  values: [value], // set filter
+                },
+              });
+            },
+          });
+        }
       }
-      if (final.length) {
-        final.push('separator');
+      if (column?.isFilterAllowed() && api.isColumnFilterPresent()) {
+        const { [column.getColId()]: thisColumnFilterModel, ...otherColumnsFilterModel } = api.getFilterModel();
+        if (thisColumnFilterModel) {
+          addToBlock({
+            name: `Reset Filter For "${column.getColDef().headerName}"`,
+            action: () => {
+              api.setFilterModel({
+                ...api.getFilterModel(),
+                [column.getColId()]: null,
+              });
+            },
+          });
+        }
+        if (thisColumnFilterModel && Object.keys(otherColumnsFilterModel).length) {
+          addToBlock({
+            name: `Reset All Filters Except "${column.getColDef().headerName}"`,
+            action: () => {
+              api.setFilterModel({
+                [column.getColId()]: api.getFilterModel()[column.getColId()],
+              });
+            },
+          });
+        }
       }
-      return final.concat([
-        'autoSizeAll',
-        'separator',
-        'resetColumns',
-        {
-          name: 'Reset Filters',
+      if (api.isColumnFilterPresent()) {
+        addToBlock({
+          name: 'Reset All Filters',
           action: () => {
             api.setFilterModel(null);
           },
-        },
-        'separator',
-        'expandAll',
-        'contractAll',
-      ]);
+        });
+      }
+      endOfBlock();
+
+      addToBlock('resetColumns', 'autoSizeAll');
+      endOfBlock();
+
+      if (columnApi.getRowGroupColumns().length) {
+        addToBlock('expandAll', 'contractAll');
+      }
+      endOfBlock();
+
+      return constructFinal();
     },
     [],
   );
