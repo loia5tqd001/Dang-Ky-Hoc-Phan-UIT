@@ -3,26 +3,13 @@ import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 import constate from 'constate';
 import { useMemo, useState } from 'react';
+import groupBy from 'lodash/groupBy';
+import reverse from 'lodash/reverse';
 import { ClassModel } from '../../../types';
-import { selectIsChiVeTkb, selectSelectedClasses, useTkbStore } from '../../../zus';
+import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../../zus';
 import './styles.css';
 import { isSameAgGridRowId } from '../../../utils';
 import { usePhanLoaiHocTrenTruongContext } from './hooks';
-
-type Props = {
-  data: ClassModel;
-  isOutsideTable?: boolean;
-} & React.TdHTMLAttributes<HTMLTableCellElement>;
-
-export const [ClassCellContext, useClassCellContext] = constate(() => {
-  const [cellDataHovering, setCellDataHovering] = useState<ClassModel | null>(null);
-  return { cellDataHovering, setCellDataHovering };
-});
-
-function getCtrlKeyString() {
-  const isMac = navigator.userAgent.toUpperCase().includes('MAC');
-  return isMac ? 'Cmd' : 'Ctrl';
-}
 
 const randomColors = [
   '#FF5733',
@@ -45,7 +32,65 @@ const randomColors = [
   '#3498DB',
   '#2C3E50',
   '#E74C3C',
+  '#1B1464',
+  '#6C3483',
+  '#2E4053',
+  '#FF4500',
+  '#008080',
+  '#800000',
+  '#8B4513',
+  '#FF6347',
+  '#4B0082',
+  '#7CFC00',
+  '#8A2BE2',
+  '#00FA9A',
+  '#DC143C',
+  '#20B2AA',
+  '#FFFF00',
+  '#191970',
+  '#A52A2A',
+  '#808080',
+  '#8B008B',
+  '#008B8B',
+  '#483D8B',
+  '#00CED1',
+  '#556B2F',
+  '#BC8F8F',
+  '#4169E1',
+  '#2F4F4F',
+  '#00FF7F',
+  '#483D8B',
+  '#FF1493',
 ] as const;
+
+type Props = {
+  data: ClassModel;
+  isOutsideTable?: boolean;
+} & React.TdHTMLAttributes<HTMLTableCellElement>;
+
+export const [ClassCellContext, useClassCellContext] = constate(() => {
+  const [cellDataHovering, setCellDataHovering] = useState<ClassModel | null>(null);
+  return { cellDataHovering, setCellDataHovering };
+});
+
+const getMonChonRoiKey = (data: ClassModel) => `${data.MaMH}-${data.ThucHanh}`;
+// TODO: refactor
+export const [MonChonRoiContext, useMonChonRoiContext] = constate(() => {
+  const newRandomColors = useMemo(() => reverse([...randomColors]), []);
+  const selectedClasses = useTkbStore(selectSelectedClassesBuoc3);
+  const map = groupBy(selectedClasses, getMonChonRoiKey);
+  const mapColor: Record<keyof typeof map, (typeof newRandomColors)[number]> = {};
+  Object.entries(map).forEach(([key, value], index) => {
+    const hasDuplication = value.length > 1;
+    if (hasDuplication) mapColor[key] = newRandomColors[index];
+  });
+  return { mapColor };
+});
+
+function getCtrlKeyString() {
+  const isMac = navigator.userAgent.toUpperCase().includes('MAC');
+  return isMac ? 'Cmd' : 'Ctrl';
+}
 
 function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
   const { MaLop, NgonNgu, TenMH, TenGV, PhongHoc, NBD, NKT, Thu, Tiet } = data;
@@ -53,6 +98,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
   const selectedClasses = useTkbStore(selectSelectedClasses);
   const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
   const { cellDataHovering, setCellDataHovering } = useClassCellContext();
+  const { mapColor } = useMonChonRoiContext();
 
   const { redundant } = usePhanLoaiHocTrenTruongContext();
 
@@ -69,6 +115,8 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
     );
   });
   const isRedundantRelated = redundantIndex > -1;
+
+  const maLopColor = mapColor[getMonChonRoiKey(data)];
 
   return (
     <Tooltip title={isRedundantRelated ? 'Bị trùng TKB' : null}>
@@ -122,7 +170,10 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
           </Tooltip>
         )}
         <strong>
-          {MaLop} - {NgonNgu}
+          <Tooltip title={maLopColor ? 'Có vẻ như bạn đang chọn thừa cho môn này' : undefined}>
+            <span style={{ color: maLopColor }}>{MaLop}</span>
+          </Tooltip>{' '}
+          - {NgonNgu}
         </strong>
         <br />
         {TenMH}

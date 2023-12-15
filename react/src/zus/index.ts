@@ -124,7 +124,7 @@ export const selectFinalDataTkb = (state: TkbStore): ClassModel[] => {
   const dataExcel = selectDataExcel(state);
   return dataExcel?.data ?? [];
 };
-const selectSelectedClassesBuoc3 = memoize((state: TkbStore): ClassModel[] => {
+export const selectSelectedClassesBuoc3 = memoize((state: TkbStore): ClassModel[] => {
   const isChiVeTkb = selectIsChiVeTkb(state);
   const textareaChiVeTkb = selectTextareaChiVeTkb(state);
   const finalDataTkb = selectFinalDataTkb(state);

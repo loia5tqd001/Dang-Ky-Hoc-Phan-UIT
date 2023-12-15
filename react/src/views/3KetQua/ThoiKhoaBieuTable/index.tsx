@@ -1,5 +1,5 @@
 import { getDanhSachTiet } from '../../../utils';
-import ClassCell, { ClassCellContext } from './ClassCell';
+import ClassCell, { ClassCellContext, MonChonRoiContext } from './ClassCell';
 import TableHead from './TableHead';
 import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext } from './hooks';
 import './styles.css';
@@ -61,9 +61,11 @@ function Render() {
 function Index() {
   return (
     <ClassCellContext>
-      <PhanLoaiHocTrenTruongContext>
-        <Render />
-      </PhanLoaiHocTrenTruongContext>
+      <MonChonRoiContext>
+        <PhanLoaiHocTrenTruongContext>
+          <Render />
+        </PhanLoaiHocTrenTruongContext>
+      </MonChonRoiContext>
     </ClassCellContext>
   );
 }
