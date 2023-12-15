@@ -1,15 +1,16 @@
 import CloseIcon from '@mui/icons-material/Close';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 import constate from 'constate';
-import { useMemo, useState } from 'react';
 import groupBy from 'lodash/groupBy';
 import reverse from 'lodash/reverse';
+import { useMemo, useState } from 'react';
 import { ClassModel } from '../../../types';
-import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../../zus';
-import './styles.css';
 import { isSameAgGridRowId } from '../../../utils';
+import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../../zus';
 import { usePhanLoaiHocTrenTruongContext } from './hooks';
+import './styles.css';
 
 const randomColors = [
   '#FF5733',
@@ -116,7 +117,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
   });
   const isRedundantRelated = redundantIndex > -1;
 
-  const maLopColor = mapColor[getMonChonRoiKey(data)];
+  const monChonRoiWarningColor = mapColor[getMonChonRoiKey(data)];
 
   return (
     <Tooltip title={isRedundantRelated ? 'Bị trùng TKB' : null}>
@@ -170,10 +171,12 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
           </Tooltip>
         )}
         <strong>
-          <Tooltip title={maLopColor ? 'Có vẻ như bạn đang chọn thừa cho môn này' : undefined}>
-            <span style={{ color: maLopColor }}>{MaLop}</span>
-          </Tooltip>{' '}
-          - {NgonNgu}
+          {MaLop} - {NgonNgu}
+          {monChonRoiWarningColor && (
+            <Tooltip title={monChonRoiWarningColor ? 'Có vẻ như bạn đang chọn thừa cho môn này' : undefined}>
+              <WarningAmberIcon style={{ color: monChonRoiWarningColor }} />
+            </Tooltip>
+          )}
         </strong>
         <br />
         {TenMH}
