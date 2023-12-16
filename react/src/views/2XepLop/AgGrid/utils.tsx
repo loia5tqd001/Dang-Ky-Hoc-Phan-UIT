@@ -31,7 +31,7 @@ import {
   selectSelectedClasses,
   useTkbStore,
 } from '../../../zus';
-import ThoiKhoaBieuTable from '../../3KetQua/ThoiKhoaBieuTable';
+import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
 
 type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';

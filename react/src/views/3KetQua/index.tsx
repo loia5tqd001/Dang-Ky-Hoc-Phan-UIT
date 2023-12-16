@@ -4,8 +4,8 @@ import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
 import SoTinChi from '../../components/SoTinChi';
 import { selectIsChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
+import ThoiKhoaBieuTable from '../../components/ThoiKhoaBieuTable';
 import ScriptDangKyInput, { DanhSachLopInput } from './ScriptDangKyInput';
-import ThoiKhoaBieuTable from './ThoiKhoaBieuTable';
 
 function Index() {
   const setIsChiVeTkb = useTkbStore((s) => s.setIsChiVeTkb);

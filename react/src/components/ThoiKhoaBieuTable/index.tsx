@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
-import { ROUTES } from '../../../constants';
-import { getDanhSachTiet } from '../../../utils';
+import { ROUTES } from '../../constants';
+import { getDanhSachTiet } from '../../utils';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
 import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext } from './hooks';

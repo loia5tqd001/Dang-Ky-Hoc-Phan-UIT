@@ -1,8 +1,8 @@
 import React from 'react';
 import constate from 'constate';
-import { findOverlapedClasses, getDanhSachTiet } from '../../../utils';
-import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
-import { ClassModel } from '../../../types';
+import { findOverlapedClasses, getDanhSachTiet } from '../../utils';
+import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
+import { ClassModel } from '../../types';
 import { getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
