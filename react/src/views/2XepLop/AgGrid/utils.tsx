@@ -105,7 +105,7 @@ const columnDefs: GridOptions['columnDefs'] = [
     cellStyle: BOLD_CELL_STYLE,
     enableRowGroup: true,
     valueGetter: ({ data }: ValueGetterParams<ClassModel, string>): string => {
-      return data?.MaMH || data?.TenMH ? `${data.TenMH} - ${data.MaMH}` : '';
+      return data?.MaMH || data?.TenMH ? `${data.MaMH} - ${data.TenMH}` : '';
     },
   },
   {
