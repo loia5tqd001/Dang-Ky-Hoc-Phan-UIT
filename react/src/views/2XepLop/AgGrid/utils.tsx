@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import {
   AgGridEvent,
   CellStyle,
@@ -12,10 +13,12 @@ import {
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import sortBy from 'lodash/sortBy';
+import { closeSnackbar, enqueueSnackbar } from 'notistack';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
 import SoTinChi from '../../../components/SoTinChi';
+import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
 import {
   findOverlapedClasses,
   getAgGridRowId,
@@ -31,7 +34,6 @@ import {
   selectSelectedClasses,
   useTkbStore,
 } from '../../../zus';
-import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
 
 type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
@@ -433,10 +435,27 @@ export const useGridOptions = () => {
     [agGridColumnState, agGridFilterModel, selectedClasses, updateNodesSelectionToAgGrid],
   );
 
-  const onRowClicked = useCallback(({ node }: RowClickedEvent) => {
-    log('>>onRowClicked');
+  const onRowClicked = useCallback(({ node }: RowClickedEvent<ClassModel>) => {
+    log('>>onRowClicked', { node });
     if (node.group) {
       node.setExpanded(!node.expanded);
+    }
+    if (node.data && !node.selectable) {
+      enqueueSnackbar(`Không thể chọn lớp ${node.data.MaLop} do bị trùng TKB với lớp đã chọn`, {
+        variant: 'warning',
+        preventDuplicate: true,
+        action: (key) => (
+          <Button
+            size="small"
+            color="inherit"
+            onClick={() => {
+              closeSnackbar(key);
+            }}
+          >
+            Đã hiểu
+          </Button>
+        ),
+      });
     }
   }, []);
 
