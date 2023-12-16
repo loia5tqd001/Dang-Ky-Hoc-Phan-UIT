@@ -17,6 +17,8 @@ import Typewriter from 'typewriter-effect';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
 
+const drawerWidth = 190;
+
 const openedMixin = (theme) =>
   ({
     width: drawerWidth,
@@ -35,9 +37,6 @@ const closedMixin = (theme) =>
     }),
     overflowX: 'hidden',
     width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(${theme.spacing(8)} + 1px)`,
-    },
   } as const);
 
 const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
@@ -147,8 +146,6 @@ function LeftDrawer() {
 export default LeftDrawer;
 
 // styles below:
-
-const drawerWidth = 190;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
