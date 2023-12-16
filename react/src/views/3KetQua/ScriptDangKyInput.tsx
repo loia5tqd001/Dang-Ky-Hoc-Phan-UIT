@@ -123,22 +123,23 @@ export function DanhSachLopInput() {
         disabled={useToolXepLop && !hasLop}
         InputProps={{
           inputComponent: CustomInputComponent2,
-          endAdornment: hasLop ? (
-            <Tooltip title={'Chia sẻ TKB'}>
-              <IconButton
-                edge="end"
-                size="small"
-                onClick={() => {
-                  const newUrl =
-                    window.location.origin + window.location.pathname + '?self_selected=' + dsLopInputValue;
-                  navigator.clipboard.writeText(newUrl);
-                  window.open(newUrl, Math.random()?.toString());
-                }}
-              >
-                <ShareIcon />
-              </IconButton>
-            </Tooltip>
-          ) : null,
+          endAdornment:
+            useToolXepLop && hasLop ? (
+              <Tooltip title={'Chia sẻ TKB'}>
+                <IconButton
+                  edge="end"
+                  size="small"
+                  onClick={() => {
+                    const newUrl =
+                      window.location.origin + window.location.pathname + '?self_selected=' + dsLopInputValue;
+                    navigator.clipboard.writeText(newUrl);
+                    window.open(newUrl, Math.random()?.toString());
+                  }}
+                >
+                  <ShareIcon />
+                </IconButton>
+              </Tooltip>
+            ) : null,
         }}
       />
     </Grid>

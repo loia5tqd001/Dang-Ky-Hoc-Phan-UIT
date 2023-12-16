@@ -52,6 +52,23 @@
     opacity: 1;
 }
 
+#thoi-khoa-bieu {
+    position: relative;
+}
+#thoi-khoa-bieu .download-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+#thoi-khoa-bieu:hover .download-image-btn {
+    opacity: 1;
+}
+#thoi-khoa-bieu.compact .download-image-btn {
+    display: none;
+}
+
 /* the tooltip by default is too far away from the anchor, i.e: "Xoá môn này" tooltip */
 .MuiTooltip-tooltipPlacementBottom {
     margin-top: 0 !important;

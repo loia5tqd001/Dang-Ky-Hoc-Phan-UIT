@@ -1,9 +1,10 @@
-import React from 'react';
 import constate from 'constate';
+import html2canvas from 'html2canvas';
+import React from 'react';
+import { ClassModel } from '../../types';
 import { findOverlapedClasses, getDanhSachTiet } from '../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
-import { ClassModel } from '../../types';
-import { getTietIndex } from './utils';
+import { downloadFromCanvas, getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
 const rowDataExample = [
@@ -90,3 +91,18 @@ const usePhanLoaiHocTrenTruong = () => {
 };
 
 export const [PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext] = constate(usePhanLoaiHocTrenTruong);
+
+export const useProcessImageTkb = () => {
+  const tkbTableRef = React.useRef<HTMLTableElement>(null);
+
+  const saveTkbImageToComputer = React.useCallback(async () => {
+    if (!tkbTableRef.current) return;
+    const canvas = await html2canvas(tkbTableRef.current);
+    downloadFromCanvas(canvas, 'thoikhoabieu.png');
+  }, [tkbTableRef]);
+
+  return {
+    tkbTableRef,
+    saveTkbImageToComputer,
+  };
+};

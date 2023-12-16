@@ -21,6 +21,7 @@
     "constate": "^3.3.2",
     "eslint": "^8.55.0",
     "eslint-config-react-app": "^7.0.1",
+    "html2canvas": "^1.4.1",
     "lodash": "^4.17.21",
     "notistack": "^3.0.1",
     "proxy-memoize": "^2.0.4",

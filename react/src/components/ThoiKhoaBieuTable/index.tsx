@@ -1,11 +1,13 @@
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
+import { IconButton, Tooltip } from '@mui/material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { ROUTES } from '../../constants';
 import { getDanhSachTiet } from '../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../zus';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
-import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext } from './hooks';
+import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext, useProcessImageTkb } from './hooks';
 import './styles.css';
 import { timeLookup } from './utils';
 
@@ -34,6 +36,7 @@ function Render() {
 
   const location = useLocation();
   const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
+  const { tkbTableRef, saveTkbImageToComputer } = useProcessImageTkb();
 
   const isInStep2 = location.pathname === ROUTES._2XepLop.path;
 
@@ -41,7 +44,7 @@ function Render() {
   if (isInStep2 && isChiVeTkb) {
     return (
       <h3 style={{ textAlign: 'center', padding: 20 }}>
-        {window.location.search.includes('self_selected') ? (
+        {location.search.includes('self_selected') ? (
           <>
             Preview bị disable ở chế độ chia sẻ TKB <code style={{ whiteSpace: 'nowrap' }}>?self_selected=</code>, sang
             tab Bước 3 để xem TKB
@@ -56,6 +59,11 @@ function Render() {
   return (
     <ClassCellContext>
       <div id="thoi-khoa-bieu" className={clsx({ compact: isInStep2 })}>
+        <Tooltip title="Tải hình ảnh TKB về máy">
+          <IconButton onClick={saveTkbImageToComputer} className="download-image-btn">
+            <FileDownloadIcon />
+          </IconButton>
+        </Tooltip>
         <div style={{ display: 'flex' }}>
           {redundant
             .flatMap((it) => it.new)
@@ -65,7 +73,7 @@ function Render() {
               </tr>
             ))}
         </div>
-        <table>
+        <table ref={tkbTableRef}>
           <TableHead />
           <tbody>
             {rowDataHocTrenTruong.map((row, index) => (
