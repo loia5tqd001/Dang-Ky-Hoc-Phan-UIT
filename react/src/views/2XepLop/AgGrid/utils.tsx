@@ -262,9 +262,9 @@ const columnDefs: GridOptions['columnDefs'] = [
 const defaultColDef: GridOptions['defaultColDef'] = {
   resizable: true,
   filter: true,
-  menuTabs: ['generalMenuTab'],
-  filterParams: { buttons: ['apply', 'reset'], closeOnApply: true },
   floatingFilter: true,
+  filterParams: { buttons: ['reset'] },
+  menuTabs: ['generalMenuTab'],
 };
 
 // Sort after grouping: https://www.ag-grid.com/javascript-data-grid/row-sorting/#custom-sorting-groups-example
