@@ -1,6 +1,7 @@
 import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'types';
 import './styles.css';
+import { useDrawerStore } from '../../../zus';
 import { useGridOptions } from './utils';
 
 function AgGrid() {
@@ -22,12 +23,13 @@ function AgGrid() {
     rowData,
     getRowId,
   } = useGridOptions();
+  const isDrawerOpen = useDrawerStore((s) => s.isDrawerOpen);
 
   return (
     <div
       className="ag-theme-alpine"
       style={{
-        height: 'calc(100vh - 45px)',
+        height: `calc(100vh - ${isDrawerOpen ? 50 : 18}px)`,
         fontFamily: 'inherit',
       }}
     >

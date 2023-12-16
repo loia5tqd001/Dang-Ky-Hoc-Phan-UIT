@@ -3,6 +3,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import clsx from 'clsx';
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
+import { Theme } from '@mui/material';
 import { ROUTES } from '../constants';
 import { selectFinalDataTkb, useDrawerStore, useTkbStore } from '../zus';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -40,9 +41,9 @@ function FallbackRoute() {
 }
 
 function App() {
-  const classes = useStyles();
-  const dataTkb = useTkbStore(selectFinalDataTkb);
   const isDrawerOpen = useDrawerStore((s) => s.isDrawerOpen);
+  const classes = useStyles({ isDrawerOpen });
+  const dataTkb = useTkbStore(selectFinalDataTkb);
 
   return (
     <div className={classes.root}>
@@ -73,7 +74,10 @@ export default App;
 // styles below:
 const drawerWidth = 190;
 
-const useStyles = makeStyles((theme) => ({
+type StyleProps = {
+  isDrawerOpen: boolean;
+};
+const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
   root: {
     display: 'flex',
     '& > canvas': {
@@ -82,8 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
-    paddingBottom: theme.spacing(2),
+    padding: (props) => theme.spacing(props.isDrawerOpen ? 3 : 1),
     background: '#f4f9f2ee',
     minHeight: '100vh',
     display: 'flex',

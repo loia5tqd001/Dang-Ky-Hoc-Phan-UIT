@@ -52,3 +52,29 @@
     opacity: 1;
 }
 
+/* the tooltip by default is too far away from the anchor, i.e: "Xoá môn này" tooltip */
+.MuiTooltip-tooltipPlacementBottom {
+    margin-top: 0 !important;
+}
+
+#thoi-khoa-bieu.compact table {
+    font-size: 0.9em;
+}
+#thoi-khoa-bieu.compact table thead tr th {
+    width: 10ch;
+}
+#thoi-khoa-bieu.compact table {
+    min-width: 700px;
+}
+
+@media screen and (max-width: 1100px) {
+    #thoi-khoa-bieu table {
+        font-size: 0.9em;
+    }
+    #thoi-khoa-bieu table thead tr th {
+        width: 10ch;
+    }
+    #thoi-khoa-bieu table {
+        min-width: 700px;
+    }
+}

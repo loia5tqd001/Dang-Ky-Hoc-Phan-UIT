@@ -157,7 +157,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
                 {isWarning(data) && isHoveringOnThisCell(data, 'MaLop') && (
                   <>
                     <br />
-                    hoặc Shift+Click để chỉ xoá slot này
+                    hoặc Shift+Click để chỉ xoá slot thừa này
                   </>
                 )}
               </>

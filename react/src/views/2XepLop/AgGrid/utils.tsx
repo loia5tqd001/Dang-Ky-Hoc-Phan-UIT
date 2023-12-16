@@ -31,6 +31,7 @@ import {
   selectSelectedClasses,
   useTkbStore,
 } from '../../../zus';
+import ThoiKhoaBieuTable from '../../3KetQua/ThoiKhoaBieuTable';
 import { useTrungTkbDialogContext } from '../TrungTkbDialog';
 
 type FormattedBuoiValid = 'Sáng ☀️' | 'Chiều 🌞' | 'Tối 🌚';
@@ -129,12 +130,6 @@ const columnDefs: GridOptions['columnDefs'] = [
     filter: 'agTextColumnFilter',
   },
   {
-    headerName: 'SỐ TC',
-    field: 'SoTc',
-    initialWidth: 125,
-    filter: false,
-  },
-  {
     headerName: 'THỨ+BUỔI',
     colId: 'ThuBuoi',
     initialWidth: 150,
@@ -173,6 +168,12 @@ const columnDefs: GridOptions['columnDefs'] = [
       }
       return buoiA - buoiB;
     },
+  },
+  {
+    headerName: 'SỐ TC',
+    field: 'SoTc',
+    initialWidth: 90,
+    filter: false,
   },
   {
     headerName: 'HỆ ĐT',
@@ -299,6 +300,13 @@ const sideBar: GridOptions['sideBar'] = {
       labelKey: 'filters',
       iconKey: 'filter',
       toolPanel: 'agFiltersToolPanel',
+    },
+    {
+      id: 'preview',
+      labelDefault: 'Preview',
+      labelKey: 'preview',
+      iconKey: 'columnMoveMove',
+      toolPanel: ThoiKhoaBieuTable,
     },
   ],
 };

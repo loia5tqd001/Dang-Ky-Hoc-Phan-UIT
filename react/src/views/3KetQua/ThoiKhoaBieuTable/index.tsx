@@ -1,3 +1,6 @@
+import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
+import { ROUTES } from '../../../constants';
 import { getDanhSachTiet } from '../../../utils';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
@@ -28,9 +31,11 @@ function RowHocTrenTruong({ row, index }) {
 function Render() {
   const { rowDataHocTrenTruong, khongHocTrenTruong, redundant } = usePhanLoaiHocTrenTruongContext();
 
+  const location = useLocation();
+
   return (
     <ClassCellContext>
-      <div id="thoi-khoa-bieu">
+      <div id="thoi-khoa-bieu" className={clsx({ compact: location.pathname === ROUTES._2XepLop.path })}>
         <div style={{ display: 'flex' }}>
           {redundant
             .flatMap((it) => it.new)
