@@ -53,14 +53,10 @@ const randomColors = [
   '#808080',
   '#8B008B',
   '#008B8B',
-  '#483D8B',
   '#00CED1',
-  '#556B2F',
   '#BC8F8F',
   '#4169E1',
-  '#2F4F4F',
   '#00FF7F',
-  '#483D8B',
   '#FF1493',
 ] as const;
 
@@ -81,9 +77,10 @@ export const [MonChonRoiContext, useMonChonRoiContext] = constate(() => {
   const selectedClasses = useTkbStore(selectSelectedClassesBuoc3);
   const map = groupBy(selectedClasses, getMonChonRoiKey);
   const mapColor: Record<keyof typeof map, (typeof newRandomColors)[number]> = {};
-  Object.entries(map).forEach(([key, value], index) => {
+  let index = 0;
+  Object.entries(map).forEach(([key, value]) => {
     const hasDuplication = uniqMaLop(value).length > 1;
-    if (hasDuplication) mapColor[key] = newRandomColors[index];
+    if (hasDuplication) mapColor[key] = newRandomColors[index++];
   });
   return { mapColor };
 });
