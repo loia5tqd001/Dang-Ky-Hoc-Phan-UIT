@@ -286,6 +286,13 @@ const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
 const sideBar: GridOptions['sideBar'] = {
   toolPanels: [
     {
+      id: 'preview',
+      labelDefault: 'Preview',
+      labelKey: 'preview',
+      iconKey: 'columnMoveMove',
+      toolPanel: ThoiKhoaBieuTable,
+    },
+    {
       id: 'columns',
       labelDefault: 'Columns',
       labelKey: 'columns',
@@ -302,13 +309,6 @@ const sideBar: GridOptions['sideBar'] = {
       labelKey: 'filters',
       iconKey: 'filter',
       toolPanel: 'agFiltersToolPanel',
-    },
-    {
-      id: 'preview',
-      labelDefault: 'Preview',
-      labelKey: 'preview',
-      iconKey: 'columnMoveMove',
-      toolPanel: ThoiKhoaBieuTable,
     },
   ],
 };
