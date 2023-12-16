@@ -7,7 +7,7 @@ import groupBy from 'lodash/groupBy';
 import reverse from 'lodash/reverse';
 import { useMemo, useState } from 'react';
 import { ClassModel } from '../../../types';
-import { isSameAgGridRowId } from '../../../utils';
+import { isSameAgGridRowId, uniqMaLop } from '../../../utils';
 import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../../zus';
 import { usePhanLoaiHocTrenTruongContext } from './hooks';
 import './styles.css';
@@ -82,7 +82,7 @@ export const [MonChonRoiContext, useMonChonRoiContext] = constate(() => {
   const map = groupBy(selectedClasses, getMonChonRoiKey);
   const mapColor: Record<keyof typeof map, (typeof newRandomColors)[number]> = {};
   Object.entries(map).forEach(([key, value], index) => {
-    const hasDuplication = value.length > 1;
+    const hasDuplication = uniqMaLop(value).length > 1;
     if (hasDuplication) mapColor[key] = newRandomColors[index];
   });
   return { mapColor };
