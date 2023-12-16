@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import { ROUTES } from '../../constants';
 import { getDanhSachTiet } from '../../utils';
+import { selectIsChiVeTkb, useTkbStore } from '../../zus';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
 import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext } from './hooks';
@@ -32,10 +33,29 @@ function Render() {
   const { rowDataHocTrenTruong, khongHocTrenTruong, redundant } = usePhanLoaiHocTrenTruongContext();
 
   const location = useLocation();
+  const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
+
+  const isInStep2 = location.pathname === ROUTES._2XepLop.path;
+
+  // TODO: refactor the messy flow after writing tests
+  if (isInStep2 && isChiVeTkb) {
+    return (
+      <h3 style={{ textAlign: 'center', padding: 20 }}>
+        {window.location.search.includes('self_selected') ? (
+          <>
+            Preview bị disable ở chế độ chia sẻ TKB <code style={{ whiteSpace: 'nowrap' }}>?self_selected=</code>, sang
+            tab Bước 3 để xem TKB
+          </>
+        ) : (
+          `Bạn đang chọn "Không dùng dữ liệu từ bước Xếp Lớp" ở tab Bước 3`
+        )}
+      </h3>
+    );
+  }
 
   return (
     <ClassCellContext>
-      <div id="thoi-khoa-bieu" className={clsx({ compact: location.pathname === ROUTES._2XepLop.path })}>
+      <div id="thoi-khoa-bieu" className={clsx({ compact: isInStep2 })}>
         <div style={{ display: 'flex' }}>
           {redundant
             .flatMap((it) => it.new)

@@ -13,12 +13,12 @@ function Index() {
   const tongSoTC = useTkbStore(selectTongSoTcBuoc3);
 
   return (
-    <div style={{ marginTop: -15, maxWidth: 1500 }}>
+    <div style={{ marginTop: -10, maxWidth: 1500 }}>
       <Grid sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Tooltip
           title={
             window.location.search.includes('self_selected')
-              ? 'Đang dùng tính năng chia sẻ TKB (Read only)'
+              ? 'Đang dùng tính năng chia sẻ TKB ?self_selected='
               : 'Tick chọn khi bạn không dùng chức năng Xếp Lớp ở Bước 2 và nhập danh sách lớp tự chuẩn bị'
           }
         >
