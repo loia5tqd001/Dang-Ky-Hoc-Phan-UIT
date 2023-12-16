@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
@@ -65,14 +65,8 @@ type Props = {
   isOutsideTable?: boolean;
 } & React.TdHTMLAttributes<HTMLTableCellElement>;
 
-export const [ClassCellContext, useClassCellContext] = constate(() => {
-  const [cellDataHovering, setCellDataHovering] = useState<ClassModel | null>(null);
-  return { cellDataHovering, setCellDataHovering };
-});
-
 const getMonChonRoiKey = (data: ClassModel) => `${data.MaMH}-${data.ThucHanh}`;
-// TODO: refactor
-export const [MonChonRoiContext, useMonChonRoiContext] = constate(() => {
+const useMonChonRoi = () => {
   const newRandomColors = useMemo(() => reverse([...randomColors]), []);
   const selectedClasses = useTkbStore(selectSelectedClassesBuoc3);
   const map = groupBy(selectedClasses, getMonChonRoiKey);
@@ -82,26 +76,54 @@ export const [MonChonRoiContext, useMonChonRoiContext] = constate(() => {
     const hasDuplication = uniqMaLop(value).length > 1;
     if (hasDuplication) mapColor[key] = newRandomColors[index++];
   });
-  return { mapColor };
+  const getWarningColor = (data: ClassModel) => mapColor[getMonChonRoiKey(data)];
+  const isWarning = (data: ClassModel) => !!getWarningColor(data);
+  return { isWarning, getWarningColor };
+};
+export const [ClassCellContext, useClassCellContext] = constate(() => {
+  const [cellHovering, setCellHovering] = useState<ClassModel | null>(null);
+  const [isHoveringOnRemoveIcon, setIsHoveringOnRemoveIcon] = useState(false);
+  const [isHoveringOnWarningIcon, setIsHoveringOnWarningIcon] = useState(false);
+  const { isWarning, getWarningColor } = useMonChonRoi();
+  const isHoveringOnThisCell = (data: ClassModel, fieldCompare: keyof ClassModel) => {
+    return cellHovering?.[fieldCompare] === data?.[fieldCompare];
+  };
+  const isHoveringOnThisCellRemoveIcon = (data: ClassModel) =>
+    isHoveringOnThisCell(data, 'MaMH') && isHoveringOnRemoveIcon;
+  const isHoveringOnThisCellWarningIcon = (data: ClassModel) => {
+    return !!cellHovering && getMonChonRoiKey(data) === getMonChonRoiKey(cellHovering) && isHoveringOnWarningIcon;
+  };
+  return {
+    isHoveringOnThisCell,
+    isHoveringOnThisCellRemoveIcon,
+    isHoveringOnThisCellWarningIcon,
+    setCellHovering,
+    setIsHoveringOnRemoveIcon,
+    setIsHoveringOnWarningIcon,
+    isWarning,
+    getWarningColor,
+  };
 });
-
-function getCtrlKeyString() {
-  const isMac = navigator.userAgent.toUpperCase().includes('MAC');
-  return isMac ? 'Cmd' : 'Ctrl';
-}
 
 function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
   const { MaLop, NgonNgu, TenMH, TenGV, PhongHoc, NBD, NKT, Thu, Tiet } = data;
   const removeClasses = useTkbStore((s) => s.removeClasses);
   const selectedClasses = useTkbStore(selectSelectedClasses);
   const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
-  const { cellDataHovering, setCellDataHovering } = useClassCellContext();
-  const { mapColor } = useMonChonRoiContext();
+  const {
+    isHoveringOnThisCell,
+    isHoveringOnThisCellRemoveIcon,
+    isHoveringOnThisCellWarningIcon,
+    setIsHoveringOnWarningIcon,
+    setCellHovering,
+    setIsHoveringOnRemoveIcon,
+    isWarning,
+    getWarningColor,
+  } = useClassCellContext();
 
   const { redundant } = usePhanLoaiHocTrenTruongContext();
 
   // TODO: display warning cho cac truong hop:
-  // - chon 2 slot chung lop
   // - chon 2 slot chung mon khac lop, i.e: Nhap Mon Lap Trinh LT cua 1 nguoi, TH cua 1 nguoi khac
   const cacLopChungMonDangChon = useMemo(() => {
     return selectedClasses.filter((selectedClass) => selectedClass.MaMH === data.MaMH);
@@ -114,66 +136,67 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
   });
   const isRedundantRelated = redundantIndex > -1;
 
-  const monChonRoiWarningColor = mapColor[getMonChonRoiKey(data)];
-
   return (
     <Tooltip title={isRedundantRelated ? 'Bị trùng TKB' : null}>
       <td
         {...restProps}
         className={clsx('cell-class', {
-          'cell-class-hovering': cellDataHovering?.MaMH === data.MaMH,
+          'cell-class-hovering': isHoveringOnThisCell(data, 'MaMH'),
         })}
         style={{
           boxShadow: isRedundantRelated ? `inset 0 0 0 3px ${randomColors[redundantIndex]}` : undefined,
         }}
-        onMouseEnter={() => setCellDataHovering(data)}
-        onMouseLeave={() => setCellDataHovering(null)}
+        onMouseEnter={() => setCellHovering(data)}
+        onMouseLeave={() => setCellHovering(null)}
       >
         {!isChiVeTkb && (
           <Tooltip
             title={
               <>
-                Xoá lớp này
-                {cacLopChungMonDangChon.length > 1 && (
+                Xoá môn này
+                {isWarning(data) && isHoveringOnThisCell(data, 'MaLop') && (
                   <>
                     <br />
-                    {getCtrlKeyString()}+Click để xoá môn
+                    hoặc Shift+Click để chỉ xoá slot này
                   </>
                 )}
-                {/* Easter Eggs: */}
-                {/* <>
-                  <br />
-                  {getCtrlKeyString()}+Shift+Click để xoá toàn bộ
-                </> */}
               </>
             }
+            open={isHoveringOnThisCellRemoveIcon(data)}
           >
             <IconButton
+              onMouseEnter={() => setIsHoveringOnRemoveIcon(true)}
+              onMouseLeave={() => setIsHoveringOnRemoveIcon(false)}
               style={{ position: 'absolute', top: 0, right: 0 }}
               color="inherit"
               size="small"
               onClick={(e) => {
                 const classesToRemove = (() => {
-                  const isCtrlKeyPressed = e.ctrlKey || e.metaKey;
-                  if (isCtrlKeyPressed && e.shiftKey) return selectedClasses; // easter eggs
-                  if (isCtrlKeyPressed) return cacLopChungMonDangChon;
-                  return [data];
+                  if (isWarning(data) && e.shiftKey) return [data];
+                  if ((e.ctrlKey || e.metaKey) && e.shiftKey) return selectedClasses; // easter eggs: Cmd + Shift + Click to remove all selected classes
+                  return cacLopChungMonDangChon;
                 })();
                 removeClasses(classesToRemove);
+                setCellHovering(null);
               }}
               className="remove-class-btn"
             >
-              <CloseIcon />
+              <DeleteOutlineIcon />
             </IconButton>
           </Tooltip>
         )}
         <strong>
-          {MaLop} - {NgonNgu}
-          {monChonRoiWarningColor && (
-            <Tooltip title={monChonRoiWarningColor ? 'Có vẻ như bạn đang chọn thừa cho môn này' : undefined}>
-              <WarningAmberIcon style={{ color: monChonRoiWarningColor }} />
+          {MaLop}
+          {isWarning(data) && (
+            <Tooltip open={isHoveringOnThisCellWarningIcon(data)} title="Có vẻ như bạn đang chọn thừa cho môn này">
+              <WarningAmberIcon
+                onMouseEnter={() => setIsHoveringOnWarningIcon(true)}
+                onMouseLeave={() => setIsHoveringOnWarningIcon(false)}
+                style={{ color: getWarningColor(data) }}
+              />
             </Tooltip>
-          )}
+          )}{' '}
+          - {NgonNgu}
         </strong>
         <br />
         {TenMH}
