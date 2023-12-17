@@ -1,6 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightBlue } from '@mui/material/colors';
 import { StyledEngineProvider, Theme, ThemeProvider, adaptV4Theme, createTheme } from '@mui/material/styles';
+import { Analytics } from '@vercel/analytics/react';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
@@ -45,6 +46,7 @@ ReactDOM.render(
   <SnackbarProvider>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
+        <Analytics />
         <CssBaseline />
         <App />
       </ThemeProvider>
