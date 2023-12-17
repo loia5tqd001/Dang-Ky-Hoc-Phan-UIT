@@ -50,7 +50,7 @@ function Render() {
             tab Bước 3 để xem TKB
           </>
         ) : (
-          `Bạn đang chọn "Không dùng dữ liệu từ bước Xếp Lớp" ở tab Bước 3`
+          `Bạn đang chọn "Tự chuẩn bị danh sách mã lớp" ở tab Bước 3`
         )}
       </h3>
     );
