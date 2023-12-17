@@ -1,12 +1,11 @@
-# Tool Đăng Ký Học Phần UIT
-
-<p align="center">
-  <img src="./react/public/favicon.ico">
-</p>
+<div align="center">
+  <a href="https://uit.edu.vn/" target="_blank"><img src="./react/public/favicon.ico"></a>
+  <h1>Tool Đăng Ký Học Phần UIT</h1>
+</div>
 
 ## Giới thiệu
 
-Tool Đăng Ký Học Phần UIT là một ứng dụng web hỗ trợ các bạn sinh viên UIT đăng ký học phần được dễ dàng, tiện lợi. Ứng dụng gồm 2 phần chính: **1. Soạn thời khoá biểu** (chuẩn bị cho ĐKHP), và **2. Script Đăng Ký Học Phần** - hỗ trợ ĐKHP nhanh hơn đăng ký thủ công - được gen ra từ bước 1. Soạn thời khoá biểu.
+Tool Đăng Ký Học Phần UIT là một ứng dụng web hỗ trợ các bạn sinh viên UIT đăng ký học phần được dễ dàng, tiện lợi. Ứng dụng gồm 2 phần chính: **1. Tool Soạn Thời Khoá Biểu** (chuẩn bị cho ĐKHP) và **2. Script Đăng Ký Học Phần** - hỗ trợ ĐKHP nhanh hơn đăng ký thủ công - được gen ra từ bước 1. Soạn thời khoá biểu.
 
 ## Các update ở phiên bản 2024
 
@@ -41,7 +40,7 @@ Những lớp chung môn cũng sẽ hiện biểu tượng icon thùng rác khi 
 ### Filters/Columns/RowGroup
 Ở phiên bản mới nhất, các filters, columns, row group configs đã được cải thiện cho mượt mà hơn và hoạt động hợp lý hơn (rất khó giải thích, các bạn tự trải nghiệm). Các configs này sẽ hiện ở 3 nơi: 
 1. Ngay trên Header Name của column 
-2. Tab Columns và tab Filters ở Sidebar 
+2. Tab `Columns` và tab `Filters` ở Sidebar 
 3. Context Menu (khi click chuột phải lên Grid)
 
 ### Others
