@@ -60,7 +60,7 @@ function Render() {
     <ClassCellContext>
       <div id="thoi-khoa-bieu" className={clsx({ compact: isInStep2 })}>
         <Tooltip title="Tải hình ảnh TKB về máy">
-          <IconButton onClick={saveTkbImageToComputer} className="download-image-btn">
+          <IconButton onClick={saveTkbImageToComputer} className="download-image-btn" color="primary">
             <FileDownloadIcon />
           </IconButton>
         </Tooltip>
