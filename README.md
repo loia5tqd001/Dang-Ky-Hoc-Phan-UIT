@@ -1,5 +1,74 @@
 # Tool Đăng Ký Học Phần UIT
 
+<p align="center">
+  <img src="./react/public/favicon.ico">
+</p>
+
+## Giới thiệu
+
+Tool Đăng Ký Học Phần UIT là một ứng dụng web hỗ trợ các bạn sinh viên UIT đăng ký học phần được dễ dàng, tiện lợi. Ứng dụng gồm 2 phần chính: **1. Soạn thời khoá biểu** (chuẩn bị cho ĐKHP), và **2. Script Đăng Ký Học Phần** - hỗ trợ ĐKHP nhanh hơn đăng ký thủ công - được gen ra từ bước 1. Soạn thời khoá biểu.
+
+## Các update ở phiên bản 2024
+
+### Preview
+Ở phiên bản mới nhất, người dùng có thể preview Thời Khoá Biểu ngay trong Grid Danh Sách Lớp bằng 1 trong 2 cách:
+<details open>
+  <summary>1. Sử dụng tab Preview trên Sidebar</summary>
+  <img width="1728" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/958fd7ed-3c51-4243-a5c9-7c164b4043a5">
+</details>
+<details>
+  <summary>2. Mở 2 tab browser (tiện lợi cho người có 2 màn hình)</summary>
+  <img width="1728" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/f9192440-fd2f-4a9a-8f65-f43a2d89b60b">
+</details>
+
+### Selection Behavior
+Ở phiên bản mới nhất:
+
+<details open>
+  <summary>1. Những slot bị trùng TKB sẽ không hiện checkbox (non-selectable), giúp nhanh chóng chỉ ra những lớp nào có thể chọn được</summary>
+  <img width="852" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/91c20248-c177-4b55-b750-e19de8c8fed2">
+</details> 
+<details>
+  <summary>2. Khi chọn thừa lớp cho môn, sẽ hiện các cặp lớp thừa lên Thời Khoá Biểu</summary>
+  <img width="1728" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/2b9ff6df-35f9-479b-8f52-0682a1d5ed32">
+</details> 
+<details open>
+  <summary>3. Có thể tương tác trực tiếp lên Thời Khoá Biểu: Click để xoá môn, <i>Shift+Click và Ctrl+Shift+Click cho các trường hợp đặc biệt khác</i></summary>
+Những lớp chung môn cũng sẽ hiện biểu tượng icon thùng rác khi hover để nhanh chóng nhận biết lớp nào sẽ bị xoá sau khi click.
+<img width="1404" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/f14177c5-185b-49fd-b3d1-d80a16768e3e">
+</details> 
+
+### Filters/Columns/RowGroup
+Ở phiên bản mới nhất, các filters, columns, row group configs đã được cải thiện cho mượt mà hơn và hoạt động hợp lý hơn (rất khó giải thích, các bạn tự trải nghiệm). Các configs này sẽ hiện ở 3 nơi: 
+1. Ngay trên Header Name của column 
+2. Tab Columns và tab Filters ở Sidebar 
+3. Context Menu (khi click chuột phải lên Grid)
+
+### Others
+
+<details >
+  <summary>1. Chia sẻ TKB</summary>
+Khi bấm vào nút chia sẻ TKB, các bạn sẽ được đưa đến 1 url với query param <code>https://dkhp-uit.vercel.app?self_selected={1 danh sách mã lớp}</code>. Url này có thể dùng đễ lưu lại trạng thái các lớp đã chọn, hoặc chia sẻ cho bạn bè.
+<img width="773" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/579a026a-0aa6-4fb8-9095-d542b97f78d5">
+
+<b>NOTE:</b> Thời Khoá Biểu hiển thị sẽ ưu tiên danh sách mã lớp trên url. Nếu bạn muốn hiển thị Thời Khoá Biểu theo các lớp được chọn ở local, phải xoá url query param đó đi (url query param có ưu tiên hiển thị cao hơn các lớp được chọn ở local).
+</details> 
+
+<details >
+  <summary>2. Tải hình ảnh TKB về máy</summary>
+<img width="331" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/c34f8101-97cc-43f5-b3e8-6b83e789fa97">
+</details> 
+
+<details >
+  <summary>3. Copy script</summary>
+<img width="788" alt="image" src="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/assets/31364664/a9bdbec3-f263-445e-90ff-1c52d8b3742a">
+</details> 
+
+---
+
+<details>
+  <summary>Old doc (before 2024)</summary>
+
 ## [ 👉 TODOLIST](https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/20)
 
 ## Giới thiệu
@@ -71,3 +140,5 @@ Giao diện gồm 5 màn hình tương ứng với 5 tính năng bên trên:
 #### Cách chạy testcase
 
 #### Cập nhật thời khoá biểu mặc định
+
+</details>
