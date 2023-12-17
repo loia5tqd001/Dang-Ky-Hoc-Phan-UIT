@@ -176,10 +176,9 @@ function LeftDrawer() {
               }}
             >
               <GitHubButton
-                href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/stargazers"
-                data-icon="octicon-star"
+                href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
                 data-size="large"
-                data-show-count={true}
+                data-show-count="true"
                 children={'Star'}
               />
             </div>
