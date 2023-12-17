@@ -20,10 +20,11 @@ import { useDrawerStore } from '../../../zus';
 import { sendTrackingEvent } from '../../../tracking';
 
 const drawerWidth = 190;
+const drawerWidthClosed = 50;
 
-const openedMixin = (theme) =>
+const openCloseMixin = (theme, open) =>
   ({
-    width: drawerWidth,
+    width: `${open ? drawerWidth : drawerWidthClosed}px !important`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -31,29 +32,15 @@ const openedMixin = (theme) =>
     overflowX: 'hidden',
   } as const);
 
-const closedMixin = (theme) =>
-  ({
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-  } as const);
-
 const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
-  width: drawerWidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  ...(open && {
-    ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
-  }),
+  ...openCloseMixin(theme, open),
+  '& .MuiDrawer-paper': {
+    background: '#f2f1e3f0',
+    ...openCloseMixin(theme, open),
+  },
 }));
 
 function LeftDrawer() {
@@ -73,16 +60,7 @@ function LeftDrawer() {
 
   return (
     <nav className={classes.drawer}>
-      <Drawer
-        classes={{
-          paper: clsx(classes.drawerPaper, {
-            [classes.drawerClose]: isCollapsed,
-          }),
-        }}
-        className={clsx(classes.drawer)}
-        variant="permanent"
-        open={isOpen} // TODO: when page loads with open=false, the drawer will display stupidly when expanding
-      >
+      <Drawer className={clsx(classes.drawer)} variant="permanent" open={isOpen}>
         <Box className={classes.drawerTopCollapse}>
           <Tooltip title={isOpen ? 'Collapse' : 'Expand'}>
             <IconButton color="inherit" onClick={toggleDrawer} size="large">
@@ -206,12 +184,6 @@ const useStyles = makeStyles((theme) => ({
   collapseIconCollapsed: {
     transform: 'rotate(540deg)',
   },
-  drawerClose: {
-    width: '50px !important',
-    // width: 0,
-    // flexShrink: 0,
-    // transform: 'translateX(-110px)',
-  },
   img: {
     width: '100%',
     transformOrigin: 'center',
@@ -235,10 +207,6 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: '1px solid #ccc',
     display: 'grid',
     placeItems: 'center',
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    background: '#f2f1e3f0',
   },
   listItem: {
     borderTop: '1px solid transparent',

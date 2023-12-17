@@ -4,29 +4,35 @@ import { IconButton, InputBaseProps, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
-import { useMemo, useState } from 'react';
+import { HTMLAttributes, forwardRef, useMemo, useState } from 'react';
+import { sendTrackingEvent } from '../../tracking';
 import { extractListMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
-import { sendTrackingEvent } from '../../tracking';
 import { getScriptDkhp } from './utils';
 
 const DEFAULT_TOOLTIP = 'Click để sao chép';
 const COPIED_TOOLTIP = 'Đã sao chép';
 
-const CustomInputComponent: InputBaseProps['inputComponent'] = ({ inputRef, title, ...rest }) => (
+const CustomInputComponent: InputBaseProps['inputComponent'] = forwardRef<
+  HTMLTextAreaElement,
+  HTMLAttributes<HTMLTextAreaElement>
+>((props, ref) => (
   <Tooltip title="Xem video hướng dẫn ở B1 để biết cách dùng.">
-    <textarea ref={inputRef} style={{ resize: 'vertical' }} {...rest} />
+    <textarea ref={ref} style={{ resize: 'vertical' }} {...props} />
   </Tooltip>
-);
+));
 
-const CustomInputComponent2: InputBaseProps['inputComponent'] = ({ inputRef, title, ...rest }) => {
+const CustomInputComponent2: InputBaseProps['inputComponent'] = forwardRef<
+  HTMLTextAreaElement,
+  HTMLAttributes<HTMLTextAreaElement>
+>((props, ref) => {
   const khongXepLop = useTkbStore(selectIsChiVeTkb);
   return (
     <Tooltip title={khongXepLop ? 'Mỗi mã lớp một hàng, hoặc cách nhau bằng khoảng trắng, hoặc dấu phẩy' : ''}>
-      <textarea ref={inputRef} style={{ resize: 'vertical' }} {...rest} />
+      <textarea ref={ref} style={{ resize: 'vertical' }} {...props} />
     </Tooltip>
   );
-};
+});
 
 const useCommon = () => {
   const cacLop = useTkbStore(selectPhanLoaiHocTrenTruong);
