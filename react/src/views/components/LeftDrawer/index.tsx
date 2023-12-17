@@ -22,9 +22,8 @@ import { sendTrackingEvent } from '../../../tracking';
 const drawerWidth = 190;
 const drawerWidthClosed = 50;
 
-const openCloseMixin = (theme, open) =>
+const openCloseMixin = (theme) =>
   ({
-    width: `${open ? drawerWidth : drawerWidthClosed}px !important`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -33,13 +32,15 @@ const openCloseMixin = (theme, open) =>
   } as const);
 
 const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
+  width: drawerWidth,
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  ...openCloseMixin(theme, open),
+  ...openCloseMixin(theme),
   '& .MuiDrawer-paper': {
     background: '#f2f1e3f0',
-    ...openCloseMixin(theme, open),
+    ...openCloseMixin(theme),
+    width: open ? drawerWidth : drawerWidthClosed,
   },
 }));
 
