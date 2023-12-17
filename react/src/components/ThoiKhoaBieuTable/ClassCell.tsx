@@ -7,7 +7,7 @@ import groupBy from 'lodash/groupBy';
 import reverse from 'lodash/reverse';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { sendTrackingEvent } from '../../tracking';
+import { trackEvent } from '../../tracking';
 import { ClassModel } from '../../types';
 import { isSameAgGridRowId, uniqMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../zus';
@@ -84,14 +84,14 @@ const useMonChonRoi = () => {
   const soMonChonRoi = Object.keys(mapColor).length;
   useEffect(() => {
     if (soMonChonRoi) {
-      sendTrackingEvent.common({
+      trackEvent.common({
         action: 'tkb_table_chon_mon_chon_roi_true',
         label: locationText,
         value: soMonChonRoi,
         nonInteraction: true,
       });
     } else {
-      sendTrackingEvent.common({
+      trackEvent.common({
         action: 'tkb_table_chon_mon_chon_roi_false',
         label: locationText,
         nonInteraction: true,
@@ -208,7 +208,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
                   trackingLabel = 'click';
                   return cacLopChungMonDangChon;
                 })();
-                sendTrackingEvent.common({
+                trackEvent.common({
                   action: 'tkb_remove_class_btn_click',
                   label: trackingLabel,
                 });

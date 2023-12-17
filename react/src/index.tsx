@@ -21,9 +21,7 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578eb9cab60c42d78');
-ReactGA.initialize('G-HK94GQMRY2', {
-  testMode: process.env.NODE_ENV === 'development',
-});
+ReactGA.initialize('G-HK94GQMRY2');
 
 // color: https://material-ui.com/customization/color/#color
 // theming: https://material-ui.com/customization/theming/

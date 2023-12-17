@@ -17,7 +17,7 @@ import Typewriter from 'typewriter-effect';
 import { useEffect } from 'react';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
-import { sendTrackingEvent } from '../../../tracking';
+import { trackEvent } from '../../../tracking';
 
 const drawerWidth = 190;
 const drawerWidthClosed = 50;
@@ -52,7 +52,7 @@ function LeftDrawer() {
   const location = useLocation();
 
   useEffect(() => {
-    sendTrackingEvent.leftDrawer({
+    trackEvent.leftDrawer({
       action: 'view',
       label: isOpen ? 'open' : 'close',
       nonInteraction: true,
@@ -78,7 +78,7 @@ function LeftDrawer() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                sendTrackingEvent.leftDrawer({
+                trackEvent.leftDrawer({
                   action: 'logo_click',
                 });
               }}
@@ -99,7 +99,7 @@ function LeftDrawer() {
               to={route.path + location.search}
               activeClassName={classes.menuItemActive}
               onClick={() => {
-                sendTrackingEvent.leftDrawer({
+                trackEvent.leftDrawer({
                   action: 'menu_item_click',
                   label: route.path,
                 });
@@ -118,7 +118,7 @@ function LeftDrawer() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                sendTrackingEvent.leftDrawer({
+                trackEvent.leftDrawer({
                   action: 'feedback_btn_click',
                 });
               }}
@@ -144,12 +144,12 @@ function LeftDrawer() {
           <Box className={clsx(classes.githubStarWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
             <div
               onClick={() => {
-                sendTrackingEvent.leftDrawer({
+                trackEvent.leftDrawer({
                   action: 'github_star_btn_click',
                 });
               }}
               onMouseEnter={() => {
-                sendTrackingEvent.leftDrawer({
+                trackEvent.leftDrawer({
                   action: 'github_star_btn_hover',
                 });
               }}

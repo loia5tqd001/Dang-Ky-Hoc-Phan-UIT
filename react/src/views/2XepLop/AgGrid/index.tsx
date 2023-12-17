@@ -2,7 +2,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'types';
 import './styles.css';
 import { useDrawerStore } from '../../../zus';
-import { sendTrackingEvent } from '../../../tracking';
+import { trackEvent } from '../../../tracking';
 import { useGridOptions } from './utils';
 
 function AgGrid() {
@@ -69,7 +69,7 @@ function AgGrid() {
         onRowClicked={onRowClicked}
         onToolPanelVisibleChanged={(e) => {
           if (e.visible) {
-            sendTrackingEvent.page2({
+            trackEvent.page2({
               action: 'tool_panel_open',
               label: e.key,
             });

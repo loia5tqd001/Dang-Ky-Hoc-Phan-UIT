@@ -20,7 +20,7 @@ import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
 import SoTinChi from '../../../components/SoTinChi';
 import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
-import { sendTrackingEvent } from '../../../tracking';
+import { trackEvent } from '../../../tracking';
 import {
   findOverlapedClasses,
   getAgGridRowId,
@@ -413,7 +413,7 @@ export const useGridOptions = () => {
     log('>>onFilterChanged', e);
     if (e.source !== PROGRAMMATICALLY_CHANGE_SELECTION) {
       e.columns.forEach((column) => {
-        sendTrackingEvent.page2({
+        trackEvent.page2({
           action: 'filter_changed',
           label: column.getColId(),
         });
@@ -451,7 +451,7 @@ export const useGridOptions = () => {
       node.setExpanded(!node.expanded);
     }
     if (node.data && !node.selectable) {
-      sendTrackingEvent.page2({
+      trackEvent.page2({
         action: 'unselectable_row_click',
       });
       enqueueSnackbar(`Không thể chọn lớp ${node.data.MaLop} do bị trùng TKB với lớp đã chọn`, {
@@ -480,7 +480,7 @@ export const useGridOptions = () => {
         addToBlock({
           name: `Copy text "${value}"`,
           action: () => {
-            sendTrackingEvent.page2({ action: 'context_menu_copy_text_used' });
+            trackEvent.page2({ action: 'context_menu_copy_text_used' });
             navigator.clipboard.writeText(value);
           },
         });
@@ -495,7 +495,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Add Filter "${column.getColDef().headerName}"="${value}"`,
             action: () => {
-              sendTrackingEvent.page2({ action: 'context_menu_add_filter_used' });
+              trackEvent.page2({ action: 'context_menu_add_filter_used' });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: {
@@ -514,7 +514,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Reset Filter For "${column.getColDef().headerName}"`,
             action: () => {
-              sendTrackingEvent.page2({ action: 'context_menu_reset_filter_for_used' });
+              trackEvent.page2({ action: 'context_menu_reset_filter_for_used' });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: null,
@@ -526,7 +526,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Reset All Filters Except "${column.getColDef().headerName}"`,
             action: () => {
-              sendTrackingEvent.page2({ action: 'context_menu_reset_filters_except_used' });
+              trackEvent.page2({ action: 'context_menu_reset_filters_except_used' });
               api.setFilterModel({
                 [column.getColId()]: api.getFilterModel()[column.getColId()],
               });
@@ -538,7 +538,7 @@ export const useGridOptions = () => {
         addToBlock({
           name: 'Reset All Filters',
           action: () => {
-            sendTrackingEvent.page2({ action: 'context_menu_reset_all_filters_used' });
+            trackEvent.page2({ action: 'context_menu_reset_all_filters_used' });
             api.setFilterModel(null);
           },
         });
@@ -556,8 +556,8 @@ export const useGridOptions = () => {
       const final = constructFinal();
       final.forEach((item) => {
         if (item === 'separator') return;
-        if (typeof item === 'string') sendTrackingEvent.page2({ action: 'context_menu_item_shown', label: item });
-        else sendTrackingEvent.page2({ action: 'context_menu_item_shown', label: item.name });
+        if (typeof item === 'string') trackEvent.page2({ action: 'context_menu_item_shown', label: item });
+        else trackEvent.page2({ action: 'context_menu_item_shown', label: item.name });
       });
       return final;
     },

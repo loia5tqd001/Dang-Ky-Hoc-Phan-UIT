@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import SoTinChi from '../../components/SoTinChi';
 import { selectIsChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
 import ThoiKhoaBieuTable from '../../components/ThoiKhoaBieuTable';
-import { sendTrackingEvent } from '../../tracking';
+import { trackEvent } from '../../tracking';
 import ScriptDangKyInput, { DanhSachLopInput } from './ScriptDangKyInput';
 
 function Index() {
@@ -29,7 +29,7 @@ function Index() {
                 checked={khongXepLop}
                 onChange={(e) => {
                   setIsChiVeTkb(e.target.checked);
-                  sendTrackingEvent.page3({
+                  trackEvent.page3({
                     action: 'chi_ve_tkb_toggle',
                     value: e.target.checked ? 1 : 0,
                   });

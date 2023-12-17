@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { ROUTES } from '../../constants';
 import { getDanhSachTiet } from '../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../zus';
-import { sendTrackingEvent } from '../../tracking';
+import { trackEvent } from '../../tracking';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
 import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext, useProcessImageTkb } from './hooks';
@@ -46,7 +46,7 @@ function Render() {
 
   useEffect(() => {
     if (redundant.length) {
-      sendTrackingEvent.common({
+      trackEvent.common({
         action: 'tkb_table_redundant',
         label: locationText,
         value: redundant.length,
@@ -56,7 +56,7 @@ function Render() {
   }, [locationText, redundant]);
 
   useEffect(() => {
-    sendTrackingEvent.common({
+    trackEvent.common({
       action: 'tkb_table_view',
       label: locationText,
       nonInteraction: true,

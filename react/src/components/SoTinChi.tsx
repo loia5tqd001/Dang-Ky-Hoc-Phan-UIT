@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { getTongSoTcJudgement } from '../utils';
 import { selectTongSoTcSelected, useTkbStore } from '../zus';
 import { COLORS } from '../constants';
-import { sendTrackingEvent } from '../tracking';
+import { trackEvent } from '../tracking';
 
 function SoTinChi(props: { tongSoTcSelected?: number }) {
   const tongSoTcSelectedB2 = useTkbStore(selectTongSoTcSelected);
@@ -14,7 +14,7 @@ function SoTinChi(props: { tongSoTcSelected?: number }) {
   const location = useLocation();
   const locationText = `location: ${location.pathname}`;
   useEffect(() => {
-    sendTrackingEvent.common({
+    trackEvent.common({
       action: 'tong_so_tc_view',
       label: locationText,
       nonInteraction: true,
@@ -26,7 +26,7 @@ function SoTinChi(props: { tongSoTcSelected?: number }) {
       <p
         style={{ color: judgement.isOk ? COLORS.SUCCESS : COLORS.ERROR, margin: 0, padding: 6 }}
         onMouseEnter={() => {
-          sendTrackingEvent.common({
+          trackEvent.common({
             action: 'tong_so_tc_hover',
             label: locationText,
           });

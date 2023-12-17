@@ -1,33 +1,33 @@
 import ReactGA from 'react-ga4';
 
-type SendTrackingEventOptions = Omit<Exclude<Parameters<(typeof ReactGA)['event']>[0], string>, 'category'>;
+type TrackEventOptions = Omit<Exclude<Parameters<(typeof ReactGA)['event']>[0], string>, 'category'>;
 
-export const sendTrackingEvent = {
-  leftDrawer: (options: SendTrackingEventOptions) => {
+export const trackEvent = {
+  leftDrawer: (options: TrackEventOptions) => {
     return ReactGA.event({
       ...options,
       category: 'left_drawer',
     });
   },
-  page1: (options: SendTrackingEventOptions) => {
+  page1: (options: TrackEventOptions) => {
     return ReactGA.event({
       ...options,
       category: 'page1',
     });
   },
-  page2: (options: SendTrackingEventOptions) => {
+  page2: (options: TrackEventOptions) => {
     return ReactGA.event({
       ...options,
       category: 'page2',
     });
   },
-  page3: (options: SendTrackingEventOptions) => {
+  page3: (options: TrackEventOptions) => {
     return ReactGA.event({
       ...options,
       category: 'page3',
     });
   },
-  common: (options: SendTrackingEventOptions) => {
+  common: (options: TrackEventOptions) => {
     return ReactGA.event({
       ...options,
       category: 'common',
