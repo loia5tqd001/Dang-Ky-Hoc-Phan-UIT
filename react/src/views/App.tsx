@@ -57,6 +57,13 @@ function App() {
             })}
           >
             <Suspense fallback={<LinearProgress />}>
+              <Route
+                path="/b1e7x6f66mkd"
+                component={() => {
+                  window.location.href = 'https://b1e7x6f66mkd.ddns.dataunlocker.com';
+                  return null;
+                }}
+              />
               <PersistedRoute path={ROUTES._1ChonFileExcel.path} component={ChonFileExcel} />
               <PersistedRoute path={ROUTES._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
               <PersistedRoute path={ROUTES._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
