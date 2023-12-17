@@ -6,15 +6,10 @@ import { LicenseManager } from 'ag-grid-enterprise';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga4';
+import App from './views/App';
 
 import 'ag-grid-enterprise/styles/ag-grid.css';
 import 'ag-grid-enterprise/styles/ag-theme-alpine.css';
-import App from './views/App';
-
-declare module '@mui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends Theme {}
-}
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
