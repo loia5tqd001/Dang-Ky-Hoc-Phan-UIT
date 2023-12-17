@@ -15,7 +15,7 @@ type StoreState = {
 export const useDrawerStore = create<StoreState>()(
   persist(
     (set) => ({
-      isDrawerOpen: true,
+      isDrawerOpen: document.body.offsetWidth > 900,
       toggleDrawer: () => {
         trackEvent.leftDrawer({ action: 'toggle_drawer' });
         set((state) => ({ isDrawerOpen: !state.isDrawerOpen }));
