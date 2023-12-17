@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import {
   AgGridEvent,
   CellStyle,
+  FilterChangedEvent,
   GetContextMenuItemsParams,
   GridOptions,
   GridReadyEvent,
@@ -19,6 +20,7 @@ import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
 import SoTinChi from '../../../components/SoTinChi';
 import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
+import { sendTrackingEvent } from '../../../tracking';
 import {
   findOverlapedClasses,
   getAgGridRowId,
@@ -407,9 +409,17 @@ export const useGridOptions = () => {
   const DEBOUNCE_TIME = 500;
   const setAgGridFilterModel = useTkbStore((s) => s.setAgGridFilterModel);
   const setAgGridColumnState = useTkbStore((s) => s.setAgGridColumnState);
-  const onFilterChanged: GridOptions['onFilterChanged'] = useDebouncedCallback(({ api }: AgGridEvent) => {
-    log('>>onFilterChanged');
-    setAgGridFilterModel(api.getFilterModel());
+  const onFilterChanged: GridOptions['onFilterChanged'] = useDebouncedCallback((e: FilterChangedEvent) => {
+    log('>>onFilterChanged', e);
+    if (e.source !== PROGRAMMATICALLY_CHANGE_SELECTION) {
+      e.columns.forEach((column) => {
+        sendTrackingEvent.page2({
+          action: 'filter_changed',
+          label: column.getColId(),
+        });
+      });
+    }
+    setAgGridFilterModel(e.api.getFilterModel());
   }, DEBOUNCE_TIME);
 
   // onColumnResized will be called too much without debounce
@@ -441,6 +451,9 @@ export const useGridOptions = () => {
       node.setExpanded(!node.expanded);
     }
     if (node.data && !node.selectable) {
+      sendTrackingEvent.page2({
+        action: 'unselectable_row_click',
+      });
       enqueueSnackbar(`Không thể chọn lớp ${node.data.MaLop} do bị trùng TKB với lớp đã chọn`, {
         variant: 'warning',
         preventDuplicate: true,
@@ -467,6 +480,7 @@ export const useGridOptions = () => {
         addToBlock({
           name: `Copy text "${value}"`,
           action: () => {
+            sendTrackingEvent.page2({ action: 'context_menu_copy_text_used' });
             navigator.clipboard.writeText(value);
           },
         });
@@ -481,6 +495,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Add Filter "${column.getColDef().headerName}"="${value}"`,
             action: () => {
+              sendTrackingEvent.page2({ action: 'context_menu_add_filter_used' });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: {
@@ -499,6 +514,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Reset Filter For "${column.getColDef().headerName}"`,
             action: () => {
+              sendTrackingEvent.page2({ action: 'context_menu_reset_filter_for_used' });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: null,
@@ -510,6 +526,7 @@ export const useGridOptions = () => {
           addToBlock({
             name: `Reset All Filters Except "${column.getColDef().headerName}"`,
             action: () => {
+              sendTrackingEvent.page2({ action: 'context_menu_reset_filters_except_used' });
               api.setFilterModel({
                 [column.getColId()]: api.getFilterModel()[column.getColId()],
               });
@@ -521,6 +538,7 @@ export const useGridOptions = () => {
         addToBlock({
           name: 'Reset All Filters',
           action: () => {
+            sendTrackingEvent.page2({ action: 'context_menu_reset_all_filters_used' });
             api.setFilterModel(null);
           },
         });
@@ -535,7 +553,13 @@ export const useGridOptions = () => {
       }
       endOfBlock();
 
-      return constructFinal();
+      const final = constructFinal();
+      final.forEach((item) => {
+        if (item === 'separator') return;
+        if (typeof item === 'string') sendTrackingEvent.page2({ action: 'context_menu_item_shown', label: item });
+        else sendTrackingEvent.page2({ action: 'context_menu_item_shown', label: item.name });
+      });
+      return final;
     },
     [],
   );

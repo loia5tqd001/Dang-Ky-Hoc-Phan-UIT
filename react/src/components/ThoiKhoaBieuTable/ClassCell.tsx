@@ -5,7 +5,9 @@ import clsx from 'clsx';
 import constate from 'constate';
 import groupBy from 'lodash/groupBy';
 import reverse from 'lodash/reverse';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { sendTrackingEvent } from '../../tracking';
 import { ClassModel } from '../../types';
 import { isSameAgGridRowId, uniqMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../zus';
@@ -76,6 +78,27 @@ const useMonChonRoi = () => {
     const hasDuplication = uniqMaLop(value).length > 1;
     if (hasDuplication) mapColor[key] = newRandomColors[index++];
   });
+
+  const location = useLocation();
+  const locationText = `location: ${location.pathname}, self_selected: ${location.search.includes('self_selected')}`;
+  const soMonChonRoi = Object.keys(mapColor).length;
+  useEffect(() => {
+    if (soMonChonRoi) {
+      sendTrackingEvent.common({
+        action: 'tkb_table_chon_mon_chon_roi_true',
+        label: locationText,
+        value: soMonChonRoi,
+        nonInteraction: true,
+      });
+    } else {
+      sendTrackingEvent.common({
+        action: 'tkb_table_chon_mon_chon_roi_false',
+        label: locationText,
+        nonInteraction: true,
+      });
+    }
+  }, [locationText, soMonChonRoi]);
+
   const getWarningColor = (data: ClassModel) => mapColor[getMonChonRoiKey(data)];
   const isWarning = (data: ClassModel) => !!getWarningColor(data);
   return { isWarning, getWarningColor };
@@ -171,11 +194,24 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
               color="inherit"
               size="small"
               onClick={(e) => {
+                let trackingLabel: string;
                 const classesToRemove = (() => {
-                  if (isWarning(data) && e.shiftKey) return [data];
-                  if ((e.ctrlKey || e.metaKey) && e.shiftKey) return selectedClasses; // easter eggs: Cmd + Shift + Click to remove all selected classes
+                  if (isWarning(data) && e.shiftKey) {
+                    trackingLabel = 'shift_click';
+                    return [data];
+                  }
+                  if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                    trackingLabel = 'cmd_shift_click';
+                    // easter eggs: Cmd + Shift + Click to remove all selected classes
+                    return selectedClasses;
+                  }
+                  trackingLabel = 'click';
                   return cacLopChungMonDangChon;
                 })();
+                sendTrackingEvent.common({
+                  action: 'tkb_remove_class_btn_click',
+                  label: trackingLabel,
+                });
                 removeClasses(classesToRemove);
                 setCellHovering(null);
               }}

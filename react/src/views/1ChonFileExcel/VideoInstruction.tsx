@@ -1,8 +1,8 @@
-import React from 'react';
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import Skeleton from '@mui/material/Skeleton';
+import { sendTrackingEvent } from '../../tracking';
 
 function VideoInstruction() {
   return (
@@ -23,6 +23,11 @@ function VideoInstruction() {
           <div style={{ paddingTop: '56%' }} />
         </Skeleton>
         <iframe
+          onClick={() => {
+            sendTrackingEvent.page1({
+              action: 'video_instruction_click',
+            });
+          }}
           title={' '}
           width="100%"
           height="100%"

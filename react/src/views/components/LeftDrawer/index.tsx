@@ -14,8 +14,10 @@ import clsx from 'clsx';
 import GitHubButton from 'react-github-btn';
 import { NavLink, useLocation } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
+import { useEffect } from 'react';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
+import { sendTrackingEvent } from '../../../tracking';
 
 const drawerWidth = 190;
 
@@ -61,6 +63,14 @@ function LeftDrawer() {
   const isCollapsed = !isOpen;
   const location = useLocation();
 
+  useEffect(() => {
+    sendTrackingEvent.leftDrawer({
+      action: 'view',
+      label: isOpen ? 'open' : 'close',
+      nonInteraction: true,
+    });
+  }, [isOpen]);
+
   return (
     <nav className={classes.drawer}>
       <Drawer
@@ -84,7 +94,16 @@ function LeftDrawer() {
         {/* Logo */}
         <Box mx={5} my={5} style={{ height: 120, marginTop: 60 }}>
           <Tooltip title="Tool đăng ký học phần UIT">
-            <a href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                sendTrackingEvent.leftDrawer({
+                  action: 'logo_click',
+                });
+              }}
+            >
               <img src={logoUit} alt="logo uit" className={clsx(classes.img, isCollapsed && classes.imgCollapsed)} />
             </a>
           </Tooltip>
@@ -100,6 +119,12 @@ function LeftDrawer() {
               component={NavLink}
               to={route.path + location.search}
               activeClassName={classes.menuItemActive}
+              onClick={() => {
+                sendTrackingEvent.leftDrawer({
+                  action: 'menu_item_click',
+                  label: route.path,
+                });
+              }}
             >
               <ListItemText primary={isOpen ? route.name : `${index + 1}.`} />
             </ListItem>
@@ -109,7 +134,16 @@ function LeftDrawer() {
         {/* Icons with link */}
         <Tooltip title="Gửi feedback" placement="top">
           <Box m={1} style={{ margin: 'auto auto 0' }}>
-            <a href="https://www.facebook.com/messages/t/loia5tqd001" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.facebook.com/messages/t/loia5tqd001"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                sendTrackingEvent.leftDrawer({
+                  action: 'feedback_btn_click',
+                });
+              }}
+            >
               <FeedbackIcon color="primary" fontSize="large" />
             </a>
           </Box>
@@ -129,13 +163,26 @@ function LeftDrawer() {
         {/* Github stars */}
         <Tooltip title="Hãy vào star giúp nhé">
           <Box className={clsx(classes.githubStarWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
-            <GitHubButton
-              href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/stargazers"
-              data-icon="octicon-star"
-              data-size="large"
-              data-show-count={true}
-              children={'Star'}
-            />
+            <div
+              onClick={() => {
+                sendTrackingEvent.leftDrawer({
+                  action: 'github_star_btn_click',
+                });
+              }}
+              onMouseEnter={() => {
+                sendTrackingEvent.leftDrawer({
+                  action: 'github_star_btn_hover',
+                });
+              }}
+            >
+              <GitHubButton
+                href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/stargazers"
+                data-icon="octicon-star"
+                data-size="large"
+                data-show-count={true}
+                children={'Star'}
+              />
+            </div>
           </Box>
         </Tooltip>
       </Drawer>

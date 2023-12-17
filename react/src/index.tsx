@@ -4,6 +4,7 @@ import { StyledEngineProvider, Theme, ThemeProvider, adaptV4Theme, createTheme }
 import { LicenseManager } from 'ag-grid-enterprise';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga4';
 
 import 'ag-grid-enterprise/styles/ag-grid.css';
 import 'ag-grid-enterprise/styles/ag-theme-alpine.css';
@@ -20,6 +21,9 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578eb9cab60c42d78');
+ReactGA.initialize('G-HK94GQMRY2', {
+  testMode: process.env.NODE_ENV === 'development',
+});
 
 // color: https://material-ui.com/customization/color/#color
 // theming: https://material-ui.com/customization/theming/

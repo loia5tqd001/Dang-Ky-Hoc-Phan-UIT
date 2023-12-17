@@ -4,6 +4,7 @@ import React from 'react';
 import { ClassModel } from '../../types';
 import { findOverlapedClasses, getDanhSachTiet } from '../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
+import { sendTrackingEvent } from '../../tracking';
 import { downloadFromCanvas, getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
@@ -97,6 +98,9 @@ export const useProcessImageTkb = () => {
 
   const saveTkbImageToComputer = React.useCallback(async () => {
     if (!tkbTableRef.current) return;
+    sendTrackingEvent.page3({
+      action: 'save-tkb-image',
+    });
     const canvas = await html2canvas(tkbTableRef.current);
     downloadFromCanvas(canvas, 'thoikhoabieu.png');
   }, [tkbTableRef]);

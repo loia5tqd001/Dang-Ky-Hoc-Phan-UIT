@@ -7,6 +7,7 @@ import { enqueueSnackbar } from 'notistack';
 import { useMemo, useState } from 'react';
 import { extractListMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
+import { sendTrackingEvent } from '../../tracking';
 import { getScriptDkhp } from './utils';
 
 const DEFAULT_TOOLTIP = 'Click để sao chép';
@@ -76,6 +77,9 @@ export function ScriptDangKyInput() {
             <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
               <IconButton
                 onClick={() => {
+                  sendTrackingEvent.page3({
+                    action: 'script_copy_btn_click',
+                  });
                   navigator.clipboard.writeText(scriptInputValue).then(
                     () => {
                       setIsCopying(true);
@@ -130,6 +134,9 @@ export function DanhSachLopInput() {
                   edge="end"
                   size="small"
                   onClick={() => {
+                    sendTrackingEvent.page3({
+                      action: 'chia_se_tkb_btn_click',
+                    });
                     const newUrl =
                       window.location.origin + window.location.pathname + '?self_selected=' + dsLopInputValue;
                     navigator.clipboard.writeText(newUrl);

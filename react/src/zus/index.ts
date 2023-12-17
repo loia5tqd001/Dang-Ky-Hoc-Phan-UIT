@@ -5,6 +5,7 @@ import { Mutate, StoreApi, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { ClassModel, ClassModelOriginal } from '../types';
 import { calcTongSoTC, isSameAgGridRowId } from '../utils';
+import { sendTrackingEvent } from '../tracking';
 
 type StoreState = {
   isDrawerOpen: boolean;
@@ -15,7 +16,10 @@ export const useDrawerStore = create<StoreState>()(
   persist(
     (set) => ({
       isDrawerOpen: true,
-      toggleDrawer: () => set((state) => ({ isDrawerOpen: !state.isDrawerOpen })),
+      toggleDrawer: () => {
+        sendTrackingEvent.leftDrawer({ action: 'toggle_drawer' });
+        set((state) => ({ isDrawerOpen: !state.isDrawerOpen }));
+      },
     }),
     {
       name: 'drawer-state-storage',

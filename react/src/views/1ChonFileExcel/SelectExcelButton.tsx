@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import makeStyles from '@mui/styles/makeStyles';
 import { enqueueSnackbar } from 'notistack';
 import { selectDataExcel, useTkbStore } from '../../zus';
+import { sendTrackingEvent } from '../../tracking';
 import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
@@ -45,9 +46,15 @@ function SelectExcelButton() {
               variant: 'success',
             },
           );
+          sendTrackingEvent.page1({
+            action: 'upload_excel_success',
+          });
         } else {
           enqueueSnackbar('Không đúng định dạng file của trường', {
             variant: 'error',
+          });
+          sendTrackingEvent.page1({
+            action: 'upload_excel_error',
           });
         }
       };
@@ -66,6 +73,11 @@ function SelectExcelButton() {
           color="primary"
           className={dataExcel?.lastUpdate ? classes.button : undefined}
           component="label"
+          onClick={() => {
+            sendTrackingEvent.page1({
+              action: 'upload_excel_btn_click',
+            });
+          }}
         >
           {dataExcel?.lastUpdate ? (
             <>
@@ -79,7 +91,14 @@ function SelectExcelButton() {
       </Tooltip>
       <span style={{ marginLeft: '10px' }}>
         Ví dụ file excel:{' '}
-        <a href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024">
+        <a
+          href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024"
+          onClick={() => {
+            sendTrackingEvent.page1({
+              action: 'example_excel_link_click',
+            });
+          }}
+        >
           https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024
         </a>
       </span>
