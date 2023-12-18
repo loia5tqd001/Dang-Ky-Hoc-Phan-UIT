@@ -21,7 +21,7 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'unspecified',
   authDomain: 'tool-dkhp-uit.firebaseapp.com',
   projectId: 'tool-dkhp-uit',
   storageBucket: 'tool-dkhp-uit.appspot.com',
