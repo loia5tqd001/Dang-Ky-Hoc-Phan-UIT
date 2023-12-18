@@ -15,7 +15,7 @@ function Index() {
         style={{ fontWeight: 'bold', padding: '5px 10px', marginBottom: 12 }}
         variant="outlined"
       >
-        Xem update 2024 tại{' '}
+        Update 2024:{' '}
         <a
           href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT?tab=readme-ov-file#c%C3%A1c-update-%E1%BB%9F-phi%C3%AAn-b%E1%BA%A3n-2024"
           target="_blank"
@@ -26,7 +26,7 @@ function Index() {
             });
           }}
         >
-          đây
+          Xem ngay
         </a>
       </Alert>
       <Alert
@@ -35,7 +35,7 @@ function Index() {
         style={{ fontWeight: 'bold', padding: '5px 10px', marginBottom: 12 }}
         variant="outlined"
       >
-        Video hướng dẫn sử dụng script đăng ký nhanh:{' '}
+        Video cách dùng script đăng ký nhanh:{' '}
         <a
           href="https://www.youtube.com/watch?v=DsLUHgX_xzs"
           target="_blank"
