@@ -7,6 +7,13 @@ import { ClassModel, ClassModelOriginal } from '../types';
 import { calcTongSoTC, isSameAgGridRowId } from '../utils';
 import { trackEvent } from '../tracking';
 
+type UtilsStore = {
+  hasAdBlocker: boolean;
+};
+export const useUtilsStore = create<UtilsStore>()((set) => ({
+  hasAdBlocker: false,
+}));
+
 type StoreState = {
   isDrawerOpen: boolean;
   toggleDrawer: () => void;

@@ -4,12 +4,14 @@ import { StyledEngineProvider, Theme, ThemeProvider, adaptV4Theme, createTheme }
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { LicenseManager } from 'ag-grid-enterprise';
+import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from 'firebase/app';
+import { getPerformance } from 'firebase/performance';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga4';
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getPerformance } from 'firebase/performance';
+import { checkAdBlocker } from './tracking.utils';
+import { useUtilsStore } from './zus';
 
 import App from './views/App';
 
@@ -19,6 +21,8 @@ declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
+
+checkAdBlocker().then((hasAdBlocker) => useUtilsStore.setState({ hasAdBlocker }));
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'unspecified',
