@@ -1,36 +1,36 @@
+import { logEvent } from 'firebase/analytics';
 import ReactGA from 'react-ga4';
+import { analytics } from '.';
 
-type TrackEventOptions = Omit<Exclude<Parameters<(typeof ReactGA)['event']>[0], string>, 'category'>;
+type GaEvent = Exclude<Parameters<(typeof ReactGA)['event']>[0], string>;
+type TrackEventOptions = Omit<GaEvent, 'category'>;
+
+const getFirebaseEvent = ({ category, action, ...others }: GaEvent) => {
+  return {
+    eventName: `${category}__${action}`,
+    eventParams: others,
+  };
+};
+
+const convertToMultipleEvents = (category: string) => {
+  return (options: TrackEventOptions) => {
+    // google analytics 4
+    const gaEvent: GaEvent = {
+      ...options,
+      category,
+    };
+    ReactGA.event(gaEvent);
+
+    // firebase analytics
+    const firebaseEvent = getFirebaseEvent(gaEvent);
+    logEvent(analytics, firebaseEvent.eventName, firebaseEvent.eventParams);
+  };
+};
 
 export const trackEvent = {
-  leftDrawer: (options: TrackEventOptions) => {
-    return ReactGA.event({
-      ...options,
-      category: 'left_drawer',
-    });
-  },
-  page1: (options: TrackEventOptions) => {
-    return ReactGA.event({
-      ...options,
-      category: 'page1',
-    });
-  },
-  page2: (options: TrackEventOptions) => {
-    return ReactGA.event({
-      ...options,
-      category: 'page2',
-    });
-  },
-  page3: (options: TrackEventOptions) => {
-    return ReactGA.event({
-      ...options,
-      category: 'page3',
-    });
-  },
-  common: (options: TrackEventOptions) => {
-    return ReactGA.event({
-      ...options,
-      category: 'common',
-    });
-  },
+  leftDrawer: convertToMultipleEvents('left_drawer'),
+  page1: convertToMultipleEvents('page1'),
+  page2: convertToMultipleEvents('page2'),
+  page3: convertToMultipleEvents('page3'),
+  common: convertToMultipleEvents('common'),
 };
