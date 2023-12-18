@@ -1,12 +1,11 @@
-import React, { ChangeEventHandler } from 'react';
-import XLSX from 'xlsx';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import makeStyles from '@mui/styles/makeStyles';
 import { enqueueSnackbar } from 'notistack';
-import { selectDataExcel, useTkbStore } from '../../zus';
+import React, { ChangeEventHandler } from 'react';
+import XLSX from 'xlsx';
 import { trackEvent } from '../../tracking';
+import { selectDataExcel, useTkbStore } from '../../zus';
 import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
@@ -14,7 +13,6 @@ const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
 function SelectExcelButton() {
   const dataExcel = useTkbStore(selectDataExcel);
   const setDataExcel = useTkbStore((s) => s.setDataExcel);
-  const classes = useStyles();
 
   const handleUploadFileExcel = React.useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -69,22 +67,22 @@ function SelectExcelButton() {
       {/* File uploader with material-ui: https://stackoverflow.com/a/54043619/9787887*/}
       <Tooltip title={dataExcel?.fileName || 'Chưa upload file'}>
         <Button
-          variant="outlined"
-          color="primary"
-          className={dataExcel?.lastUpdate ? classes.button : undefined}
+          variant={'contained'}
+          color={dataExcel?.lastUpdate ? 'success' : 'primary'}
           component="label"
           onClick={() => {
             trackEvent.page1({
               action: 'upload_excel_btn_click',
             });
           }}
+          style={dataExcel?.lastUpdate ? undefined : { fontWeight: 'bold' }}
         >
           {dataExcel?.lastUpdate ? (
             <>
-              <span>Đã upload file vào: </span> <Bold>{dataExcel.lastUpdate}</Bold>
+              <span>Đã upload: </span> <Bold>{dataExcel.lastUpdate}</Bold>
             </>
           ) : (
-            'Tải file excel lên'
+            'Upload file excel'
           )}
           <input type="file" style={{ display: 'none' }} accept={sheetJSFT} onChange={handleUploadFileExcel} />
         </Button>
@@ -107,15 +105,3 @@ function SelectExcelButton() {
 }
 
 export default SelectExcelButton;
-
-// styles below:
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    color: theme.palette.success.main,
-    borderColor: theme.palette.success.light,
-    '&:hover': {
-      borderColor: theme.palette.success.main,
-    },
-  },
-}));
