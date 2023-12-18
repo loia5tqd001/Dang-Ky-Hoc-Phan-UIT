@@ -116,6 +116,11 @@ export const [ClassCellContext, useClassCellContext] = constate(() => {
   const isHoveringOnThisCellWarningIcon = (data: ClassModel) => {
     return !!cellHovering && getMonChonRoiKey(data) === getMonChonRoiKey(cellHovering) && isHoveringOnWarningIcon;
   };
+  const onRemoveClass = () => {
+    setCellHovering(null);
+    setIsHoveringOnRemoveIcon(false);
+    setIsHoveringOnWarningIcon(false);
+  };
   return {
     isHoveringOnThisCell,
     isHoveringOnThisCellRemoveIcon,
@@ -125,6 +130,7 @@ export const [ClassCellContext, useClassCellContext] = constate(() => {
     setIsHoveringOnWarningIcon,
     isWarning,
     getWarningColor,
+    onRemoveClass,
   };
 });
 
@@ -142,6 +148,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
     setIsHoveringOnRemoveIcon,
     isWarning,
     getWarningColor,
+    onRemoveClass,
   } = useClassCellContext();
 
   const { redundant } = usePhanLoaiHocTrenTruongContext();
@@ -213,7 +220,7 @@ function ClassCell({ data, isOutsideTable = false, ...restProps }: Props) {
                   label: trackingLabel,
                 });
                 removeClasses(classesToRemove);
-                setCellHovering(null);
+                onRemoveClass();
               }}
               className="remove-class-btn"
             >
