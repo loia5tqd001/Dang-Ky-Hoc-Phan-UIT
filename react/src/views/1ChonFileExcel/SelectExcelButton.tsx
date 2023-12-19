@@ -66,9 +66,6 @@ function SelectExcelButton() {
           variant={'contained'}
           color={dataExcel?.lastUpdate ? 'success' : 'primary'}
           component="label"
-          onClick={() => {
-            tracker.track('[page1] btn_upload_excel_clicked');
-          }}
           style={dataExcel?.lastUpdate ? undefined : { fontWeight: 'bold' }}
         >
           {dataExcel?.lastUpdate ? (
@@ -78,7 +75,15 @@ function SelectExcelButton() {
           ) : (
             'Upload file excel'
           )}
-          <input type="file" style={{ display: 'none' }} accept={sheetJSFT} onChange={handleUploadFileExcel} />
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            accept={sheetJSFT}
+            onChange={handleUploadFileExcel}
+            onClick={() => {
+              tracker.track('[page1] btn_upload_excel_clicked');
+            }}
+          />
         </Button>
       </Tooltip>
       <span style={{ marginLeft: '10px' }}>
