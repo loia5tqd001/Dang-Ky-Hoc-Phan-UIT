@@ -84,6 +84,8 @@ function SelectExcelButton() {
       <span style={{ marginLeft: '10px' }}>
         Ví dụ file excel:{' '}
         <a
+          target="_blank"
+          rel="noreferrer"
           href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024"
           onClick={() => {
             tracker.track('[page1] link_excel_example_clicked');
