@@ -24,13 +24,6 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
-export const tracker = buildTracker();
-checkAdBlocker().then((hasAdBlocker) => {
-  tracker.updateProperty('hasAdBlocker', hasAdBlocker);
-  tracker.updateProperty('leftDrawerInitiallyOpen', useDrawerStore.getState().isDrawerOpen);
-  useUtilsStore.setState({ hasAdBlocker });
-});
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'unspecified',
   authDomain: 'tool-dkhp-uit.firebaseapp.com',
@@ -43,6 +36,13 @@ const app = initializeApp(firebaseConfig, { automaticDataCollectionEnabled: true
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 getPerformance(app);
+
+export const tracker = buildTracker();
+checkAdBlocker().then((hasAdBlocker) => {
+  tracker.updateProperty('hasAdBlocker', hasAdBlocker);
+  tracker.updateProperty('leftDrawerInitiallyOpen', useDrawerStore.getState().isDrawerOpen);
+  useUtilsStore.setState({ hasAdBlocker });
+});
 
 LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578eb9cab60c42d78');
 ReactGA.initialize('G-HK94GQMRY2');

@@ -1,5 +1,5 @@
 import { logEvent } from 'firebase/analytics';
-import { doc, setDoc } from 'firebase/firestore';
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import ReactGA from 'react-ga4';
 import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
 import { log } from './utils';
@@ -11,16 +11,16 @@ type EventAction = 'clicked' | 'hovered' | 'toggled' | 'changed' | 'shown' | 're
 type EventRecord = {
   name: `[${EventGroup}] ${string}${EventAction}` | 'page_loaded';
   location: string;
-  time: number;
-  data?: {
+  time: Timestamp;
+  data: {
     [propertyName: string]: AllowedPropertyValues;
   };
 };
 type SessionRecord = {
   visitorId: string;
   startLocation: string;
-  startTime: number;
-  endTime: number;
+  startTime: Timestamp;
+  endTime: Timestamp;
   engagementTime: number;
   timeZone: string;
   browser: string;
@@ -50,13 +50,14 @@ export const buildTracker = () => {
     events.push({
       name: eventName,
       location: window.location.href,
-      time: Date.now(),
-      data: properties,
+      time: Timestamp.now(),
+      data: properties ?? {},
     });
     // firebase analytics
     logEvent(analytics, eventName, properties);
     // GA4
     ReactGA.event(eventName, properties);
+    dump();
   };
 
   const updateProperty = <TKey extends keyof SessionRecord>(key: TKey, value: SessionRecord[TKey]) => {
@@ -73,28 +74,37 @@ export const buildTracker = () => {
     }
   };
 
+  const dump = () => {
+    const finalStartTime = Timestamp.fromMillis(startTime);
+    const finalEndTime = Timestamp.now();
+    const sessionRecord: SessionRecord = {
+      visitorId,
+      startLocation,
+      startTime: finalStartTime,
+      endTime: finalEndTime,
+      engagementTime: finalEndTime.seconds - finalStartTime.seconds,
+      timeZone,
+      browser,
+      os,
+      hasAdBlocker,
+      leftDrawerInitiallyOpen,
+      referral,
+      events,
+    };
+    const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
+    setDoc(newDoc, sessionRecord);
+  };
+
   // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#sending_analytics_at_the_end_of_a_session
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
-      const endTime = Date.now();
-      const sessionRecord: SessionRecord = {
-        visitorId,
-        startLocation,
-        startTime,
-        endTime,
-        engagementTime: endTime - startTime,
-        timeZone,
-        browser,
-        os,
-        hasAdBlocker,
-        leftDrawerInitiallyOpen,
-        referral,
-        events,
-      };
-      const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
-      setDoc(newDoc, sessionRecord);
+      // dump();
     }
   });
+
+  setTimeout(() => {
+    dump();
+  }, 3000);
 
   return {
     track,
