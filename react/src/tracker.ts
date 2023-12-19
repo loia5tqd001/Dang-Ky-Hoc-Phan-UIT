@@ -1,8 +1,7 @@
 import { logEvent } from 'firebase/analytics';
 import { doc, setDoc } from 'firebase/firestore';
-import platform from 'platform';
 import ReactGA from 'react-ga4';
-import { getVisitorFingerprint } from './tracking.utils';
+import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
 import { analytics, db } from '.';
 
 type AllowedPropertyValues = string | number | boolean | null | undefined;
@@ -34,8 +33,8 @@ type SessionRecord = {
 export const buildTracker = () => {
   const visitorId = getVisitorFingerprint();
   const startLocation = window.location.href;
-  const browser = platform?.name;
-  const os = platform?.os?.toString();
+  const browser = getBrowserName();
+  const os = getOsName();
   const referral = document.referrer;
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const startTime = Date.now();

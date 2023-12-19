@@ -29,3 +29,51 @@ export function checkAdBlocker(): Promise<boolean> {
       return true; // others
     });
 }
+
+export function getBrowserName(): string {
+  const nAgt: string = navigator.userAgent;
+  let browserName: string = navigator.appName;
+
+  if (nAgt.includes('OPR')) {
+    browserName = 'Opera';
+  } else if (nAgt.includes('Edg')) {
+    browserName = 'Microsoft Edge';
+  } else if (nAgt.includes('MSIE')) {
+    browserName = 'Microsoft Internet Explorer';
+  } else if (nAgt.includes('Chrome')) {
+    browserName = 'Chrome';
+  } else if (nAgt.includes('Safari')) {
+    browserName = 'Safari';
+  } else if (nAgt.includes('Firefox')) {
+    browserName = 'Firefox';
+  } else {
+    const nameOffset: number = nAgt.lastIndexOf(' ') + 1;
+    const verOffset: number = nAgt.lastIndexOf('/');
+    if (nameOffset < verOffset) {
+      browserName = nAgt.substring(nameOffset, verOffset);
+    }
+  }
+
+  return browserName;
+}
+
+export function getOsName(): string {
+  const userAgent: string = navigator.userAgent;
+  let osName: string = 'Unknown OS';
+
+  if (userAgent.includes('Windows')) {
+    osName = 'Windows';
+  } else if (userAgent.includes('Macintosh') || userAgent.includes('Mac OS')) {
+    osName = 'MacOS';
+  } else if (userAgent.includes('X11') || userAgent.includes('UNIX')) {
+    osName = 'UNIX';
+  } else if (userAgent.includes('Linux')) {
+    osName = 'Linux';
+  } else if (userAgent.includes('Android')) {
+    osName = 'Android';
+  } else if (userAgent.includes('iOS')) {
+    osName = 'iOS';
+  }
+
+  return osName;
+}
