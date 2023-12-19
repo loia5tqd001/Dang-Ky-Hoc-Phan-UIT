@@ -2,6 +2,7 @@ import { logEvent } from 'firebase/analytics';
 import { doc, setDoc } from 'firebase/firestore';
 import ReactGA from 'react-ga4';
 import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
+import { log } from './utils';
 import { analytics, db } from '.';
 
 type AllowedPropertyValues = string | number | boolean | null | undefined;
@@ -44,6 +45,7 @@ export const buildTracker = () => {
   const events: EventRecord[] = [];
 
   const track = (eventName: EventRecord['name'], properties?: EventRecord['data']) => {
+    log('>>track', eventName, properties);
     // custom tracking
     events.push({
       name: eventName,
