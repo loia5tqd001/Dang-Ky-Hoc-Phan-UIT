@@ -6,12 +6,14 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 import { getPerformance } from 'firebase/performance';
 import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga4';
+import { buildTracker } from './tracker';
 import { checkAdBlocker } from './tracking.utils';
-import { useUtilsStore } from './zus';
+import { useDrawerStore, useUtilsStore } from './zus';
 
 import App from './views/App';
 
@@ -22,7 +24,12 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
-checkAdBlocker().then((hasAdBlocker) => useUtilsStore.setState({ hasAdBlocker }));
+export const tracker = buildTracker();
+checkAdBlocker().then((hasAdBlocker) => {
+  tracker.updateProperty('hasAdBlocker', hasAdBlocker);
+  tracker.updateProperty('leftDrawerInitiallyOpen', useDrawerStore.getState().isDrawerOpen);
+  useUtilsStore.setState({ hasAdBlocker });
+});
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'unspecified',
@@ -34,14 +41,12 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig, { automaticDataCollectionEnabled: true });
 export const analytics = getAnalytics(app);
+export const db = getFirestore(app);
 getPerformance(app);
 
 LicenseManager.setLicenseKey('I_<3_SCHOOL_NDEwMjMzMzIwMDAwMA==afc05c982fa05a2578eb9cab60c42d78');
 ReactGA.initialize('G-HK94GQMRY2');
 
-// color: https://material-ui.com/customization/color/#color
-// theming: https://material-ui.com/customization/theming/
-// global css: https://material-ui.com/customization/globals/
 const theme = createTheme(
   adaptV4Theme({
     typography: {
@@ -56,7 +61,6 @@ const theme = createTheme(
   }),
 );
 
-// TODO: read this: https://material-ui.com/customization/globals/#global-css
 ReactDOM.render(
   <SnackbarProvider>
     <StyledEngineProvider injectFirst>

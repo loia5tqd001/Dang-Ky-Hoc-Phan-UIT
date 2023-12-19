@@ -1,6 +1,6 @@
 import { Alert, AlertProps, Button } from '@mui/material';
+import { tracker } from '../..';
 import { selectDataExcel, useTkbStore, useUtilsStore } from '../../zus';
-import { trackEvent } from '../../tracking';
 import SelectExcelButton from './SelectExcelButton';
 
 function MyAlert({ children, color, ...otherProps }: AlertProps) {
@@ -34,7 +34,10 @@ function Index() {
             <Button
               color="inherit"
               size="small"
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                tracker.track('[page1] btn_confirm_close_adblock_clicked');
+                window.location.reload();
+              }}
               style={{ fontWeight: 'bold' }}
             >
               Đã tắt
@@ -51,9 +54,7 @@ function Index() {
           target="_blank"
           rel="noreferrer"
           onClick={() => {
-            trackEvent.page1({
-              action: '2024_update_link_click',
-            });
+            tracker.track('[page1] link_2024_update_clicked');
           }}
         >
           Xem ngay
@@ -66,9 +67,7 @@ function Index() {
           target="_blank"
           rel="noreferrer"
           onClick={() => {
-            trackEvent.page1({
-              action: 'script_instruction_video_link_click',
-            });
+            tracker.track('[page1] link_script_instruction_video_clicked');
           }}
         >
           Xem ngay

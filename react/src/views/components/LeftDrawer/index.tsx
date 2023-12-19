@@ -14,10 +14,9 @@ import clsx from 'clsx';
 import GitHubButton from 'react-github-btn';
 import { NavLink, useLocation } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
-import { useEffect } from 'react';
+import { tracker } from '../../..';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
-import { trackEvent } from '../../../tracking';
 
 const drawerWidth = 190;
 const drawerWidthClosed = 50;
@@ -51,14 +50,6 @@ function LeftDrawer() {
   const isCollapsed = !isOpen;
   const location = useLocation();
 
-  useEffect(() => {
-    trackEvent.leftDrawer({
-      action: 'view',
-      label: isOpen ? 'open' : 'close',
-      nonInteraction: true,
-    });
-  }, [isOpen]);
-
   return (
     <nav className={classes.drawer}>
       <Drawer className={clsx(classes.drawer)} variant="permanent" open={isOpen}>
@@ -78,9 +69,7 @@ function LeftDrawer() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                trackEvent.leftDrawer({
-                  action: 'logo_click',
-                });
+                tracker.track('[drawer] logo_clicked');
               }}
             >
               <img src={logoUit} alt="logo uit" className={clsx(classes.img, isCollapsed && classes.imgCollapsed)} />
@@ -99,10 +88,7 @@ function LeftDrawer() {
               to={route.path + location.search}
               activeClassName={classes.menuItemActive}
               onClick={() => {
-                trackEvent.leftDrawer({
-                  action: 'menu_item_click',
-                  label: route.path,
-                });
+                tracker.track('[drawer] menu_item_clicked', route);
               }}
             >
               <ListItemText primary={isOpen ? route.name : `${index + 1}.`} />
@@ -118,9 +104,7 @@ function LeftDrawer() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                trackEvent.leftDrawer({
-                  action: 'feedback_btn_click',
-                });
+                tracker.track('[drawer] btn_feedback_clicked');
               }}
             >
               <FeedbackIcon color="primary" fontSize="large" />
@@ -144,14 +128,10 @@ function LeftDrawer() {
           <Box className={clsx(classes.githubStarWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
             <div
               onClick={() => {
-                trackEvent.leftDrawer({
-                  action: 'github_star_btn_click',
-                });
+                tracker.track('[drawer] btn_star_github_clicked');
               }}
               onMouseEnter={() => {
-                trackEvent.leftDrawer({
-                  action: 'github_star_btn_hover',
-                });
+                tracker.track('[drawer] btn_star_github_hovered');
               }}
             >
               <GitHubButton

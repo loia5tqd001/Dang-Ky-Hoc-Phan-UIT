@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
 import { HTMLAttributes, forwardRef, useMemo, useState } from 'react';
-import { trackEvent } from '../../tracking';
+import { tracker } from '../..';
 import { extractListMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
 import { getScriptDkhp } from './utils';
@@ -83,9 +83,7 @@ export function ScriptDangKyInput() {
             <Tooltip title={isCopying ? COPIED_TOOLTIP : DEFAULT_TOOLTIP}>
               <IconButton
                 onClick={() => {
-                  trackEvent.page3({
-                    action: 'script_copy_btn_click',
-                  });
+                  tracker.track('[page3] btn_copy_script_clicked');
                   navigator.clipboard.writeText(scriptInputValue).then(
                     () => {
                       setIsCopying(true);
@@ -140,9 +138,7 @@ export function DanhSachLopInput() {
                   edge="end"
                   size="small"
                   onClick={() => {
-                    trackEvent.page3({
-                      action: 'chia_se_tkb_btn_click',
-                    });
+                    tracker.track('[page3] btn_chia_se_tkb_clicked');
                     const newUrl =
                       window.location.origin + window.location.pathname + '?self_selected=' + dsLopInputValue;
                     navigator.clipboard.writeText(newUrl);

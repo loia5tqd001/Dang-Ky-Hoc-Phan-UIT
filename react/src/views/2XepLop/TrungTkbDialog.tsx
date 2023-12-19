@@ -9,7 +9,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import constate from 'constate';
 import React from 'react';
 import { ClassModel } from '../../types';
-import { trackEvent } from '../../tracking';
 
 export type TTrungTkb = {
   existing: ClassModel;
@@ -34,13 +33,6 @@ export const [TrungTkbDialogContext, useTrungTkbDialogContext] = constate(() => 
 
 function TrungTkbDialog() {
   const { isDialogOpen, closeDialog, trungTkbs } = useTrungTkbDialogContext();
-  React.useEffect(() => {
-    if (isDialogOpen) {
-      trackEvent.page2({
-        action: 'trung_tkb_dialog_open',
-      });
-    }
-  }, [isDialogOpen]);
   return (
     <Dialog
       open={isDialogOpen}

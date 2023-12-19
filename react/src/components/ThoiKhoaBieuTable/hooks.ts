@@ -1,10 +1,10 @@
 import constate from 'constate';
 import html2canvas from 'html2canvas';
 import React from 'react';
+import { tracker } from '../..';
 import { ClassModel } from '../../types';
 import { findOverlapedClasses, getDanhSachTiet } from '../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../zus';
-import { trackEvent } from '../../tracking';
 import { downloadFromCanvas, getTietIndex } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
@@ -98,9 +98,7 @@ export const useProcessImageTkb = () => {
 
   const saveTkbImageToComputer = React.useCallback(async () => {
     if (!tkbTableRef.current) return;
-    trackEvent.page3({
-      action: 'save-tkb-image',
-    });
+    tracker.track('[tkb_table] btn_save_image_clicked');
     const canvas = await html2canvas(tkbTableRef.current);
     downloadFromCanvas(canvas, 'thoikhoabieu.png');
   }, [tkbTableRef]);

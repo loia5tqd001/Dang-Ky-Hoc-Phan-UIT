@@ -4,8 +4,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { enqueueSnackbar } from 'notistack';
 import React, { ChangeEventHandler } from 'react';
 import XLSX from 'xlsx';
-import { trackEvent } from '../../tracking';
 import { selectDataExcel, useTkbStore } from '../../zus';
+import { tracker } from '../..';
 import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
@@ -44,16 +44,12 @@ function SelectExcelButton() {
               variant: 'success',
             },
           );
-          trackEvent.page1({
-            action: 'upload_excel_success',
-          });
+          tracker.track('[page1] upload_excel_resulted', { success: true, fileName: file.name });
         } else {
           enqueueSnackbar('Không đúng định dạng file của trường', {
             variant: 'error',
           });
-          trackEvent.page1({
-            action: 'upload_excel_error',
-          });
+          tracker.track('[page1] upload_excel_resulted', { success: false });
         }
       };
       if (rABS) reader.readAsBinaryString(file);
@@ -71,9 +67,7 @@ function SelectExcelButton() {
           color={dataExcel?.lastUpdate ? 'success' : 'primary'}
           component="label"
           onClick={() => {
-            trackEvent.page1({
-              action: 'upload_excel_btn_click',
-            });
+            tracker.track('[page1] btn_upload_excel_clicked');
           }}
           style={dataExcel?.lastUpdate ? undefined : { fontWeight: 'bold' }}
         >
@@ -92,9 +86,7 @@ function SelectExcelButton() {
         <a
           href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024"
           onClick={() => {
-            trackEvent.page1({
-              action: 'example_excel_link_click',
-            });
+            tracker.track('[page1] link_excel_example_clicked');
           }}
         >
           https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024

@@ -1,8 +1,8 @@
 import { AgGridReact } from 'ag-grid-react';
 import { ClassModel } from 'types';
-import './styles.css';
+import { tracker } from '../../..';
 import { useDrawerStore } from '../../../zus';
-import { trackEvent } from '../../../tracking';
+import './styles.css';
 import { useGridOptions } from './utils';
 
 function AgGrid() {
@@ -69,9 +69,8 @@ function AgGrid() {
         onRowClicked={onRowClicked}
         onToolPanelVisibleChanged={(e) => {
           if (e.visible) {
-            trackEvent.page2({
-              action: 'tool_panel_open',
-              label: e.key,
+            tracker.track('[page2] tool_panel_shown', {
+              panel: e.key,
             });
           }
         }}

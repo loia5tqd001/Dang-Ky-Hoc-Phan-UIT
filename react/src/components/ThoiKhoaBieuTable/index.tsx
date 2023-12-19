@@ -1,12 +1,10 @@
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
-import { IconButton, Tooltip } from '@mui/material';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { useEffect } from 'react';
 import { ROUTES } from '../../constants';
 import { getDanhSachTiet } from '../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../zus';
-import { trackEvent } from '../../tracking';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
 import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext, useProcessImageTkb } from './hooks';
@@ -41,27 +39,6 @@ function Render() {
   const { tkbTableRef, saveTkbImageToComputer } = useProcessImageTkb();
 
   const isInStep2 = location.pathname === ROUTES._2XepLop.path;
-
-  const locationText = `location: ${location.pathname}, self_selected: ${location.search.includes('self_selected')}`;
-
-  useEffect(() => {
-    if (redundant.length) {
-      trackEvent.common({
-        action: 'tkb_table_redundant',
-        label: locationText,
-        value: redundant.length,
-        nonInteraction: true,
-      });
-    }
-  }, [locationText, redundant]);
-
-  useEffect(() => {
-    trackEvent.common({
-      action: 'tkb_table_view',
-      label: locationText,
-      nonInteraction: true,
-    });
-  }, [locationText]);
 
   // TODO: refactor the messy flow after writing tests
   if (isInStep2 && isChiVeTkb) {

@@ -2,10 +2,10 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
+import { tracker } from '../..';
 import SoTinChi from '../../components/SoTinChi';
-import { selectIsChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
 import ThoiKhoaBieuTable from '../../components/ThoiKhoaBieuTable';
-import { trackEvent } from '../../tracking';
+import { selectIsChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
 import ScriptDangKyInput, { DanhSachLopInput } from './ScriptDangKyInput';
 
 function Index() {
@@ -29,9 +29,8 @@ function Index() {
                 checked={khongXepLop}
                 onChange={(e) => {
                   setIsChiVeTkb(e.target.checked);
-                  trackEvent.page3({
-                    action: 'chi_ve_tkb_toggle',
-                    value: e.target.checked ? 1 : 0,
+                  tracker.track('[page3] checkbox_chi_ve_tkb_toggled', {
+                    newState: e.target.checked,
                   });
                 }}
                 name="chiVeTkb"

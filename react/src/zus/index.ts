@@ -3,9 +3,9 @@ import { partition } from 'lodash';
 import { memoize } from 'proxy-memoize';
 import { Mutate, StoreApi, create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { tracker } from '..';
 import { ClassModel, ClassModelOriginal } from '../types';
 import { calcTongSoTC, isSameAgGridRowId } from '../utils';
-import { trackEvent } from '../tracking';
 
 type UtilsStore = {
   hasAdBlocker: boolean;
@@ -21,11 +21,12 @@ type StoreState = {
 
 export const useDrawerStore = create<StoreState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isDrawerOpen: document.body.offsetWidth > 900,
       toggleDrawer: () => {
-        trackEvent.leftDrawer({ action: 'toggle_drawer' });
-        set((state) => ({ isDrawerOpen: !state.isDrawerOpen }));
+        const newState = !get().isDrawerOpen;
+        tracker.track('[drawer] toggled', { newState });
+        set({ isDrawerOpen: newState });
       },
     }),
     {

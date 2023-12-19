@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Skeleton from '@mui/material/Skeleton';
-import { trackEvent } from '../../tracking';
+import { tracker } from '../..';
 
 function VideoInstruction() {
   return (
@@ -24,9 +24,7 @@ function VideoInstruction() {
         </Skeleton>
         <iframe
           onClick={() => {
-            trackEvent.page1({
-              action: 'video_instruction_click',
-            });
+            tracker.track('[page1] video_instruction_clicked');
           }}
           title={' '}
           width="100%"

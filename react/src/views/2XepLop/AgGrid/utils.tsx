@@ -18,9 +18,9 @@ import { closeSnackbar, enqueueSnackbar } from 'notistack';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Buoi, ClassModel } from 'types';
 import { useDebouncedCallback } from 'use-debounce';
+import { tracker } from '../../..';
 import SoTinChi from '../../../components/SoTinChi';
 import ThoiKhoaBieuTable from '../../../components/ThoiKhoaBieuTable';
-import { trackEvent } from '../../../tracking';
 import {
   findOverlapedClasses,
   getAgGridRowId,
@@ -398,6 +398,9 @@ export const useGridOptions = () => {
         oldSelectedClasses.concat(newSelectedClasses),
       );
       if (redundant.length) {
+        tracker.track('[page2] dialog_trung_tkb_shown', {
+          redundant: JSON.stringify(redundant),
+        });
         openTrungTkbDialog(redundant);
       }
       setSelectedClasses(finalSelectedClasses);
@@ -412,11 +415,8 @@ export const useGridOptions = () => {
   const onFilterChanged: GridOptions['onFilterChanged'] = useDebouncedCallback((e: FilterChangedEvent) => {
     log('>>onFilterChanged', e);
     if (e.source !== PROGRAMMATICALLY_CHANGE_SELECTION) {
-      e.columns.forEach((column) => {
-        trackEvent.page2({
-          action: 'filter_changed',
-          label: column.getColId(),
-        });
+      tracker.track('[page2] filter_changed', {
+        columns: e.columns.map((it) => it.getColId()).join(','),
       });
     }
     setAgGridFilterModel(e.api.getFilterModel());
@@ -451,9 +451,7 @@ export const useGridOptions = () => {
       node.setExpanded(!node.expanded);
     }
     if (node.data && !node.selectable) {
-      trackEvent.page2({
-        action: 'unselectable_row_click',
-      });
+      tracker.track('[page2] row_unselectable_clicked');
       enqueueSnackbar(`Không thể chọn lớp ${node.data.MaLop} do bị trùng TKB với lớp đã chọn`, {
         variant: 'warning',
         preventDuplicate: true,
@@ -475,12 +473,13 @@ export const useGridOptions = () => {
   const getContextMenuItems = useCallback(
     ({ value, column, api, columnApi }: GetContextMenuItemsParams<ClassModel>): (string | MenuItemDef)[] => {
       const { addToBlock, endOfBlock, constructFinal } = getContextMenuItemsBuilder();
+      const headerName = column?.getColDef().headerName;
 
       if (value) {
         addToBlock({
           name: `Copy text "${value}"`,
           action: () => {
-            trackEvent.page2({ action: 'context_menu_copy_text_used' });
+            tracker.track('[page2] context_menu_copy_text_clicked', { text: value });
             navigator.clipboard.writeText(value);
           },
         });
@@ -493,9 +492,12 @@ export const useGridOptions = () => {
           thisColumnCurrentFilterModel?.filter === value || thisColumnCurrentFilterModel?.values?.includes(value);
         if (!alreadyFilterByThisValue) {
           addToBlock({
-            name: `Add Filter "${column.getColDef().headerName}"="${value}"`,
+            name: `Add Filter "${headerName}"="${value}"`,
             action: () => {
-              trackEvent.page2({ action: 'context_menu_add_filter_used' });
+              tracker.track('[page2] context_menu_add_filter_clicked', {
+                headerName,
+                value,
+              });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: {
@@ -512,9 +514,9 @@ export const useGridOptions = () => {
         const { [column.getColId()]: thisColumnFilterModel, ...otherColumnsFilterModel } = api.getFilterModel();
         if (thisColumnFilterModel) {
           addToBlock({
-            name: `Reset Filter For "${column.getColDef().headerName}"`,
+            name: `Reset Filter For "${headerName}"`,
             action: () => {
-              trackEvent.page2({ action: 'context_menu_reset_filter_for_used' });
+              tracker.track('[page2] context_menu_reset_1_filter_clicked', { headerName });
               api.setFilterModel({
                 ...api.getFilterModel(),
                 [column.getColId()]: null,
@@ -524,9 +526,9 @@ export const useGridOptions = () => {
         }
         if (thisColumnFilterModel && Object.keys(otherColumnsFilterModel).length) {
           addToBlock({
-            name: `Reset All Filters Except "${column.getColDef().headerName}"`,
+            name: `Reset All Filters Except "${headerName}"`,
             action: () => {
-              trackEvent.page2({ action: 'context_menu_reset_filters_except_used' });
+              tracker.track('[page2] context_menu_reset_n_1_filters_clicked', { headerName });
               api.setFilterModel({
                 [column.getColId()]: api.getFilterModel()[column.getColId()],
               });
@@ -538,7 +540,7 @@ export const useGridOptions = () => {
         addToBlock({
           name: 'Reset All Filters',
           action: () => {
-            trackEvent.page2({ action: 'context_menu_reset_all_filters_used' });
+            tracker.track('[page2] context_menu_reset_all_filters_clicked');
             api.setFilterModel(null);
           },
         });
@@ -554,10 +556,8 @@ export const useGridOptions = () => {
       endOfBlock();
 
       const final = constructFinal();
-      final.forEach((item) => {
-        if (item === 'separator') return;
-        if (typeof item === 'string') trackEvent.page2({ action: 'context_menu_item_shown', label: item });
-        else trackEvent.page2({ action: 'context_menu_item_shown', label: item.name });
+      tracker.track('[page2] context_menu_shown', {
+        items: final.map((item) => (typeof item === 'string' ? item : item.name)).join(','),
       });
       return final;
     },
