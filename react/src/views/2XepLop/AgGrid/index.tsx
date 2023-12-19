@@ -68,10 +68,12 @@ function AgGrid() {
         getRowId={getRowId}
         onRowClicked={onRowClicked}
         onToolPanelVisibleChanged={(e) => {
-          tracker.track('[page2] tool_panel_visibility_changed', {
-            panel: e.key,
-            visible: e.visible,
-          });
+          if (e.source === 'sideBarButtonClicked') {
+            tracker.track('[page2] tool_panel_clicked', {
+              panel: e.key,
+              visible: e.visible,
+            });
+          }
         }}
       />
     </div>
