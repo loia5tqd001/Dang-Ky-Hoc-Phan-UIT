@@ -286,6 +286,7 @@ const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
 };
 
 const sideBar: GridOptions['sideBar'] = {
+  defaultToolPanel: 'preview',
   toolPanels: [
     {
       id: 'preview',
@@ -293,6 +294,7 @@ const sideBar: GridOptions['sideBar'] = {
       labelKey: 'preview',
       iconKey: 'columnMoveMove',
       toolPanel: ThoiKhoaBieuTable,
+      width: 700,
     },
     {
       id: 'columns',

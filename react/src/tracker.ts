@@ -1,5 +1,6 @@
 import { logEvent } from 'firebase/analytics';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
+import { throttle } from 'lodash';
 import ReactGA from 'react-ga4';
 import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
 import { log } from './utils';
@@ -57,6 +58,7 @@ export const buildTracker = () => {
     logEvent(analytics, eventName, properties);
     // GA4
     ReactGA.event(eventName, properties);
+
     dump();
   };
 
@@ -74,26 +76,32 @@ export const buildTracker = () => {
     }
   };
 
-  const dump = () => {
-    const finalStartTime = Timestamp.fromMillis(startTime);
-    const finalEndTime = Timestamp.now();
-    const sessionRecord: SessionRecord = {
-      visitorId,
-      startLocation,
-      startTime: finalStartTime,
-      endTime: finalEndTime,
-      engagementTime: finalEndTime.seconds - finalStartTime.seconds,
-      timeZone,
-      browser,
-      os,
-      hasAdBlocker,
-      leftDrawerInitiallyOpen,
-      referral,
-      events,
-    };
-    const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
-    setDoc(newDoc, sessionRecord);
-  };
+  // batch events within a 2 seconds window
+  const dump = throttle(
+    () => {
+      const finalStartTime = Timestamp.fromMillis(startTime);
+      const finalEndTime = Timestamp.now();
+      const sessionRecord: SessionRecord = {
+        visitorId,
+        startLocation,
+        startTime: finalStartTime,
+        endTime: finalEndTime,
+        engagementTime: finalEndTime.seconds - finalStartTime.seconds,
+        timeZone,
+        browser,
+        os,
+        hasAdBlocker,
+        leftDrawerInitiallyOpen,
+        referral,
+        events,
+      };
+      log('>>dump', sessionRecord);
+      const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
+      setDoc(newDoc, sessionRecord);
+    },
+    2000,
+    { leading: false, trailing: true },
+  );
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#sending_analytics_at_the_end_of_a_session
   document.addEventListener('visibilitychange', () => {
@@ -102,9 +110,7 @@ export const buildTracker = () => {
     }
   });
 
-  setTimeout(() => {
-    dump();
-  }, 3000);
+  dump();
 
   return {
     track,
