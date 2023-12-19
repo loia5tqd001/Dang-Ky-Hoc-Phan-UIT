@@ -105,7 +105,7 @@ const columnDefs: GridOptions['columnDefs'] = [
   },
   {
     headerName: 'MÔN HỌC',
-    field: 'TenMH',
+    field: 'MonHoc',
     initialWidth: 350,
     cellStyle: BOLD_CELL_STYLE,
     enableRowGroup: true,
