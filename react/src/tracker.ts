@@ -99,7 +99,7 @@ export const buildTracker = () => {
       const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
       setDoc(newDoc, sessionRecord);
     },
-    2000,
+    3000,
     { leading: false, trailing: true },
   );
 
@@ -109,8 +109,6 @@ export const buildTracker = () => {
       // dump();
     }
   });
-
-  dump();
 
   return {
     track,
