@@ -1,8 +1,8 @@
 import Tooltip from '@mui/material/Tooltip';
-import { tracker } from '..';
-import { COLORS } from '../constants';
-import { getTongSoTcJudgement } from '../utils';
-import { selectTongSoTcSelected, useTkbStore } from '../zus';
+import { tracker } from '../..';
+import { COLORS } from '../../constants';
+import { getTongSoTcJudgement } from '../../utils';
+import { selectTongSoTcSelected, useTkbStore } from '../../zus';
 
 function SoTinChi(props: { tongSoTcSelected?: number }) {
   const tongSoTcSelectedB2 = useTkbStore(selectTongSoTcSelected);

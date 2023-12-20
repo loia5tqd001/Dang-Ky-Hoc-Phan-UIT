@@ -6,10 +6,10 @@ import constate from 'constate';
 import groupBy from 'lodash/groupBy';
 import reverse from 'lodash/reverse';
 import { useMemo, useState } from 'react';
-import { tracker } from '../..';
-import { ClassModel } from '../../types';
-import { isSameAgGridRowId, uniqMaLop } from '../../utils';
-import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../zus';
+import { tracker } from '../../..';
+import { ClassModel } from '../../../types';
+import { isSameAgGridRowId, uniqMaLop } from '../../../utils';
+import { selectIsChiVeTkb, selectSelectedClasses, selectSelectedClassesBuoc3, useTkbStore } from '../../../zus';
 import { usePhanLoaiHocTrenTruongContext } from './hooks';
 import './styles.css';
 

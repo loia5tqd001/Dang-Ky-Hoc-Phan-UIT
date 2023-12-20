@@ -24,6 +24,8 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
+export const isProd = process.env.NODE_ENV === 'production';
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'unspecified',
   authDomain: 'tool-dkhp-uit.firebaseapp.com',

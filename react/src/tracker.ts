@@ -4,7 +4,7 @@ import { throttle } from 'lodash';
 import ReactGA from 'react-ga4';
 import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
 import { log } from './utils';
-import { analytics, db } from '.';
+import { analytics, db, isProd } from '.';
 
 type AllowedPropertyValues = string | number | boolean | null | undefined;
 type EventGroup = 'tkb_table' | 'so_tc' | 'drawer' | 'page1' | 'page2' | 'page3';
@@ -54,12 +54,12 @@ export const buildTracker = () => {
       time: Timestamp.now(),
       data: properties ?? {},
     });
+    dump();
+
     // firebase analytics
     logEvent(analytics, eventName, properties);
     // GA4
     ReactGA.event(eventName, properties);
-
-    dump();
   };
 
   const updateProperty = <TKey extends keyof SessionRecord>(key: TKey, value: SessionRecord[TKey]) => {
@@ -76,7 +76,6 @@ export const buildTracker = () => {
     }
   };
 
-  // batch events within a 2 seconds window
   const dump = throttle(
     () => {
       const finalStartTime = Timestamp.fromMillis(startTime);
@@ -96,19 +95,21 @@ export const buildTracker = () => {
         events,
       };
       log('>>dump', sessionRecord);
-      const newDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
-      setDoc(newDoc, sessionRecord);
+      if (isProd) {
+        const newOrExistingDoc = doc(db, 'trackingEvents', `${visitorId}-${startTime}`);
+        setDoc(newOrExistingDoc, sessionRecord);
+      }
     },
     3000,
     { leading: false, trailing: true },
   );
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#sending_analytics_at_the_end_of_a_session
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-      // dump();
-    }
-  });
+  // document.addEventListener('visibilitychange', () => {
+  //   if (document.visibilityState === 'hidden') {
+  //     dump();
+  //   }
+  // });
 
   return {
     track,
