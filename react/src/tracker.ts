@@ -9,7 +9,7 @@ type AllowedPropertyValues = string | number | boolean | null | undefined;
 type EventGroup = 'tkb_table' | 'so_tc' | 'drawer' | 'page1' | 'page2' | 'page3' | 'page';
 type EventAction = 'clicked' | 'hovered' | 'toggled' | 'changed' | 'shown' | 'resulted';
 type EventRecord<IsFirebase extends boolean = false> = {
-  name: `[${EventGroup}] ${string}${EventAction}` | 'page_loaded';
+  name: `[${EventGroup}] ${string}${EventAction}`;
   location: string;
   time: IsFirebase extends true ? Timestamp : number;
   data: {
@@ -31,6 +31,7 @@ type SessionRecord<IsFirebase extends boolean = false> = {
   events: EventRecord<IsFirebase>[];
 };
 const LOCAL_STORAGE_KEY = 'TRACKING_EVENTS';
+const PAGE_VISIBILITY_CHANGED_EVENT_NAME: EventRecord['name'] = '[page] visibility_changed';
 
 /**
  * cache events to localStorage
@@ -46,9 +47,10 @@ export const buildTracker = () => {
   const startTime = Date.now();
   let leftDrawerInitiallyOpen: boolean;
   let hasAdBlocker: boolean;
-  const sessionId = `${visitorId}-${startTime}`;
-  type TrackingEventsLocalStorage = Record<typeof sessionId, SessionRecord>;
+  const currentSessionId = `${visitorId}-${startTime}`;
+  type TrackingEventsLocalStorage = Record<typeof currentSessionId, SessionRecord>;
   const events: EventRecord[] = [];
+  let numEventsDumpedToFirestore = 0;
 
   const track = (eventName: EventRecord['name'], properties?: EventRecord['data']) => {
     log('>>track', eventName, properties);
@@ -117,29 +119,44 @@ export const buildTracker = () => {
 
   const cacheToLocalStorage = () => {
     if (events.length) {
-      const existingEvents = getCachedTrackingFromLocalStorage();
-      const sessionRecord = getLocalSessionRecord();
-      log('>>cacheToLocalStorage', { existingEvents, sessionId, sessionRecord });
-      existingEvents[sessionId] = sessionRecord;
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existingEvents));
+      const cachedSessions = getCachedTrackingFromLocalStorage();
+      const currentSessionRecord = getLocalSessionRecord();
+      log('>>cacheToLocalStorage', { cachedSessions, currentSessionId, currentSessionRecord });
+      cachedSessions[currentSessionId] = currentSessionRecord;
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cachedSessions));
     }
   };
 
+  // if the user just switch back and forth between tabs without doing any additional meaningful actions, we don't need to dump to firestore
+  const hasMoreMeaningfulEvents = (localStorageSessionRecord: SessionRecord) => {
+    if (numEventsDumpedToFirestore >= localStorageSessionRecord.events.length) return; // something might have been wrong
+    const additionalEvents = localStorageSessionRecord.events.slice(numEventsDumpedToFirestore);
+    return additionalEvents.some((event) => event.name !== PAGE_VISIBILITY_CHANGED_EVENT_NAME);
+  };
+  // has taken care of:
+  // - multiple tabs (multiple sessions) opened simultaneously
+  // - events from previous sessions (closed unexpectedly), but not yet dumped to firestore
   const dumpToFirestore = async () => {
-    // has taken care of:
-    // - multiple tabs (multiple sessions) opened simultaneously
-    // - events from previous sessions (closed unexpectedly), but not yet dumped to firestore
-    const existingEvents = getCachedTrackingFromLocalStorage();
-    log('>>dumpToFirestore', { existingEvents });
-    const promises = Object.entries(existingEvents).map(([sessionId, sessionRecord]) => {
-      const finalSessionId = isProd ? sessionId : `__DEV__${sessionId}`;
-      const newOrExistingDoc = doc(db, 'trackingEvents', finalSessionId);
-      return setDoc(newOrExistingDoc, getFirebaseSessionRecord(sessionRecord)).then(() => {
-        delete existingEvents[sessionId];
-      });
+    const cachedSessions = getCachedTrackingFromLocalStorage();
+    log('>>dumpToFirestore', { cachedSessions });
+    const promises = Object.entries(cachedSessions).map(async ([sessionId, sessionRecord]) => {
+      if (sessionId === currentSessionId && !hasMoreMeaningfulEvents(sessionRecord)) return;
+      const firestoreSessionId = isProd ? sessionId : `__DEV__${sessionId}`;
+      const newOrExistingDoc = doc(db, 'trackingEvents', firestoreSessionId);
+      return setDoc(newOrExistingDoc, getFirebaseSessionRecord(sessionRecord))
+        .then(() => {
+          if (sessionId === currentSessionId) {
+            numEventsDumpedToFirestore = sessionRecord.events.length;
+          }
+          delete cachedSessions[sessionId];
+        })
+        .catch((e) => {
+          // it's OK, we'll try again next time
+          log('>>dumpToFirestore error', e);
+        });
     });
     await Promise.all(promises);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(existingEvents));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cachedSessions));
   };
 
   document.addEventListener('visibilitychange', async (e) => {
@@ -147,15 +164,15 @@ export const buildTracker = () => {
     // add this to more accurately track engagement time
     // since dumping to localStorage is a sync operation, it'll be sured operated, whereas dumping to firestore is async and not sure,
     // in that case, we leveraged localStorage to leave a dirt for future sessions to dump to firestore in case the current session was closed unexpectedly
-    track('[page] visibility_changed', { visibility: document.visibilityState });
+    track(PAGE_VISIBILITY_CHANGED_EVENT_NAME, { visibility: document.visibilityState });
     if (document.visibilityState === 'hidden') {
       dumpToFirestore();
     }
   });
 
-  const existingEvents = getCachedTrackingFromLocalStorage();
+  const cachedSessions = getCachedTrackingFromLocalStorage();
   // if there are trackings from previous sessions, dump them to firestore
-  if (Object.keys(existingEvents).length) {
+  if (Object.keys(cachedSessions).length) {
     dumpToFirestore();
   }
 
@@ -164,3 +181,5 @@ export const buildTracker = () => {
     updateProperty,
   };
 };
+
+// TODO: write unit test
