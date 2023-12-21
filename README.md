@@ -7,6 +7,8 @@
 
 Tool Đăng Ký Học Phần UIT là một ứng dụng web hỗ trợ các bạn sinh viên UIT đăng ký học phần được dễ dàng, tiện lợi. Ứng dụng gồm 2 phần chính: **1. Tool Soạn Thời Khoá Biểu** (chuẩn bị cho ĐKHP) và **2. Script Đăng Ký Học Phần** - hỗ trợ ĐKHP nhanh hơn đăng ký thủ công - được gen ra từ bước 1. Soạn thời khoá biểu.
 
+> Trước kia, để **1. Soạn Thời Khoá Biểu** mất vài ngày, bây giờ chỉ mất vài phút, để **2. ĐKHP** mất vài phút, bây giờ chỉ mất vài giây.
+
 ## Các update ở phiên bản 2024
 
 ### Preview
