@@ -1,7 +1,7 @@
 import { logEvent } from 'firebase/analytics';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import ReactGA from 'react-ga4';
-import { getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
+import { doWhenIdle, getBrowserName, getOsName, getVisitorFingerprint } from './tracking.utils';
 import { log } from './utils';
 import { analytics, db, isProd } from '.';
 
@@ -51,6 +51,7 @@ export const buildTracker = () => {
   type TrackingEventsLocalStorage = Record<typeof currentSessionId, SessionRecord>;
   const events: EventRecord[] = [];
   let numEventsDumpedToFirestore = 0;
+  let isDumpingToFirestore = false;
 
   const track = (eventName: EventRecord['name'], properties?: EventRecord['data']) => {
     log('>>track', eventName, properties);
@@ -61,7 +62,7 @@ export const buildTracker = () => {
       time: Date.now(),
       data: properties ?? {},
     });
-    cacheToLocalStorage();
+    doWhenIdle(cacheToLocalStorage);
 
     // firebase analytics
     logEvent(analytics, eventName, properties);
@@ -137,6 +138,8 @@ export const buildTracker = () => {
   // - multiple tabs (multiple sessions) opened simultaneously
   // - events from previous sessions (closed unexpectedly), but not yet dumped to firestore
   const dumpToFirestore = async () => {
+    if (isDumpingToFirestore) return;
+    isDumpingToFirestore = true;
     const cachedSessions = getCachedTrackingFromLocalStorage();
     log('>>dumpToFirestore', { cachedSessions });
     const promises = Object.entries(cachedSessions).map(async ([sessionId, sessionRecord]) => {
@@ -157,6 +160,7 @@ export const buildTracker = () => {
     });
     await Promise.all(promises);
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cachedSessions));
+    isDumpingToFirestore = false;
   };
 
   document.addEventListener('visibilitychange', async (e) => {
@@ -173,7 +177,7 @@ export const buildTracker = () => {
   const cachedSessions = getCachedTrackingFromLocalStorage();
   // if there are trackings from previous sessions, dump them to firestore
   if (Object.keys(cachedSessions).length) {
-    dumpToFirestore();
+    doWhenIdle(dumpToFirestore);
   }
 
   return {

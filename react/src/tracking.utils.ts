@@ -77,3 +77,11 @@ export function getOsName(): string {
 
   return osName;
 }
+
+export function doWhenIdle(cb: () => void): void {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(cb);
+  } else {
+    cb();
+  }
+}
