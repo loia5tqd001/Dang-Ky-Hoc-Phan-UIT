@@ -84,7 +84,7 @@ export const buildTracker = () => {
     }
   };
 
-  const getLocalSessionRecord = (): SessionRecord<false> => {
+  const makeLocalSessionRecord = (): SessionRecord<false> => {
     const endTime = Date.now();
     return {
       visitorId,
@@ -114,14 +114,14 @@ export const buildTracker = () => {
     };
   };
 
-  const getCachedTrackingFromLocalStorage = (): TrackingEventsLocalStorage => {
+  const getCachedSessionsInLocalStorage = (): TrackingEventsLocalStorage => {
     return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}');
   };
 
   const cacheToLocalStorage = () => {
     if (events.length) {
-      const cachedSessions = getCachedTrackingFromLocalStorage();
-      const currentSessionRecord = getLocalSessionRecord();
+      const cachedSessions = getCachedSessionsInLocalStorage();
+      const currentSessionRecord = makeLocalSessionRecord();
       log('>>cacheToLocalStorage', { cachedSessions, currentSessionId, currentSessionRecord });
       cachedSessions[currentSessionId] = currentSessionRecord;
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cachedSessions));
@@ -129,10 +129,13 @@ export const buildTracker = () => {
   };
 
   // if the user just switch back and forth between tabs without doing any additional meaningful actions, we don't need to dump to firestore
-  const hasMoreMeaningfulEvents = (localStorageSessionRecord: SessionRecord) => {
-    if (numEventsDumpedToFirestore >= localStorageSessionRecord.events.length) return; // something might have been wrong
-    const additionalEvents = localStorageSessionRecord.events.slice(numEventsDumpedToFirestore);
-    return additionalEvents.some((event) => event.name !== PAGE_VISIBILITY_CHANGED_EVENT_NAME);
+  const hasMoreMeaningfulEvents = (sessionRecordInLocalStorage: SessionRecord): boolean => {
+    if (sessionRecordInLocalStorage.events.length > numEventsDumpedToFirestore) {
+      const additionalEvents = sessionRecordInLocalStorage.events.slice(numEventsDumpedToFirestore);
+      return additionalEvents.some((event) => event.name !== PAGE_VISIBILITY_CHANGED_EVENT_NAME);
+    }
+    log('>>hasMoreEvents', false, 'maybe something was wrong?');
+    return false;
   };
   // has taken care of:
   // - multiple tabs (multiple sessions) opened simultaneously
@@ -140,7 +143,7 @@ export const buildTracker = () => {
   const dumpToFirestore = async () => {
     if (isDumpingToFirestore) return;
     isDumpingToFirestore = true;
-    const cachedSessions = getCachedTrackingFromLocalStorage();
+    const cachedSessions = getCachedSessionsInLocalStorage();
     log('>>dumpToFirestore', { cachedSessions });
     const promises = Object.entries(cachedSessions).map(async ([sessionId, sessionRecord]) => {
       if (sessionId === currentSessionId && !hasMoreMeaningfulEvents(sessionRecord)) return;
@@ -174,7 +177,7 @@ export const buildTracker = () => {
     }
   });
 
-  const cachedSessions = getCachedTrackingFromLocalStorage();
+  const cachedSessions = getCachedSessionsInLocalStorage();
   // if there are trackings from previous sessions, dump them to firestore
   if (Object.keys(cachedSessions).length) {
     doWhenIdle(dumpToFirestore);
