@@ -19,7 +19,6 @@
     max-width: 1500px;
     min-height: 75vh;
     /* border: 2px dashed #52a4d3; */
-    margin-top: 5px;
     /* https://stackoverflow.com/questions/628301/css3s-border-radius-property-and-border-collapsecollapse-dont-mix-how-can-i */
     overflow: hidden;
     border-radius: 5px;
@@ -57,7 +56,7 @@
 }
 #thoi-khoa-bieu .download-image-btn {
     position: absolute;
-    top: 5px;
+    top: 0;
     right: 0;
     opacity: 0;
     transition: opacity 0.1s ease-in-out;
