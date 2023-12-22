@@ -1,7 +1,14 @@
 // cannot use fingerprintjs because AdBlocker blocks it so I create a simple one myself
 export const getVisitorFingerprint = (): string => {
   const { screen, navigator } = window;
-  const data = `${navigator.userAgent}${screen.width}${screen.height}${navigator.language}`;
+  const data = [
+    navigator.userAgent,
+    screen.width,
+    screen.height,
+    navigator.language,
+    new Date().getTimezoneOffset(),
+    navigator.hardwareConcurrency,
+  ].join('');
   const hash = (str: string): string => {
     let hashValue = 0 >>> 0;
     for (let i = 0; i < str.length; i++) {
