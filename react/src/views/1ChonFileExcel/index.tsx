@@ -77,6 +77,19 @@ function Index() {
         </a>
       </MyAlert>
       <MyAlert>
+        FAQ:{' '}
+        <a
+          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            tracker.track('[page1] link_faq_clicked');
+          }}
+        >
+          Xem ngay
+        </a>
+      </MyAlert>
+      <MyAlert>
         Cảm thấy phần mềm hữu ích?{' '}
         <a
           href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
