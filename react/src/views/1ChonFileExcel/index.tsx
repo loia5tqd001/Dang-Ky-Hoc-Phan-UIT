@@ -1,6 +1,7 @@
-import { Alert, AlertProps, Button } from '@mui/material';
+import { Alert, AlertProps } from '@mui/material';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { tracker } from '../..';
-import { selectDataExcel, useTkbStore, useUtilsStore } from '../../zus';
+import { selectDataExcel, useTkbStore } from '../../zus';
 import SelectExcelButton from './SelectExcelButton';
 
 function MyAlert({ children, color, ...otherProps }: AlertProps) {
@@ -20,12 +21,10 @@ function MyAlert({ children, color, ...otherProps }: AlertProps) {
 }
 
 function Index() {
-  const hasAdBlocker = useUtilsStore((s) => s.hasAdBlocker);
-
   return (
     <div style={{ maxWidth: 1500 }}>
       <SelectExcelButton />
-      {hasAdBlocker && (
+      {/* {hasAdBlocker && (
         <MyAlert
           severity="warning"
           color="warning"
@@ -46,20 +45,24 @@ function Index() {
         >
           Tool ĐKHP UIT vẫn sẽ sử dụng được nhưng nó sẽ hoạt động mượt mà hơn nếu bạn tạm thời tắt AdBlocker!
         </MyAlert>
-      )}
-      <MyAlert>
-        Update 2024:{' '}
+      )} */}
+      {/* 
+      https://daa.uit.edu.vn/thong-bao-lich-dkhp-va-tkb-du-kien-hk2-nam-hoc-2023-2024
+      https://stackoverflow.com/a/46493867 
+      */}
+      {/* <MyAlert>
+        File Excel HK2 2023-2024:{' '}
         <a
-          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT?tab=readme-ov-file#c%C3%A1c-update-%E1%BB%9F-phi%C3%AAn-b%E1%BA%A3n-2024"
+          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRyf8-kMRTo4CllfPA4sjbjxkhGhR1tT7yD1HASjmClqTwwkJBgWRvuxJPIAK8Wdw/pub?output=xlsx"
           target="_blank"
           rel="noreferrer"
           onClick={() => {
-            tracker.track('[page1] link_2024_update_clicked');
+            tracker.track('[page1] link_excel_hk2_2023_2024_clicked');
           }}
         >
-          Xem ngay
+          Tải ngay
         </a>
-      </MyAlert>
+      </MyAlert> */}
       <MyAlert>
         Video cách dùng script đăng ký nhanh:{' '}
         <a
@@ -71,6 +74,21 @@ function Index() {
           }}
         >
           Xem ngay
+        </a>
+      </MyAlert>
+      <MyAlert>
+        Cảm thấy phần mềm hữu ích?{' '}
+        <a
+          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            tracker.track('[page1] link_tha_star_ngay_clicked');
+          }}
+          style={{ display: 'inline-flex', alignItems: 'center' }}
+        >
+          Thả <StarOutlineIcon style={{ fontSize: 16 }} />
+          star
         </a>
       </MyAlert>
     </div>

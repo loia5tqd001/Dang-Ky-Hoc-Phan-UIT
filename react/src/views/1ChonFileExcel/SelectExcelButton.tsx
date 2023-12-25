@@ -86,7 +86,32 @@ function SelectExcelButton() {
           />
         </Button>
       </Tooltip>
+      {/* https://stackoverflow.com/a/46493867 */}
       <span style={{ marginLeft: '10px' }}>
+        Ví dụ file excel{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://daa.uit.edu.vn/thong-bao-lich-dkhp-va-tkb-du-kien-hk2-nam-hoc-2023-2024"
+          onClick={() => {
+            tracker.track('[page1] link_excel_hk2_2023_2024_original_clicked');
+          }}
+        >
+          chính quy HK2 2023-2024
+        </a>
+        :{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRyf8-kMRTo4CllfPA4sjbjxkhGhR1tT7yD1HASjmClqTwwkJBgWRvuxJPIAK8Wdw/pub?output=xlsx"
+          onClick={() => {
+            tracker.track('[page1] link_excel_hk2_2023_2024_clicked');
+          }}
+        >
+          Tải ngay
+        </a>{' '}
+      </span>
+      {/* <span style={{ marginLeft: '10px' }}>
         Ví dụ file excel:{' '}
         <a
           target="_blank"
@@ -98,7 +123,7 @@ function SelectExcelButton() {
         >
           https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024
         </a>
-      </span>
+      </span> */}
     </Box>
   );
 }
