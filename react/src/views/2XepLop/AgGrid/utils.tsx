@@ -267,7 +267,7 @@ const defaultColDef: GridOptions['defaultColDef'] = {
   resizable: true,
   filter: true,
   floatingFilter: true,
-  filterParams: { buttons: ['reset'] },
+  filterParams: { buttons: ['reset'], defaultToNothingSelected: true },
   menuTabs: ['generalMenuTab'],
 };
 
