@@ -110,11 +110,11 @@ export const useProcessImageTkb = () => {
     const canvas = await html2canvas(tkbTableRef.current);
     canvas.toBlob((blob) => {
       if (blob === null) {
-        enqueueSnackbar('Sao chép ảnh thất bại, vui lòng thử lại.', { variant: 'error' });
+        enqueueSnackbar('Sao chép vào clipboard thất bại, vui lòng thử lại.', { variant: 'error' });
         return;
       }
       navigator.clipboard.write([new window.ClipboardItem({ [blob.type]: blob })]);
-      enqueueSnackbar('Sao chép ảnh vào clipboard thành công.', { variant: 'success' });
+      enqueueSnackbar('Sao chép vào clipboard thành công.', { variant: 'success' });
     });
   }, []);
 

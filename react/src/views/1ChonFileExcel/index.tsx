@@ -38,7 +38,7 @@ function Index() {
         </a>
       </MyAlert>
       <MyAlert>
-        FAQ:{' '}
+        Câu hỏi thường gặp:{' '}
         <a
           href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
           target="_blank"
