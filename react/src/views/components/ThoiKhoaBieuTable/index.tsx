@@ -42,7 +42,7 @@ function Render() {
 
   const isInStep2 = location.pathname === ROUTES._2XepLop.path;
 
-  const [isExtraButtonsShown, setIsExtraButtonsShown] = useState(false);
+  const [areExtraButtonsShown, setAreExtraButtonsShown] = useState(false);
 
   // TODO: refactor the messy flow after writing tests
   if (isInStep2 && isChiVeTkb) {
@@ -65,10 +65,10 @@ function Render() {
       <div
         id="thoi-khoa-bieu"
         className={clsx({ compact: isInStep2 })}
-        onMouseEnter={() => setIsExtraButtonsShown(true)}
-        onMouseLeave={() => setIsExtraButtonsShown(false)}
+        onMouseEnter={() => setAreExtraButtonsShown(true)}
+        onMouseLeave={() => setAreExtraButtonsShown(false)}
       >
-        <div className={clsx('extra-buttons', { 'extra-buttons-shown': isExtraButtonsShown })}>
+        <div className={clsx('extra-buttons', { 'extra-buttons-shown': areExtraButtonsShown })}>
           <Tooltip title="Tải hình ảnh TKB về máy" placement="left">
             <IconButton onClick={saveTkbImageToComputer} color="primary">
               <FileDownloadIcon />

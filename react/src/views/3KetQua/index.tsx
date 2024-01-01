@@ -13,8 +13,9 @@ function Index() {
   const khongXepLop = useTkbStore(selectIsChiVeTkb);
   const tongSoTC = useTkbStore(selectTongSoTcBuoc3);
 
+  const TABLE_EXTRA_BUTTONS_WIDTH = 30;
   return (
-    <div style={{ marginTop: -10, maxWidth: 1500 }}>
+    <div style={{ marginTop: -10, maxWidth: 1500, paddingRight: TABLE_EXTRA_BUTTONS_WIDTH }}>
       <Grid sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Tooltip
           title={
