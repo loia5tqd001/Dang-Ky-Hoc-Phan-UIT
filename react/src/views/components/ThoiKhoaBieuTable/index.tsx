@@ -2,6 +2,8 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
+import ImageIcon from '@mui/icons-material/Image';
+import { useState } from 'react';
 import { ROUTES } from '../../../constants';
 import { getDanhSachTiet } from '../../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../../zus';
@@ -36,9 +38,11 @@ function Render() {
 
   const location = useLocation();
   const isChiVeTkb = useTkbStore(selectIsChiVeTkb);
-  const { tkbTableRef, saveTkbImageToComputer } = useProcessImageTkb();
+  const { tkbTableRef, saveTkbImageToComputer, copyTkbImageToClipboard } = useProcessImageTkb();
 
   const isInStep2 = location.pathname === ROUTES._2XepLop.path;
+
+  const [isExtraButtonsShown, setIsExtraButtonsShown] = useState(false);
 
   // TODO: refactor the messy flow after writing tests
   if (isInStep2 && isChiVeTkb) {
@@ -58,12 +62,25 @@ function Render() {
 
   return (
     <ClassCellContext>
-      <div id="thoi-khoa-bieu" className={clsx({ compact: isInStep2 })}>
-        <Tooltip title="Tải hình ảnh TKB về máy">
-          <IconButton onClick={saveTkbImageToComputer} className="download-image-btn" color="primary">
-            <FileDownloadIcon />
-          </IconButton>
-        </Tooltip>
+      <div
+        id="thoi-khoa-bieu"
+        className={clsx({ compact: isInStep2 })}
+        onMouseEnter={() => setIsExtraButtonsShown(true)}
+        onMouseLeave={() => setIsExtraButtonsShown(false)}
+      >
+        <div className={clsx('extra-buttons', { 'extra-buttons-shown': isExtraButtonsShown })}>
+          <Tooltip title="Tải hình ảnh TKB về máy" placement="left">
+            <IconButton onClick={saveTkbImageToComputer} color="primary">
+              <FileDownloadIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Sao chép hình ảnh TKB vào clipboard" placement="left">
+            <IconButton onClick={copyTkbImageToClipboard} color="primary">
+              <ImageIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+
         <div style={{ display: 'flex' }}>
           {redundant
             .flatMap((it) => it.new)

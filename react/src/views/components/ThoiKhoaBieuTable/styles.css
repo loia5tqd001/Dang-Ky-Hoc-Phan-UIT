@@ -54,17 +54,23 @@
 #thoi-khoa-bieu {
     position: relative;
 }
-#thoi-khoa-bieu .download-image-btn {
+#thoi-khoa-bieu .extra-buttons {
     position: absolute;
     top: 0;
     right: 0;
     opacity: 0;
-    transition: opacity 0.1s ease-in-out;
+    transform: translateX(100%);
+    display: flex;
+    flex-direction: column;
+    transition: 0.1s ease-in-out;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 0 2px #0003;
 }
-#thoi-khoa-bieu:hover .download-image-btn {
+#thoi-khoa-bieu .extra-buttons.extra-buttons-shown {
     opacity: 1;
 }
-#thoi-khoa-bieu.compact .download-image-btn {
+#thoi-khoa-bieu.compact .extra-buttons {
     display: none;
 }
 

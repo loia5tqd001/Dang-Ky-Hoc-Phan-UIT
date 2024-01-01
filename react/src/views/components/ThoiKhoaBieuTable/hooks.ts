@@ -1,6 +1,7 @@
 import constate from 'constate';
 import html2canvas from 'html2canvas';
 import React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import { tracker } from '../../..';
 import { ClassModel } from '../../../types';
 import { findOverlapedClasses, getDanhSachTiet } from '../../../utils';
@@ -103,8 +104,23 @@ export const useProcessImageTkb = () => {
     downloadFromCanvas(canvas, 'thoikhoabieu.png');
   }, [tkbTableRef]);
 
+  const copyTkbImageToClipboard = React.useCallback(async () => {
+    if (!tkbTableRef.current) return;
+    tracker.track('[tkb_table] btn_copy_image_clicked');
+    const canvas = await html2canvas(tkbTableRef.current);
+    canvas.toBlob((blob) => {
+      if (blob === null) {
+        enqueueSnackbar('Sao chép ảnh thất bại, vui lòng thử lại.', { variant: 'error' });
+        return;
+      }
+      navigator.clipboard.write([new window.ClipboardItem({ [blob.type]: blob })]);
+      enqueueSnackbar('Sao chép ảnh vào clipboard thành công.', { variant: 'success' });
+    });
+  }, []);
+
   return {
     tkbTableRef,
     saveTkbImageToComputer,
+    copyTkbImageToClipboard,
   };
 };
