@@ -10,6 +10,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import LeftDrawer from './components/LeftDrawer';
 import NeedStep1Warning from './components/NeedStep1';
 import ScrollToTop from './components/ScrollToTop';
+import './App.css';
 
 const ChonFileExcel = lazy(() => import('./1ChonFileExcel'));
 const XepLop = lazy(() => import('./2XepLop'));

@@ -37,7 +37,7 @@ function Index() {
           Xem ngay
         </a>
       </MyAlert>
-      <MyAlert>
+      <MyAlert className="animated flash">
         Câu hỏi thường gặp:{' '}
         <a
           href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
