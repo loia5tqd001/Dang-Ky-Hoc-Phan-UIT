@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-import { enqueueSnackbar } from 'notistack';
+import { closeSnackbar, enqueueSnackbar } from 'notistack';
 import React, { ChangeEventHandler } from 'react';
 import XLSX from 'xlsx';
 import { selectDataExcel, useTkbStore } from '../../zus';
@@ -42,6 +42,17 @@ function SelectExcelButton() {
             </>,
             {
               variant: 'success',
+              action: (key) => (
+                <Button
+                  size="small"
+                  color="inherit"
+                  onClick={() => {
+                    closeSnackbar(key);
+                  }}
+                >
+                  Đã hiểu
+                </Button>
+              ),
             },
           );
           tracker.track('[page1] upload_excel_resulted', { success: true, fileName: file.name });
@@ -86,7 +97,6 @@ function SelectExcelButton() {
           />
         </Button>
       </Tooltip>
-      {/* https://stackoverflow.com/a/46493867 */}
       <span style={{ marginLeft: '10px' }}>
         Ví dụ file excel{' '}
         <a
@@ -111,19 +121,6 @@ function SelectExcelButton() {
           TKB_dự kiến_HK2 2023-2024_29-12-2023_Copied.xlsx
         </a>{' '}
       </span>
-      {/* <span style={{ marginLeft: '10px' }}>
-        Ví dụ file excel:{' '}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024"
-          onClick={() => {
-            tracker.track('[page1] link_excel_example_clicked');
-          }}
-        >
-          https://daa.uit.edu.vn/thongbao/thong-bao-ke-hoach-dkhp-va-tkb-du-kien-hk1-nh2023-2024
-        </a>
-      </span> */}
     </Box>
   );
 }

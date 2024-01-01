@@ -62,7 +62,7 @@ type TkbStore = {
 
 export const useTkbStore = create<TkbStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       dataExcel: null,
 
       selectedClasses: [], // [{}, {}]
@@ -74,7 +74,15 @@ export const useTkbStore = create<TkbStore>()(
 
       // TODO: move actions outside of store
       setDataExcel: (data) => {
-        set({ dataExcel: data, selectedClasses: [] });
+        const newDataExcel = data?.data ?? [];
+        const currentSelectedClasses = get().selectedClasses;
+        // When the user uploads a new excel file:
+        // - when it's a new semester, the AgGridRowId will be different => selectedClasses will be cleared
+        // - when it's an updated excel file of the same semester, the AgGridRowId will be the same => keep selectedClasses
+        const newSelectedClasses = newDataExcel.filter((newClass) =>
+          currentSelectedClasses.some((selectedClass) => isSameAgGridRowId(selectedClass, newClass)),
+        );
+        set({ dataExcel: data, selectedClasses: newSelectedClasses });
       },
       setSelectedClasses: (data) => {
         set({ selectedClasses: data });

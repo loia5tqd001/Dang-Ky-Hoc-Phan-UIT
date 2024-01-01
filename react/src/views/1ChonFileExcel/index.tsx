@@ -24,45 +24,6 @@ function Index() {
   return (
     <div style={{ maxWidth: 1500 }}>
       <SelectExcelButton />
-      {/* {hasAdBlocker && (
-        <MyAlert
-          severity="warning"
-          color="warning"
-          variant="standard"
-          action={
-            <Button
-              color="inherit"
-              size="small"
-              onClick={() => {
-                tracker.track('[page1] btn_confirm_close_adblock_clicked');
-                window.location.reload();
-              }}
-              style={{ fontWeight: 'bold' }}
-            >
-              Đã tắt
-            </Button>
-          }
-        >
-          Tool ĐKHP UIT vẫn sẽ sử dụng được nhưng nó sẽ hoạt động mượt mà hơn nếu bạn tạm thời tắt AdBlocker!
-        </MyAlert>
-      )} */}
-      {/* 
-      https://daa.uit.edu.vn/thong-bao-lich-dkhp-va-tkb-du-kien-hk2-nam-hoc-2023-2024
-      https://stackoverflow.com/a/46493867 
-      */}
-      {/* <MyAlert>
-        File Excel HK2 2023-2024:{' '}
-        <a
-          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRyf8-kMRTo4CllfPA4sjbjxkhGhR1tT7yD1HASjmClqTwwkJBgWRvuxJPIAK8Wdw/pub?output=xlsx"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => {
-            tracker.track('[page1] link_excel_hk2_2023_2024_clicked');
-          }}
-        >
-          Tải ngay
-        </a>
-      </MyAlert> */}
       <MyAlert>
         Video cách dùng script đăng ký nhanh:{' '}
         <a
