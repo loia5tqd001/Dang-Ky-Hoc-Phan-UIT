@@ -12,8 +12,9 @@ import makeStyles from '@mui/styles/makeStyles';
 import logoUit from 'assets/img/logo-uit.png';
 import clsx from 'clsx';
 import GitHubButton from 'react-github-btn';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { tracker } from '../../..';
 import { ROUTES } from '../../../constants';
 import { useDrawerStore } from '../../../zus';
@@ -49,6 +50,12 @@ function LeftDrawer() {
   const isOpen = useDrawerStore((s) => s.isDrawerOpen);
   const isCollapsed = !isOpen;
   const location = useLocation();
+  const history = useHistory();
+
+  useHotkeys(['shift+`', 'alt+`'], () => toggleDrawer());
+  useHotkeys(['shift+1', 'alt+1'], () => history.push(ROUTES._1ChonFileExcel.path));
+  useHotkeys(['shift+2', 'alt+2'], () => history.push(ROUTES._2XepLop.path));
+  useHotkeys(['shift+3', 'alt+3'], () => history.push(ROUTES._3KetQua.path));
 
   return (
     <nav className={classes.drawer}>
