@@ -79,7 +79,11 @@ function LeftDrawer() {
                 tracker.track('[drawer] logo_clicked');
               }}
             >
-              <img src={logoUit} alt="logo uit" className={clsx(classes.img, isCollapsed && classes.imgCollapsed)} />
+              <img
+                src={logoUit}
+                alt="logo uit"
+                className={clsx(classes.img, 'drop-shadow-blue', isCollapsed && classes.imgCollapsed)}
+              />
             </a>
           </Tooltip>
         </Box>
