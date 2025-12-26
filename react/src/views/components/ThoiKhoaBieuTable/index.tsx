@@ -3,15 +3,21 @@ import { IconButton, Tooltip } from '@mui/material';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import ImageIcon from '@mui/icons-material/Image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ROUTES } from '../../../constants';
 import { getDanhSachTiet } from '../../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../../zus';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
-import { CELL, PhanLoaiHocTrenTruongContext, usePhanLoaiHocTrenTruongContext, useProcessImageTkb } from './hooks';
+import {
+  CELL,
+  PhanLoaiHocTrenTruongContext,
+  type RowData,
+  usePhanLoaiHocTrenTruongContext,
+  useProcessImageTkb,
+} from './hooks';
 import './styles.css';
-import { timeLookup } from './utils';
+import { timeLookup, tietOnline } from './utils';
 
 const GetCell = ({ data }) => {
   if (data === CELL.NO_CLASS) return <td />;
@@ -19,11 +25,16 @@ const GetCell = ({ data }) => {
   return <ClassCell data={data} rowSpan={getDanhSachTiet(data.Tiet).length} />;
 };
 
-function RowHocTrenTruong({ row, index }) {
+function RowHocTrenTruong({ row, index }: { row: RowData; index: number }) {
+  const shouldBeHidden = useMemo(() => {
+    if (index < 10) return false; // Tiết 1-10 luôn luôn hiện,
+    return Object.values(row).every((cell) => cell === CELL.NO_CLASS); // Tiết buổi tối + Online nếu không có lớp thì ẩn đi
+  }, [row, index]);
+
   return (
-    <tr>
+    <tr style={{ visibility: shouldBeHidden ? 'collapse' : undefined }}>
       <td className="cell-tiet">
-        Tiết {index + 1} <br />
+        Tiết {index === tietOnline.index ? tietOnline.stringValue : index + 1} <br />
         {timeLookup[index]}
       </td>
       {[2, 3, 4, 5, 6, 7].map((t) => (

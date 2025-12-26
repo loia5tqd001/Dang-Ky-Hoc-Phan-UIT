@@ -53,7 +53,7 @@ export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
 type ValidTimeSlot = `${string}-${string}`;
 type TimeSlots = '*' | ValidTimeSlot[];
 const getTimeSlots = ({ Thu, Tiet }: ClassModel): TimeSlots => {
-  if (Tiet === '*') return '*';
+  if (Thu === '*') return '*';
   return getDanhSachTiet(Tiet).map((tiet): ValidTimeSlot => `${Thu}-${tiet}`);
 };
 

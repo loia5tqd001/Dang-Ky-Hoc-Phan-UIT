@@ -1,3 +1,9 @@
+export const tietOnline = {
+  index: 13,
+  stringValue: '*',
+  label: 'Online',
+} as const;
+
 export const timeLookup = [
   /* tiet 1 */ '(7:30 - 8:15)',
   /* tiet 2 */ '(8:15 - 9:00)',
@@ -12,10 +18,11 @@ export const timeLookup = [
   /* tiet 11 */ '🌚',
   /* tiet 12 */ '🌚',
   /* tiet 13 */ '🌚',
+  /* tiet 14 */ tietOnline.label,
 ];
 
 export const getTietIndex = (tietString) => {
-  if (tietString === '*') return 10; // Thứ 3 Tiết * -> Thứ 3 Học Online Buổi tối, để tạm vô tiết 10
+  if (tietString === tietOnline.stringValue) return tietOnline.index; // Thứ 3 Tiết * -> Thứ 3 Học Online
   if (tietString === '0') return 9;
   return tietString - 1;
 };

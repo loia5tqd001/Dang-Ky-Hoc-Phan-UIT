@@ -31,7 +31,7 @@ export const CELL = {
 } as const;
 
 type CellData = typeof CELL.NO_CLASS | typeof CELL.OCCUPIED | ClassModel;
-type RowData = {
+export type RowData = {
   Thu2: CellData;
   Thu3: CellData;
   Thu4: CellData;
@@ -43,7 +43,7 @@ type TableData = RowData[];
 
 const initTableData = () => {
   const tableData: TableData = [];
-  for (let i = 0; i < 13; i++) {
+  for (let i = 0; i < 14; i++) {
     tableData.push({
       Thu2: CELL.NO_CLASS,
       Thu3: CELL.NO_CLASS,
@@ -77,11 +77,6 @@ const usePhanLoaiHocTrenTruong = () => {
       }
     }
 
-    const khongCoLopBuoiToi = tableData.slice(-3).every((tiet) => {
-      return Object.values(tiet).every((cell) => cell === CELL.NO_CLASS);
-    });
-    if (khongCoLopBuoiToi) tableData.splice(-3);
-
     return tableData;
   }, [kept]);
 
@@ -102,7 +97,7 @@ export const useProcessImageTkb = () => {
     tracker.track('[tkb_table] btn_save_image_clicked');
     const canvas = await html2canvas(tkbTableRef.current);
     downloadFromCanvas(canvas, 'thoikhoabieu.png');
-  }, [tkbTableRef]);
+  }, []);
 
   const copyTkbImageToClipboard = React.useCallback(async () => {
     if (!tkbTableRef.current) return;
