@@ -15,7 +15,9 @@ export const timeLookup = [
 ];
 
 export const getTietIndex = (tietString) => {
-  return tietString === '0' ? 9 : tietString - 1;
+  if (tietString === '*') return 10; // Thứ 3 Tiết * -> Thứ 3 Học Online Buổi tối, để tạm vô tiết 10
+  if (tietString === '0') return 9;
+  return tietString - 1;
 };
 
 // Plagiarize from: https://github.com/gillyb/reimg/blob/master/reimg.js
