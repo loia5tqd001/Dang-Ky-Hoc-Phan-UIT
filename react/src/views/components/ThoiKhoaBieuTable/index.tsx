@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react';
 import { ROUTES } from '../../../constants';
 import { getDanhSachTiet } from '../../../utils';
 import { selectIsChiVeTkb, useTkbStore } from '../../../zus';
+import ErrorBoundary from '../ErrorBoundary';
 import ClassCell, { ClassCellContext } from './ClassCell';
 import TableHead from './TableHead';
 import {
@@ -121,11 +122,13 @@ function Render() {
 
 function Index() {
   return (
-    <ClassCellContext>
-      <PhanLoaiHocTrenTruongContext>
-        <Render />
-      </PhanLoaiHocTrenTruongContext>
-    </ClassCellContext>
+    <ErrorBoundary>
+      <ClassCellContext>
+        <PhanLoaiHocTrenTruongContext>
+          <Render />
+        </PhanLoaiHocTrenTruongContext>
+      </ClassCellContext>
+    </ErrorBoundary>
   );
 }
 
