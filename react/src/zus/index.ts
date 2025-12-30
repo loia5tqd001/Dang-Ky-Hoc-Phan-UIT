@@ -40,7 +40,9 @@ type TkbStore = {
   dataExcel: {
     fileName: string;
     data: ClassModelOriginal[];
-    lastUpdate: string;
+    /* @deprecated: use lastUpdateTimestamp instead (keep for backward compatibility) */
+    lastUpdate?: string;
+    lastUpdateTimestamp?: number;
   } | null;
 
   selectedClasses: ClassModel[];
@@ -82,7 +84,8 @@ export const useTkbStore = create<TkbStore>()(
         const newSelectedClasses = newDataExcel.filter((newClass) =>
           currentSelectedClasses.some((selectedClass) => isSameAgGridRowId(selectedClass, newClass)),
         );
-        set({ dataExcel: data, selectedClasses: newSelectedClasses });
+        // Clear filters when uploading a new excel file (but keep selections)
+        set({ dataExcel: data, selectedClasses: newSelectedClasses, agGridFilterModel: null });
       },
       setSelectedClasses: (data) => {
         set({ selectedClasses: data });

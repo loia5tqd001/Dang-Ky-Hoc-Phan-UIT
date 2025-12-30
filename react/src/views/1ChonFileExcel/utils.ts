@@ -58,6 +58,20 @@ export function toDateTimeString(date: Date) {
   );
 }
 
+// Format epoch timestamp to 'hh:mm dd/MM/yyyy' format
+export function formatTimestampToString(timestamp: number): string {
+  return toDateTimeString(new Date(timestamp));
+}
+
+// Get formatted lastUpdate string from dataExcel (backward compatible)
+export function getLastUpdateString(dataExcel: { lastUpdate?: string; lastUpdateTimestamp?: number } | null): string | undefined {
+  if (!dataExcel) return undefined;
+  if (dataExcel.lastUpdateTimestamp !== undefined) {
+    return formatTimestampToString(dataExcel.lastUpdateTimestamp);
+  }
+  return dataExcel.lastUpdate;
+}
+
 // copied from: https://github.com/SheetJS/sheetjs/blob/master/demos/react/sheetjs.jsx#L134-L136
 export const sheetJSFT = [
   '.xlsx',

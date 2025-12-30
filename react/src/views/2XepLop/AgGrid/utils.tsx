@@ -32,6 +32,7 @@ import {
 import {
   selectAgGridColumnState,
   selectAgGridFilterModel,
+  selectDataExcel,
   selectFinalDataTkb,
   selectSelectedClasses,
   useTkbStore,
@@ -577,6 +578,26 @@ export const useGridOptions = () => {
   const rowData: GridOptions['rowData'] = useMemo(() => {
     return sortBy(dataTkb, ['KhoaQL', 'MaLop', 'Thu', 'Tiet']);
   }, [dataTkb]);
+
+  // Clear filters when a new Excel file is uploaded (but keep selections)
+  const dataExcel = useTkbStore(selectDataExcel);
+  const prevLastUpdateRef = useRef<number | string | undefined>(undefined);
+  useEffect(() => {
+    if (!agGridRef.current?.api || !dataExcel?.fileName) return;
+
+    // Use lastUpdateTimestamp if available (new format with epoch precision),
+    // otherwise fallback to lastUpdate string (backward compatibility)
+    const currentValue = dataExcel.lastUpdateTimestamp ?? dataExcel.lastUpdate;
+
+    if (!currentValue) return;
+    if (prevLastUpdateRef.current === currentValue) return;
+    prevLastUpdateRef.current = currentValue;
+
+    const currentFilterModel = agGridRef.current.api.getFilterModel();
+    if (currentFilterModel && Object.keys(currentFilterModel).length > 0) {
+      agGridRef.current.api.setFilterModel(null);
+    }
+  }, [dataExcel?.lastUpdateTimestamp, dataExcel?.lastUpdate, dataExcel?.fileName]);
 
   // TODO: try handle via event, better way than useEffect
   useEffect(() => {

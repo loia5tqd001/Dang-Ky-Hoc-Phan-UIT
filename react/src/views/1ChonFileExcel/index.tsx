@@ -3,10 +3,12 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { tracker } from '../..';
 import { selectDataExcel, useTkbStore } from '../../zus';
 import SelectExcelButton from './SelectExcelButton';
+import { getLastUpdateString } from './utils';
 
 function MyAlert({ children, color, ...otherProps }: AlertProps) {
   const dataExcel = useTkbStore(selectDataExcel);
-  const finalColor = color ?? (dataExcel?.lastUpdate ? 'success' : 'info');
+  const lastUpdateString = getLastUpdateString(dataExcel);
+  const finalColor = color ?? (lastUpdateString ? 'success' : 'info');
   return (
     <Alert
       severity="info"

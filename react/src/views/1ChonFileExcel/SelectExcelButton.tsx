@@ -6,13 +6,14 @@ import React, { ChangeEventHandler } from 'react';
 import XLSX from 'xlsx';
 import { selectDataExcel, useTkbStore } from '../../zus';
 import { tracker } from '../..';
-import { arrayToTkbObject, sheetJSFT, toDateTimeString } from './utils';
+import { arrayToTkbObject, getLastUpdateString, sheetJSFT, toDateTimeString } from './utils';
 
 const Bold = ({ children }) => <b style={{ marginLeft: 5 }}>{children}</b>;
 
 function SelectExcelButton() {
   const dataExcel = useTkbStore(selectDataExcel);
   const setDataExcel = useTkbStore((s) => s.setDataExcel);
+  const lastUpdateString = getLastUpdateString(dataExcel);
 
   const handleUploadFileExcel = React.useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -31,10 +32,12 @@ function SelectExcelButton() {
           (row) => typeof row[0] === 'number', // những row có cột 0 là STT (STT là number) thì mới là data ta cần
         );
         if (dataInArray.length) {
+          const now = new Date();
           setDataExcel({
             data: dataInArray.map((array) => arrayToTkbObject(array)),
             fileName: file.name,
-            lastUpdate: toDateTimeString(new Date()),
+            lastUpdateTimestamp: now.getTime(), // Epoch timestamp for precise comparison
+            lastUpdate: toDateTimeString(now), // Keep for backward compatibility
           });
           enqueueSnackbar(
             <>
@@ -75,13 +78,13 @@ function SelectExcelButton() {
       <Tooltip title={dataExcel?.fileName || 'Chưa upload file'}>
         <Button
           variant={'contained'}
-          color={dataExcel?.lastUpdate ? 'success' : 'primary'}
+          color={lastUpdateString ? 'success' : 'primary'}
           component="label"
-          style={dataExcel?.lastUpdate ? undefined : { fontWeight: 'bold' }}
+          style={lastUpdateString ? undefined : { fontWeight: 'bold' }}
         >
-          {dataExcel?.lastUpdate ? (
+          {lastUpdateString ? (
             <>
-              <span>Đã upload: </span> <Bold>{dataExcel.lastUpdate}</Bold>
+              <span>Đã upload: </span> <Bold>{lastUpdateString}</Bold>
             </>
           ) : (
             'Upload file excel'
