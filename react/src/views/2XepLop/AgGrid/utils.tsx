@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, useMediaQuery, useTheme } from '@mui/material';
 import {
   AgGridEvent,
   CellStyle,
@@ -285,38 +285,6 @@ const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
   },
 };
 
-const sideBar: GridOptions['sideBar'] = {
-  defaultToolPanel: 'preview',
-  toolPanels: [
-    {
-      id: 'preview',
-      labelDefault: 'Preview',
-      labelKey: 'preview',
-      iconKey: 'columnMoveMove',
-      toolPanel: ThoiKhoaBieuTable,
-      width: 700,
-    },
-    {
-      id: 'columns',
-      labelDefault: 'Columns',
-      labelKey: 'columns',
-      iconKey: 'columns',
-      toolPanel: 'agColumnsToolPanel',
-      toolPanelParams: {
-        suppressValues: true,
-        suppressPivotMode: true,
-      },
-    },
-    {
-      id: 'filters',
-      labelDefault: 'Filters',
-      labelKey: 'filters',
-      iconKey: 'filter',
-      toolPanel: 'agFiltersToolPanel',
-    },
-  ],
-};
-
 const statusBar: GridOptions['statusBar'] = {
   statusPanels: [
     { statusPanel: 'agSelectedRowCountComponent', align: 'right' },
@@ -360,10 +328,49 @@ function getContextMenuItemsBuilder() {
 const PROGRAMMATICALLY_CHANGE_SELECTION = 'api';
 export const useGridOptions = () => {
   const agGridRef = useRef<AgGridReact<ClassModel>>(null);
+  const theme = useTheme();
+  // Enable Preview panel by default on screens wider than 1400px
+  // This helps users discover the feature while avoiding clutter on smaller screens
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up(1400));
 
   const { openTrungTkbDialog } = useTrungTkbDialogContext();
   const selectedClasses = useTkbStore(selectSelectedClasses);
   const setSelectedClasses = useTkbStore((s) => s.setSelectedClasses);
+
+  const sideBar: GridOptions['sideBar'] = useMemo(
+    () => ({
+      defaultToolPanel: isLargeScreen ? 'preview' : undefined,
+      toolPanels: [
+        {
+          id: 'preview',
+          labelDefault: 'Preview',
+          labelKey: 'preview',
+          iconKey: 'columnMoveMove',
+          toolPanel: ThoiKhoaBieuTable,
+          width: 700,
+        },
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+          toolPanelParams: {
+            suppressValues: true,
+            suppressPivotMode: true,
+          },
+        },
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+        },
+      ],
+    }),
+    [isLargeScreen],
+  );
 
   const updateNodesSelectionToAgGrid = useCallback((selectedClasses: ClassModel[]) => {
     if (!agGridRef.current?.api) return;
