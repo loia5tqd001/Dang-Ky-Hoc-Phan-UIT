@@ -1,10 +1,12 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ShareIcon from '@mui/icons-material/Share';
-import { IconButton, InputBaseProps, Tooltip } from '@mui/material';
+import { IconButton, Tooltip, useTheme } from '@mui/material';
+import type { InputBaseProps, Theme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { enqueueSnackbar } from 'notistack';
-import { HTMLAttributes, forwardRef, useMemo, useState } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
+import type { HTMLAttributes } from 'react';
 import { tracker } from '../..';
 import { extractListMaLop } from '../../utils';
 import { selectIsChiVeTkb, selectPhanLoaiHocTrenTruong, selectTextareaChiVeTkb, useTkbStore } from '../../zus';
@@ -12,6 +14,14 @@ import { getScriptDkhp } from './utils';
 
 const DEFAULT_TOOLTIP = 'Click để sao chép';
 const COPIED_TOOLTIP = 'Đã sao chép';
+
+const getReadonlySx = (theme: Theme) => ({
+  '& .MuiInputBase-input': {
+    color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.action.hover,
+    cursor: 'default',
+  },
+});
 
 const CustomInputComponent: InputBaseProps['inputComponent'] = forwardRef<
   HTMLTextAreaElement,
@@ -63,6 +73,7 @@ const useCommon = () => {
 };
 
 export function ScriptDangKyInput() {
+  const theme = useTheme();
   const [isCopying, setIsCopying] = useState(false);
   const { hasLop, scriptInputValue } = useCommon();
   return (
@@ -77,6 +88,7 @@ export function ScriptDangKyInput() {
         value={scriptInputValue}
         disabled={!hasLop}
         inputProps={{ readOnly: true }}
+        sx={getReadonlySx(theme)}
         InputProps={{
           inputComponent: CustomInputComponent,
           endAdornment: hasLop ? (
@@ -108,6 +120,7 @@ export function ScriptDangKyInput() {
 }
 
 export function DanhSachLopInput() {
+  const theme = useTheme();
   const setTextareChiVeTkb = useTkbStore((s) => s.setTextareChiVeTkb);
   const { hasLop, dsLopInputValue, isChiVeTkb } = useCommon();
   const useToolXepLop = !isChiVeTkb;
@@ -129,6 +142,7 @@ export function DanhSachLopInput() {
         }}
         value={dsLopInputValue}
         disabled={useToolXepLop && !hasLop}
+        sx={useToolXepLop ? getReadonlySx(theme) : undefined}
         InputProps={{
           inputComponent: CustomInputComponent2,
           endAdornment:
