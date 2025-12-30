@@ -24,6 +24,32 @@ function Index() {
   return (
     <div style={{ maxWidth: 1500 }}>
       <SelectExcelButton />
+      <MyAlert className="animated flash">
+        Hướng dẫn sử dụng:{' '}
+        <a
+          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT?tab=readme-ov-file#c%C3%A1c-update-%E1%BB%9F-phi%C3%AAn-b%E1%BA%A3n-2024"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            tracker.track('[page1] link_usage_guide_clicked');
+          }}
+        >
+          Xem ngay
+        </a>
+      </MyAlert>
+      <MyAlert>
+        Câu hỏi thường gặp:{' '}
+        <a
+          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            tracker.track('[page1] link_faq_clicked');
+          }}
+        >
+          Xem ngay
+        </a>
+      </MyAlert>
       <MyAlert>
         Video cách dùng script đăng ký nhanh:{' '}
         <a
@@ -32,19 +58,6 @@ function Index() {
           rel="noreferrer"
           onClick={() => {
             tracker.track('[page1] link_script_instruction_video_clicked');
-          }}
-        >
-          Xem ngay
-        </a>
-      </MyAlert>
-      <MyAlert className="animated flash">
-        Câu hỏi thường gặp:{' '}
-        <a
-          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => {
-            tracker.track('[page1] link_faq_clicked');
           }}
         >
           Xem ngay
