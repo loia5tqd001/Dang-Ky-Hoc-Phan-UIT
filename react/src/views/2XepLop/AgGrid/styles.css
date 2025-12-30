@@ -58,6 +58,14 @@
 .ag-filter-toolpanel-group.ag-has-filter {
   background-color: #f2d8b0 !important;
 }
+/* only display filter icon when the column is actively filtered */
+.ag-theme-alpine .ag-floating-filter-button {
+  /* cannot use display: none because it'll mess up with the interaction */
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0
+}
 .ag-theme-alpine .ag-filter-list-panel .ag-has-filter .ag-group-title::after,
 .ag-theme-alpine .ag-header-cell-filtered .ag-icon-filter {
   font-size: x-large;
