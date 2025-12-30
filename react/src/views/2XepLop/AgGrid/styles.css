@@ -54,9 +54,9 @@
   background-color: inherit;
 
 }
-.ag-theme-alpine .ag-filter-list-panel .ag-has-filter .ag-group-title,
-.ag-theme-alpine .ag-header-cell-filtered .ag-header-cell-text {
-  text-decoration: underline;
+.ag-theme-alpine .ag-header-cell-filtered,
+.ag-filter-toolpanel-group.ag-has-filter {
+  background-color: #f2d8b0 !important;
 }
 .ag-theme-alpine .ag-filter-list-panel .ag-has-filter .ag-group-title::after,
 .ag-theme-alpine .ag-header-cell-filtered .ag-icon-filter {
