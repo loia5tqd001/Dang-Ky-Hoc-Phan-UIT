@@ -101,7 +101,7 @@ function SelectExcelButton() {
         </Button>
       </Tooltip>
       <span style={{ marginLeft: '10px' }}>
-        Ví dụ file excel{' '}
+        Ví dụ file excel của{' '}
         <a
           target="_blank"
           rel="noreferrer"
@@ -112,7 +112,7 @@ function SelectExcelButton() {
         >
           chính quy HK2 2023-2024
         </a>
-        :{' '}
+        : Tải{' '}
         <a
           target="_blank"
           rel="noreferrer"
