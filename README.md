@@ -162,3 +162,4 @@ Giao diện gồm 5 màn hình tương ứng với 5 tính năng bên trên:
 #### Cập nhật thời khoá biểu mặc định
 
 </details>
+# VLU-Regist-tools
