@@ -70,9 +70,9 @@ function LeftDrawer() {
 
         {/* Logo */}
         <Box mx={5} my={5} style={{ height: 120, marginTop: 60 }}>
-          <Tooltip title="Tool đăng ký học phần UIT">
+          <Tooltip title="Tool đăng ký học phần VLU">
             <a
-              href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
+              href="https://regist.vlu.edu.vn/"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
@@ -81,7 +81,7 @@ function LeftDrawer() {
             >
               <img
                 src={logoUit}
-                alt="logo uit"
+                alt="logo vlu"
                 className={clsx(classes.img, 'drop-shadow-blue', isCollapsed && classes.imgCollapsed)}
               />
             </a>
@@ -135,7 +135,7 @@ function LeftDrawer() {
         </Box>
 
         {/* Github stars */}
-        <Tooltip title="Hãy vào star giúp nhé">
+        <Tooltip title="Mở cổng đăng ký VLU">
           <Box className={clsx(classes.githubStarWrapper, classes.etc, isCollapsed && classes.etcCollapsed)}>
             <div
               onClick={() => {
@@ -146,10 +146,10 @@ function LeftDrawer() {
               }}
             >
               <GitHubButton
-                href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
+                href="https://regist.vlu.edu.vn/"
                 data-size="large"
-                data-show-count="true"
-                children={'Star'}
+                data-show-count="false"
+                children={'Cổng ĐKHP'}
               />
             </div>
           </Box>

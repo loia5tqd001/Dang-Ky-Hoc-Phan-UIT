@@ -11,6 +11,7 @@ function TableHead() {
         <th>Thứ 5</th>
         <th>Thứ 6</th>
         <th>Thứ 7</th>
+        <th>CN</th>
       </tr>
     </thead>
   );

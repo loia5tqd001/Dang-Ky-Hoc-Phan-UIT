@@ -38,7 +38,7 @@ function RowHocTrenTruong({ row, index }: { row: RowData; index: number }) {
         Tiết {index === tietOnline.index ? tietOnline.stringValue : index + 1} <br />
         {timeLookup[index]}
       </td>
-      {[2, 3, 4, 5, 6, 7].map((t) => (
+      {[2, 3, 4, 5, 6, 7, 8].map((t) => (
         <GetCell key={t} data={row['Thu' + t]} />
       ))}
     </tr>

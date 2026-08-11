@@ -6,7 +6,7 @@ import { tracker } from '../../..';
 import { ClassModel } from '../../../types';
 import { findOverlapedClasses, getDanhSachTiet } from '../../../utils';
 import { selectPhanLoaiHocTrenTruong, useTkbStore } from '../../../zus';
-import { downloadFromCanvas, getTietIndex } from './utils';
+import { downloadFromCanvas, getTietIndex, tietOnline } from './utils';
 
 /* // Uncomment to see how rowData can be conducted:
 const rowDataExample = [
@@ -38,12 +38,14 @@ export type RowData = {
   Thu5: CellData;
   Thu6: CellData;
   Thu7: CellData;
+  Thu8: CellData;
 };
 type TableData = RowData[];
 
 const initTableData = () => {
   const tableData: TableData = [];
-  for (let i = 0; i < 14; i++) {
+  // 16 ca học + 1 dòng Online (tietOnline.index)
+  for (let i = 0; i <= tietOnline.index; i++) {
     tableData.push({
       Thu2: CELL.NO_CLASS,
       Thu3: CELL.NO_CLASS,
@@ -51,6 +53,7 @@ const initTableData = () => {
       Thu5: CELL.NO_CLASS,
       Thu6: CELL.NO_CLASS,
       Thu7: CELL.NO_CLASS,
+      Thu8: CELL.NO_CLASS,
     });
   }
   return tableData;

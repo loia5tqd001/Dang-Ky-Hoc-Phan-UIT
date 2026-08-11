@@ -7,6 +7,7 @@ import SoTinChi from '../components/SoTinChi';
 import ThoiKhoaBieuTable from '../components/ThoiKhoaBieuTable';
 import { selectIsChiVeTkb, selectTongSoTcBuoc3, useTkbStore } from '../../zus';
 import ScriptDangKyInput, { DanhSachLopInput } from './ScriptDangKyInput';
+import RegisterPanel from 'vlu/RegisterPanel';
 
 function Index() {
   const setIsChiVeTkb = useTkbStore((s) => s.setIsChiVeTkb);
@@ -49,6 +50,7 @@ function Index() {
         <DanhSachLopInput />
         <ScriptDangKyInput />
       </Grid>
+      <RegisterPanel />
       <ThoiKhoaBieuTable />
     </div>
   );

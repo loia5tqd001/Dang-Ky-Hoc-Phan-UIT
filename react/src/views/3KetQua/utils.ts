@@ -1,32 +1,22 @@
 export const getScriptDkhp = (listMonDangKy: string[]) =>
   `
-// Chỉ cần thay mỗi môn trên một hàng cho biến monDangKy này là xong
-// Lưu ý: Nếu sau này trường update website, các thẻ query không còn đúng nữa, thì bạn liên hệ messenger.com/t/loia5tqd001 để báo mình nhé
+// Script đăng ký nhanh cho VLU - dán vào Console trên trang regist.vlu.edu.vn
+// Danh sách mã lớp: ${listMonDangKy.join(', ')}
 
-var monDangKy = \`
-${listMonDangKy.join('\n')}
-\`;
+var danhSachMaLop = \`${listMonDangKy.join('\n')}\`.trim().split('\\n').map(s => s.trim()).filter(Boolean);
 
-var successLog = (message) => console.log('%c' + message, 'font-weight:bold; color:green;');
-var errorLog = (message) => console.log('%c' + message, 'font-weight:bold; color:red;');
+var auth = JSON.parse(localStorage.getItem('authorizationData') || '{}');
+if (!auth.Token) { console.error('Không tìm thấy token! Hãy đăng nhập regist.vlu.edu.vn trước.'); }
+else {
+  var token = auth.Token;
+  var headers = {
+    'content-type': 'application/json',
+    'apiKey': 'pscRBF0zT2Mqo6vMw69YMOH43IrB2RtXBS0EHit2kzv',
+    'clientId': 'dtl',
+    'Authorization': 'Bearer ' + token
+  };
 
-DangKy(monDangKy);
-
-function DangKy(monDangKyString) {
-  try {
-    var listMonDangKy = monDangKyString.trim().split('\\n').map((it) => it.trim())
-    
-    var allRows = [...document.querySelectorAll('form table tr')]
-
-    var rowsToDangKy = allRows.filter((it) => listMonDangKy.includes(it.querySelector('td:nth-child(2)')?.textContent?.trim()))
-    
-    rowsToDangKy.forEach((it, index) => {
-      it.querySelector('td:first-child input[type="checkbox"]').click();
-      var tenLop = it.querySelector('td:nth-child(2)')?.textContent?.trim();
-      successLog(index + 1 + '.Đã chọn lớp ' + tenLop);
-    })
-  } catch {
-    errorLog('Chọn lớp không thành công! Bạn tự chọn lớp đi nhé!');
-  }
+  console.log('Danh sách mã lớp sẽ đăng ký:', danhSachMaLop);
+  console.log('Bạn cần đăng ký từng lớp trên trang regist.vlu.edu.vn vì mỗi lớp cần xác nhận OTP qua email.');
 }
 `.trim();

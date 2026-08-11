@@ -70,16 +70,22 @@ const THUBUOI_ORDER_PRIORITY: Record<FormattedThuBuoi, number> = {
   'Thứ 7 Sáng ☀️': 16,
   'Thứ 7 Chiều 🌞': 17,
   'Thứ 7 Tối 🌚': 18,
+  'Thứ 8 Sáng ☀️': 19,
+  'Thứ 8 Chiều 🌞': 20,
+  'Thứ 8 Tối 🌚': 21,
 } as const;
 
-const HTGD_ORDER_PRIORITY: Record<ClassModel['HTGD'], number> = {
+const HTGD_ORDER_PRIORITY: Record<string, number> = {
   LT: 1,
   HT1: 2,
   HT2: 3,
   ĐA: 4,
   TTTN: 5,
   KLTN: 6,
-} as const;
+  'Lý thuyết': 1,
+  'Thực hành': 2,
+  'Bài tập': 3,
+};
 
 const BOLD_CELL_STYLE: CellStyle = { fontWeight: 600 };
 
@@ -147,7 +153,7 @@ const columnDefs: GridOptions['columnDefs'] = [
       return `Thứ ${parseInt(data.Thu)} ${BUOI_FORMAT_MAP[buoi]}` as FormattedThuBuoiValid;
     },
     comparator: (a, b) => {
-      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
+      return (THUBUOI_ORDER_PRIORITY[a] ?? 99) - (THUBUOI_ORDER_PRIORITY[b] ?? 99);
     },
   },
   {
@@ -278,7 +284,7 @@ const autoGroupColumnDef: GridOptions['autoGroupColumnDef'] = {
   comparator: (a, b) => {
     const isGroupingByThuBuoi = a?.includes('Thứ') && b?.includes('Thứ');
     if (isGroupingByThuBuoi) {
-      return THUBUOI_ORDER_PRIORITY[a] - THUBUOI_ORDER_PRIORITY[b];
+      return (THUBUOI_ORDER_PRIORITY[a] ?? 99) - (THUBUOI_ORDER_PRIORITY[b] ?? 99);
     }
     const bothAreNumeral = /\d+/.test(a) && /\d+/.test(b);
     if (bothAreNumeral) return a - b;

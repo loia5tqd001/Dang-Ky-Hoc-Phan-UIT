@@ -3,6 +3,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { tracker } from '../..';
 import { selectDataExcel, useTkbStore } from '../../zus';
 import SelectExcelButton from './SelectExcelButton';
+import VluConnectPanel from 'vlu/VluConnectPanel';
 import { getLastUpdateString } from './utils';
 
 function MyAlert({ children, color, ...otherProps }: AlertProps) {
@@ -25,59 +26,40 @@ function MyAlert({ children, color, ...otherProps }: AlertProps) {
 function Index() {
   return (
     <div style={{ maxWidth: 1500 }}>
+      <VluConnectPanel />
       <SelectExcelButton />
       <MyAlert className="animated flash">
         Hướng dẫn sử dụng:{' '}
         <a
-          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT?tab=readme-ov-file#c%C3%A1c-update-%E1%BB%9F-phi%C3%AAn-b%E1%BA%A3n-2024"
+          href="https://regist.vlu.edu.vn/"
           target="_blank"
           rel="noreferrer"
           onClick={() => {
             tracker.track('[page1] link_usage_guide_clicked');
           }}
         >
-          Xem ngay
+          Mở cổng đăng ký VLU
         </a>
       </MyAlert>
       <MyAlert>
-        Câu hỏi thường gặp:{' '}
-        <a
-          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT/issues/21"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => {
-            tracker.track('[page1] link_faq_clicked');
-          }}
-        >
-          Xem ngay
-        </a>
+        Cách lấy token: Đăng nhập{' '}
+        <a href="https://regist.vlu.edu.vn/" target="_blank" rel="noreferrer">
+          regist.vlu.edu.vn
+        </a>{' '}
+        → Bấm F12 (Console) → dán{' '}
+        <code style={{ background: '#eee', padding: '2px 6px', borderRadius: 4 }}>
+          JSON.parse(localStorage.getItem('authorizationData')).Token
+        </code>{' '}
+        → copy chuỗi token và dán vào ô bên trên.
       </MyAlert>
       <MyAlert>
-        Video cách dùng script đăng ký nhanh:{' '}
+        Nếu API không có dữ liệu (đợt chưa mở), bạn vẫn có thể dùng tính năng upload Excel để xem TKB thử nghiệm.{' '}
         <a
-          href="https://www.youtube.com/watch?v=DsLUHgX_xzs"
+          href="https://daa.uit.edu.vn/thong-bao-lich-dkhp-va-tkb-du-kien-hk2-nam-hoc-2023-2024"
           target="_blank"
           rel="noreferrer"
-          onClick={() => {
-            tracker.track('[page1] link_script_instruction_video_clicked');
-          }}
         >
-          Xem ngay
-        </a>
-      </MyAlert>
-      <MyAlert>
-        Cảm thấy phần mềm hữu ích?{' '}
-        <a
-          href="https://github.com/loia5tqd001/Dang-Ky-Hoc-Phan-UIT"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => {
-            tracker.track('[page1] link_tha_star_ngay_clicked');
-          }}
-          style={{ display: 'inline-flex', alignItems: 'center' }}
-        >
-          Thả <StarOutlineIcon style={{ fontSize: 16 }} />
-          star
+          Xem mẫu
         </a>
       </MyAlert>
     </div>

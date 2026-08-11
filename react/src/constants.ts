@@ -6,7 +6,7 @@ export const COLORS = {
 export const ROUTES = {
   _1ChonFileExcel: {
     path: '/1',
-    name: '1. Chọn file excel',
+    name: '1. Kết nối dữ liệu',
   },
   _2XepLop: {
     path: '/2',
@@ -14,7 +14,7 @@ export const ROUTES = {
   },
   _3KetQua: {
     path: '/3',
-    name: '3. TKB và script',
+    name: '3. TKB và đăng ký',
   },
   // _4GiaoDienDKHP: {
   //   path: '/4',

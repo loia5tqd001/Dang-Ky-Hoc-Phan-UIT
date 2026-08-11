@@ -1,8 +1,8 @@
 {
-  "name": "dkhp-uit-react",
+  "name": "dkhp-vlu-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dkhp-uit.vercel.app/",
+  "homepage": "https://dkhp-vlu.vercel.app/",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -19,6 +19,9 @@
     "ag-grid-community": "^30.2.1",
     "ag-grid-enterprise": "^30.2.1",
     "ag-grid-react": "^30.2.1",
+    "ajv": "^8.20.0",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
     "clsx": "^2.0.0",
     "constate": "^3.3.2",
     "eslint": "^8.55.0",
