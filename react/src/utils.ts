@@ -33,16 +33,18 @@ export function extractListMaLop(classes: ClassModel[]) {
 }
 
 export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): Buoi => {
-  if (tiet.includes('11')) return Buoi.Toi;
-  if (/1|2|3|4|5/g.test(tiet)) return Buoi.Sang;
-  if (/6|7|8|9|0/g.test(tiet)) return Buoi.Chieu;
-  return Buoi.N_A;
+  if (tiet === '*') return Buoi.N_A;
+  const first = parseInt(tiet.split(/[,\s]/)[0], 10);
+  if (isNaN(first)) return Buoi.N_A;
+  if (first <= 6) return Buoi.Sang;
+  if (first <= 12) return Buoi.Chieu;
+  return Buoi.Toi;
 };
 
 export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
-  if (tiet.includes(',')) return tiet.split(',');
   if (tiet === '*') return ['*'];
-  return tiet.split('');
+  if (tiet.includes(',')) return tiet.split(',').map((s) => s.trim());
+  return [tiet.trim()];
 };
 
 /**

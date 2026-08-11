@@ -1,17 +1,18 @@
 import LinearProgress from '@mui/material/LinearProgress';
-import makeStyles from '@mui/styles/makeStyles';
-import clsx from 'clsx';
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Redirect, Route, useLocation } from 'react-router-dom';
-import { Theme } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ROUTES } from '../constants';
-import { selectFinalDataTkb, useDrawerStore, useTkbStore } from '../zus';
+import { selectFinalDataTkb, useTkbStore } from '../zus';
 import ErrorBoundary from './components/ErrorBoundary';
-import LeftDrawer from './components/LeftDrawer';
 import NeedStep1Warning from './components/NeedStep1';
 import ScrollToTop from './components/ScrollToTop';
+import VluLayout from '../vlu/VluLayout';
+import '../vlu/brand.css';
 import './App.css';
 
+const Dashboard = lazy(() => import('./Dashboard'));
 const ChonFileExcel = lazy(() => import('./1ChonFileExcel'));
 const XepLop = lazy(() => import('./2XepLop'));
 const KetQua = lazy(() => import('./3KetQua'));
@@ -38,78 +39,35 @@ function PersistedRoute(props: PersistedRouteProps) {
 function FallbackRoute() {
   const location = useLocation();
   const hasAnyMatch = Object.values(ROUTES).some((route) => route.path === location.pathname);
-  return hasAnyMatch ? null : <Redirect to={ROUTES._1ChonFileExcel.path} />;
+  return hasAnyMatch ? null : <Redirect to="/" />;
 }
 
 function App() {
-  const isDrawerOpen = useDrawerStore((s) => s.isDrawerOpen);
-  const classes = useStyles({ isDrawerOpen });
   const dataTkb = useTkbStore(selectFinalDataTkb);
 
   return (
-    <div className={classes.root}>
-      <ErrorBoundary>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
-          <Route component={ScrollToTop} />
-          <LeftDrawer />
-          <div
-            className={clsx(classes.content, {
-              [classes.contentShift]: isDrawerOpen,
-            })}
-          >
-            <Suspense fallback={<LinearProgress />}>
-              <Route
-                path="/b1e7x6f66mkd"
-                component={() => {
-                  window.location.href = 'https://b1e7x6f66mkd.ddns.dataunlocker.com';
-                  return null;
-                }}
-              />
-              <PersistedRoute path={ROUTES._1ChonFileExcel.path} component={ChonFileExcel} />
-              <PersistedRoute path={ROUTES._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
-              <PersistedRoute path={ROUTES._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
-              <FallbackRoute />
-            </Suspense>
-          </div>
-        </BrowserRouter>
-      </ErrorBoundary>
-    </div>
+    <ErrorBoundary>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <Route component={ScrollToTop} />
+        <VluLayout>
+          <Suspense fallback={<LinearProgress />}>
+            <Route exact path="/" component={Dashboard} />
+            <Route
+              path="/b1e7x6f66mkd"
+              component={() => {
+                window.location.href = 'https://b1e7x6f66mkd.ddns.dataunlocker.com';
+                return null;
+              }}
+            />
+            <PersistedRoute path={ROUTES._1ChonFileExcel.path} component={ChonFileExcel} />
+            <PersistedRoute path={ROUTES._2XepLop.path} component={dataTkb.length ? XepLop : NeedStep1Warning} />
+            <PersistedRoute path={ROUTES._3KetQua.path} component={dataTkb.length ? KetQua : NeedStep1Warning} />
+            <FallbackRoute />
+          </Suspense>
+        </VluLayout>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
 export default App;
-
-// styles below:
-const drawerWidth = 190;
-
-type StyleProps = {
-  isDrawerOpen: boolean;
-};
-const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
-  root: {
-    display: 'flex',
-    '& > canvas': {
-      position: 'fixed !important',
-    },
-  },
-  content: {
-    flexGrow: 1,
-    padding: (props) => theme.spacing(props.isDrawerOpen ? 3 : 1),
-    background: '#f4f9f2ee',
-    minHeight: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -(drawerWidth - 50),
-  },
-  contentShift: {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-}));

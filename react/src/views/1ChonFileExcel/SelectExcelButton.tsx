@@ -101,28 +101,8 @@ function SelectExcelButton() {
         </Button>
       </Tooltip>
       <span style={{ marginLeft: '10px' }}>
-        Ví dụ file excel của{' '}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://daa.uit.edu.vn/thong-bao-lich-dkhp-va-tkb-du-kien-hk2-nam-hoc-2023-2024"
-          onClick={() => {
-            tracker.track('[page1] link_excel_hk2_2023_2024_original_clicked');
-          }}
-        >
-          chính quy HK2 2023-2024
-        </a>
-        : Tải{' '}
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRyf8-kMRTo4CllfPA4sjbjxkhGhR1tT7yD1HASjmClqTwwkJBgWRvuxJPIAK8Wdw/pub?output=xlsx"
-          onClick={() => {
-            tracker.track('[page1] link_excel_hk2_2023_2024_clicked');
-          }}
-        >
-          TKB_dự kiến_HK2 2023-2024_29-12-2023_Copied.xlsx
-        </a>{' '}
+        Với VLU, dữ liệu được tải tự động qua API (ô kết nối phía trên). Upload Excel chỉ dùng khi muốn thử nghiệm
+        với định dạng tương tự.
       </span>
     </Box>
   );
