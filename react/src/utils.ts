@@ -42,6 +42,19 @@ export const getBuoiFromTiet = (tiet: ClassModel['Tiet']): Buoi => {
 export const getDanhSachTiet = (tiet: ClassModel['Tiet']): string[] => {
   if (tiet.includes(',')) return tiet.split(',');
   if (tiet === '*') return ['*'];
+  // UIT exports consecutive periods without separators (for example 910,
+  // 678910, or 111213). Periods 10+ must be kept as two-digit values;
+  // splitting into characters makes "910" overlap period 1 by mistake.
+  for (let firstPeriod = 1; firstPeriod <= 14; firstPeriod++) {
+    const periods: string[] = [];
+    let compactValue = '';
+    for (let period = firstPeriod; period <= 14 && compactValue.length <= tiet.length; period++) {
+      periods.push(String(period));
+      compactValue += period;
+      if (compactValue === tiet) return periods;
+    }
+  }
+  if (tiet === '0') return ['10']; // backward compatibility with old exports
   return tiet.split('');
 };
 
